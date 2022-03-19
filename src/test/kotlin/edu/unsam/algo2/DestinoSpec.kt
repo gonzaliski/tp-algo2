@@ -18,10 +18,10 @@ class DestinoSpec: DescribeSpec ({
             val londres = Destino(
                 pais="Inglaterra",
                 ciudad="Londres",
-                costo_base=60000
+                costo_base=60000.0
             )
             it("20% más por no ser destino local y descuento por antiguedad (15%), costo de 61200"){
-                londres.costo(usuario) shouldBe 61200
+                londres.costo(usuario) shouldBe 61200.0
             }
         }
 
