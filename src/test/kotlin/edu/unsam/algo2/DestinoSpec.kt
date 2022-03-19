@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 class DestinoSpec: DescribeSpec ({
     describe("Test con usuario con mucha antiguedad (+15), pais de residencia igual al pais destino ") {
-        val usuario = Usuario( 
+        val frank = Usuario( 
                 nombre = "Frank", 
                 apellido = "Arnold", 
                 username = "frarnold", 
@@ -16,12 +16,12 @@ class DestinoSpec: DescribeSpec ({
 
         describe("Test con destino no local"){
             val londres = Destino(
-                pais="Inglaterra",
-                ciudad="Londres",
-                costo_base=60000.0
+                pais = "Inglaterra",
+                ciudad = "Londres",
+                costo_base = 60000.0
             )
-            it("20% más por no ser destino local y descuento por antiguedad (15%), costo de 61200"){
-                londres.costo(usuario) shouldBe 61200.0
+            it("20% más por no ser destino local y descuento por antiguedad (15%), costo de 63000"){
+                londres.costo(frank) shouldBe 63000.0
             }
         }
 
