@@ -10,23 +10,23 @@ internal class DestinoSpec : DescribeSpec({
             nombre = "Pepe",
             apellido = "Rodriguez",
             username = "peper",
-            fecha_alta = LocalDate.of(
+            fechaAlta = LocalDate.of(
                 /* year = */ LocalDate.now().year - 2, // antiguedad es siempre 2
                 /* month = */ 5,
                 /* dayOfMonth = */ 11
             ),
-            pais_residencia = ""
+            paisResidencia = ""
         )
         describe("Destino local") {
             val destino = Destino(
                 pais = "Argentina",
                 ciudad = "MDQ",
-                costo_base = 25_000.0
+                costoBase = 25_000.0
             )
             describe("Pais de residencia distinto al pais destino") {
-                usuario.pais_residencia = "Uruguay"
+                usuario.paisResidencia = "Uruguay"
                 it("No tiene recargo ni descuento") {
-                    destino.costo(usuario = usuario) shouldBe destino.costo_base
+                    destino.costo(usuario = usuario) shouldBe destino.costoBase
                 }
             }
         }
@@ -37,14 +37,14 @@ internal class DestinoSpec : DescribeSpec({
             nombre = "Pepe",
             apellido ="Perez",
             username = "peperez",
-            fecha_alta = LocalDate.of(2006, 3, 18),
-            pais_residencia = "Argentina"
+            fechaAlta = LocalDate.of(2006, 3, 18),
+            paisResidencia = "Argentina"
         )
         describe("Destino local") {
             val buenosAires = Destino(
                 pais = "Argentina",
                 ciudad = "Buenos Aires",
-                costo_base = 40_000.0
+                costoBase = 40_000.0
             )
             it("El costo es de 34000") {
                 buenosAires.costo(pepe) shouldBe 34_000.0
@@ -77,14 +77,14 @@ internal class DestinoSpec : DescribeSpec({
             nombre = "Carlos",
             apellido ="Gomez",
             username = "cgomez",
-            fecha_alta = LocalDate.of(2003, 11, 25),
-            pais_residencia = "Chile"
+            fechaAlta = LocalDate.of(2003, 11, 25),
+            paisResidencia = "Chile"
         )
         describe("Destino no local") {
             val destino = Destino(
                 pais = "Brasil",
                 ciudad = "Florianopolis",
-                costo_base = 30000.0
+                costoBase = 30000.0
             )
             it("El costo es de 36000") {
                 destino.costo(user) shouldBe 36000.0
@@ -97,15 +97,15 @@ internal class DestinoSpec : DescribeSpec({
                 nombre = "Frank", 
                 apellido = "Arnold", 
                 username = "frarnold", 
-                fecha_alta = LocalDate.of(2003, 2, 5),
-                pais_residencia = "Inglaterra"
+                fechaAlta = LocalDate.of(2003, 2, 5),
+                paisResidencia = "Inglaterra"
             )
 
         describe("Test con destino no local"){
             val londres = Destino(
                 pais = "Inglaterra",
                 ciudad = "Londres",
-                costo_base = 60000.0
+                costoBase = 60000.0
             )
             it("20% más por no ser destino local y descuento por antiguedad (15%), costo de 63000"){
                 londres.costo(frank) shouldBe 63000.0

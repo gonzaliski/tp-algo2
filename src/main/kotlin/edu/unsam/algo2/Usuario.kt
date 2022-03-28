@@ -6,10 +6,10 @@ class Usuario(
     val nombre: String,
     val apellido: String,
     val username: String,
-    val fecha_alta: LocalDate,
-    var pais_residencia: String
+    val fechaAlta: LocalDate,
+    var paisResidencia: String
 ) {
 
-    fun antiguedad() = LocalDate.now().year - fecha_alta.year
+    fun antiguedad() = LocalDate.now().year - fechaAlta.year
 
 }
