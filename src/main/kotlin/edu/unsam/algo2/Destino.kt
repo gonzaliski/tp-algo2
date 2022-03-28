@@ -6,8 +6,12 @@ class Destino(
     val costoBase: Double
 ) {
 
+    companion object{
+        var LOCAL = "Argentina"
+    }
+
     fun esLocal() =
-        pais.lowercase().trim() == "Argentina".lowercase().trim()
+        pais.lowercase().trim() == LOCAL.lowercase().trim()
 
     fun costo(usuario: Usuario): Double {
         var costo: Double = costoBase
