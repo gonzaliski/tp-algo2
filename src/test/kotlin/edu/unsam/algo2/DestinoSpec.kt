@@ -20,7 +20,7 @@ internal class DestinoSpec : DescribeSpec({
         describe("Destino local") {
             val destino = Destino(
                 pais = "Argentina",
-                cuidad = "MDQ",
+                ciudad = "MDQ",
                 costo_base = 25_000.0
             )
             describe("Pais de residencia distinto al pais destino") {
