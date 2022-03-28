@@ -4,7 +4,27 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
-internal class DestinoSpec: DescribeSpec ({
+class DestinoSpec : DescribeSpec({
+    describe("Usuario con mucha antigüedad (+15) y pais residencia igual a pais destino") {
+        val pepe = Usuario(
+            nombre = "Pepe",
+            apellido ="Perez",
+            username = "peperez",
+            fecha_alta = LocalDate.of(2006, 3, 18),
+            pais_residencia = "Argentina"
+        )
+        describe("Destino local") {
+            val buenosAires = Destino(
+                pais = "Argentina",
+                ciudad = "Buenos Aires",
+                costo_base = 40_000.0
+            )
+            it("El costo es de 34000") {
+                buenosAires.costo(pepe) shouldBe 34_000.0
+            }
+        }
+    }
+
     describe("Usuario con 16 años de antiguedad y pais de residencia Argentina") {
         val usuario = Usuario("Pepe","Rodriguez", "peper", LocalDate.of(LocalDate.now().year - 16,3,20),"Argentina")
 
