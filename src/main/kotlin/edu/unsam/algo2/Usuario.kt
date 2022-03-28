@@ -1,6 +1,7 @@
 package edu.unsam.algo2
 
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class Usuario(
     val nombre: String,
@@ -10,6 +11,6 @@ class Usuario(
     var paisResidencia: String
 ) {
 
-    fun antiguedad() = LocalDate.now().year - fechaAlta.year
+    fun antiguedad() = ChronoUnit.YEARS.between(fechaAlta, LocalDate.now()).toInt()
 
 }
