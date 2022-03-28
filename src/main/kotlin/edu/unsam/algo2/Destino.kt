@@ -2,7 +2,7 @@ package edu.unsam.algo2
 
 class Destino(
     var pais: String,
-    var cuidad: String,
+    var ciudad: String,
     val costo_base: Double
 ) {
 
