@@ -6,24 +6,19 @@ class Destino(
     val costoBase: Double
 ) {
 
-    companion object{
+    companion object {
         var LOCAL = "Argentina"
     }
-
+    
     fun esLocal() =
         pais.lowercase().trim() == LOCAL.lowercase().trim()
 
     fun costo(usuario: Usuario): Double {
         var costo: Double = costoBase
-
-        if (!esLocal()) {
-            costo *= 1.2
-        }
-        if (usuario.paisResidencia == pais) {
-            costo -= (0.01 * costoBase) * minOf(usuario.antiguedad(), 15)
-        }
-
-        return costo
+        return costo + recargo(costo) - descuentoPara(usuario, costo)
     }
 
+    fun recargo(costo: Double): Double = if (!esLocal()) costo * 0.2 else 0.0
+    fun descuentoPara(usuario: Usuario, costo: Double): Double =
+        if (usuario.paisResidencia == pais) (0.01 * costoBase) * minOf(usuario.antiguedad(), 15) else 0.0
 }
