@@ -39,4 +39,12 @@ class Itinerario(
     }
 
     fun costo() = dias.sumOf { dia -> dia.costo() }
+
+    fun tieneActividadesTodosLosDias(): Boolean = dias.all { dia -> dia.actividades.isNotEmpty() }
+
+    fun actividades() = dias.flatMap { dia -> dia.actividades }
+
+    fun actividadesDeDificultad(dificultad: Actividad.Dificultad)= actividades().count { actividad -> actividad.dificultad == dificultad }
+
+    fun porcentajeDeActividades(dificultad: Actividad.Dificultad) = actividadesDeDificultad(dificultad) / actividades().size
 }
