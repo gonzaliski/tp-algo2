@@ -1,6 +1,7 @@
 package edu.unsam.algo2
 
 class Itinerario(
+    var creador: Usuario,
     var destino: Destino,
     var dias: MutableList<DiaDeItinerario> // Lista de dias, cada dia tiene una lista de actividades
 ) {
