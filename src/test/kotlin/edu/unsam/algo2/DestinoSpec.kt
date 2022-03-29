@@ -11,7 +11,8 @@ internal class DestinoSpec : DescribeSpec({
             apellido = "Rodriguez",
             username = "peper",
             fechaAlta = LocalDate.now().minusYears(2),
-            paisResidencia = ""
+            paisResidencia = "",
+            diasDisponibles = 0
         )
         describe("Destino local") {
             val destino = Destino(
@@ -34,7 +35,8 @@ internal class DestinoSpec : DescribeSpec({
             apellido = "Perez",
             username = "peperez",
             fechaAlta = LocalDate.now().minusYears(16),
-            paisResidencia = "Argentina"
+            paisResidencia = "Argentina",
+            diasDisponibles = 0
         )
         describe("Destino local") {
             val buenosAires = Destino(
@@ -49,7 +51,14 @@ internal class DestinoSpec : DescribeSpec({
     }
 
     describe("Usuario con 16 años de antiguedad y pais de residencia Argentina") {
-        val usuario = Usuario("Pepe", "Rodriguez", "peper", LocalDate.now().minusYears(16), "Argentina")
+        val usuario = Usuario(
+            "Pepe",
+            "Rodriguez",
+            "peper",
+            LocalDate.now().minusYears(16),
+            "Argentina",
+            0
+        )
 
         describe("Destino local") {
             val destino = Destino("Argentina", "MDQ", 1000.00)
@@ -74,7 +83,8 @@ internal class DestinoSpec : DescribeSpec({
             apellido = "Gomez",
             username = "cgomez",
             fechaAlta = LocalDate.now().minusYears(16),
-            paisResidencia = "Chile"
+            paisResidencia = "Chile",
+            diasDisponibles = 0
         )
         describe("Destino no local") {
             val destino = Destino(
@@ -94,7 +104,8 @@ internal class DestinoSpec : DescribeSpec({
             apellido = "Arnold",
             username = "frarnold",
             fechaAlta = LocalDate.now().minusYears(16),
-            paisResidencia = "Inglaterra"
+            paisResidencia = "Inglaterra",
+            diasDisponibles = 0
         )
 
         describe("Test con destino no local") {
