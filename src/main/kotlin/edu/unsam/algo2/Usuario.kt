@@ -4,18 +4,61 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 class Usuario(
-    val nombre: String,
-    val apellido: String,
-    val username: String,
+    var nombre: String,
     val fechaAlta: LocalDate,
-    var paisResidencia: String,
     var diasDisponibles: Int,
     var criterio: Criterio
 ) {
-
     val amigos: MutableList<Usuario> = mutableListOf()
-    val destinosDeseados: MutableList<Destino> = mutableListOf()
-    val destinosVisitados: MutableList<Destino> = mutableListOf()
+    var destinosDeseados: MutableList<Destino> = mutableListOf()
+    var destinosVisitados: MutableList<Destino> = mutableListOf()
+
+    init{
+        require(nombre.isNotBlank()){
+            "El nombre del usuario no puede ser nulo o vacio"
+        }
+
+        require(fechaAlta <= LocalDate.now()){
+            "La fecha de alta no puede ser posterior a la del día."
+        }
+        require(diasDisponibles > 0){
+            "Los días para viajar, deben ser mayores a cero."
+        }
+        require(destinosDeseados.size > 0){
+            "Todos los usuarios deben tener al menos un destino deseado."
+        }
+    }
+
+    var apellido: String = "a"
+        get() = field
+        set(value){
+            if(value.isNotEmpty()){
+                field = value
+            }else{
+                throw error("El apellido del usuario no puede ser nulo o vacio")
+            }
+        }
+    var username: String = ""
+        get() = field
+        set(value){
+            if(!value.isEmpty()){
+                field = value
+            }else{
+                throw error("El username del usuario no puede ser nulo o vacio")
+            }
+        }
+    var paisResidencia: String = ""
+        get() = field
+        set(value){
+            if(!value.isEmpty()){
+                field = value
+            }else{
+                throw error("El pais de residencia del usuario no puede ser nulo o vacio")
+            }
+        }
+
+
+
 
     fun antiguedad() = ChronoUnit.YEARS.between(fechaAlta, LocalDate.now()).toInt()
 

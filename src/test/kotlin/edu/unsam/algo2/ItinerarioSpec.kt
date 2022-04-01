@@ -1,5 +1,5 @@
 package edu.unsam.algo2
-
+/*
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
@@ -13,9 +13,12 @@ class ItinerarioSpec : DescribeSpec({
             username = "cgomez",
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Chile",
-            diasDisponibles = 0
+            diasDisponibles = 0,
+            criterio = Criterio.Relajado
         ),
-        Destino(pais = "", "", 0.0), mutableListOf(
+        Destino().apply { pais = "Chile"
+            ciudad = "Santiago"
+            costoBase = 2.0 }, mutableListOf(
             Itinerario.DiaDeItinerario(
                 mutableListOf(
                     Actividad(
@@ -84,3 +87,4 @@ class ItinerarioSpec : DescribeSpec({
         itinerario.dificultad() shouldBe Actividad.Dificultad.MEDIA
     }
 })
+*/

@@ -1,10 +1,28 @@
 package edu.unsam.algo2
 
 class Itinerario(
-    var creador: Usuario,
-    var destino: Destino,
-    var dias: MutableList<DiaDeItinerario> // Lista de dias, cada dia tiene una lista de actividades
 ) {
+    var creador: Usuario? = null
+        get() = field
+        set(value){
+            if(value != null){
+                field = value
+            }else{
+                throw error("No puede tener un creador nulo")
+            }
+        }
+    var destino: Destino = Destino()
+
+    //Todo Las actividades del día no deben solaparse en horarios.
+    var dias: MutableList<DiaDeItinerario> = mutableListOf() // Lista de dias, cada dia tiene una lista de actividades
+        get() = field
+        set(value){
+            if(value.size > 0){
+                field = value
+            }else{
+                throw error("Las actividades del dia deben tener al menos 1 actividad ")
+            }
+        }
 
     class DiaDeItinerario(var actividades: MutableList<Actividad>) {
         fun costo() = actividades.sumOf { actividad -> actividad.costo }

@@ -1,5 +1,6 @@
-package edu.unsam.algo2
 
+package edu.unsam.algo2
+/*
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
@@ -12,15 +13,28 @@ class UsuarioSpec: DescribeSpec ({
         username = "ppeter",
         fechaAlta = LocalDate.now(),
         paisResidencia = "",
-        diasDisponibles = 15
+        diasDisponibles = 15,
+        criterio = Criterio.Relajado
     )
 
     val destinosDeseados = listOf(
-        Destino("Italia", "Roma", 0.0),
-        Destino("Runcuncun", "Cucurun", 0.0)
+        Destino().apply {
+            pais = "Italia"
+            ciudad = "Roma"
+            costoBase = 3.0
+        },
+        Destino().apply {
+            pais ="Runcuncun"
+            ciudad = "Cucurun"
+            costoBase = 3.0
+        }
     )
     val destinosVisitados = listOf(
-        Destino("Chile", "Santiago", 0.0)
+        Destino().apply {
+            pais = "Chile"
+            ciudad = "Santiago"
+            costoBase = 3.0
+        }
     )
     usuario.destinosDeseados.addAll(destinosDeseados)
     usuario.destinosVisitados.addAll(destinosVisitados)
@@ -33,7 +47,8 @@ class UsuarioSpec: DescribeSpec ({
                 username = "cgomez",
                 fechaAlta = LocalDate.now().minusYears(16),
                 paisResidencia = "Chile",
-                diasDisponibles = 0
+                diasDisponibles = 0,
+                criterio = Criterio.Relajado
             ),
             usuario.destinosDeseados.first(), mutableListOf(
                 Itinerario.DiaDeItinerario(
@@ -97,9 +112,14 @@ class UsuarioSpec: DescribeSpec ({
                 username = "cgomez",
                 fechaAlta = LocalDate.now().minusYears(16),
                 paisResidencia = "Chile",
-                diasDisponibles = 0
+                diasDisponibles = 0,
+                criterio = Criterio.Relajado
             ),
-            Destino("", "", 0.0), mutableListOf(
+            Destino().apply {
+                pais = "Bolivia"
+                ciudad = "La Paz"
+                costoBase = 3.0
+            }, mutableListOf(
                 Itinerario.DiaDeItinerario(
                     mutableListOf(
                         Actividad(
@@ -125,3 +145,5 @@ class UsuarioSpec: DescribeSpec ({
     }
 
 })
+
+ */

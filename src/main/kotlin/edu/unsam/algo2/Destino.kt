@@ -1,11 +1,34 @@
 package edu.unsam.algo2
 
 class Destino(
-    var pais: String,
-    var ciudad: String,
-    val costoBase: Double
 ) {
-
+    var ciudad: String = "Runcuncun"
+        get() = field
+        set(value){
+            if(!value.isEmpty()){
+                field = value
+            }else{
+                throw error("Nombre de ciudad no puede ser nulo o vacio")
+            }
+        }
+    var pais: String = "Argentina"
+        get() = field
+        set(value){
+            if(!value.isEmpty()){
+                field = value
+            }else{
+                throw error("Nombre de pais no puede ser nulo o vacio")
+            }
+        }
+    var costoBase: Double = 3.0
+        get() = field
+        set(value){
+            if(value > 0){
+                field = value
+            }else{
+                throw error("Costo base no puede ser menor o igual a 0")
+            }
+        }
     companion object {
         var LOCAL = "Argentina"
     }
