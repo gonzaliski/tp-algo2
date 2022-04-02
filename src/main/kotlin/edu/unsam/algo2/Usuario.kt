@@ -5,6 +5,9 @@ import java.time.temporal.ChronoUnit
 
 class Usuario(
     var nombre: String,
+    var apellido: String,
+    var username: String,
+    var paisResidencia: String,
     val fechaAlta: LocalDate,
     var diasDisponibles: Int,
     var criterio: Criterio
@@ -18,9 +21,22 @@ class Usuario(
             "El nombre del usuario no puede ser nulo o vacio"
         }
 
+        require(apellido.isNotBlank()){
+            "El apellido del usuario no puede ser nulo o vacio"
+        }
+
+        require(username.isNotBlank()){
+            "El username del usuario no puede ser nulo o vacio"
+        }
+
+        require(paisResidencia.isNotBlank()){
+            "El pais del usuario no puede ser nulo o vacio"
+        }
+
         require(fechaAlta <= LocalDate.now()){
             "La fecha de alta no puede ser posterior a la del día."
         }
+
         require(diasDisponibles > 0){
             "Los días para viajar, deben ser mayores a cero."
         }
@@ -28,36 +44,6 @@ class Usuario(
             "Todos los usuarios deben tener al menos un destino deseado."
         }
     }
-
-    var apellido: String = "a"
-        get() = field
-        set(value){
-            if(value.isNotEmpty()){
-                field = value
-            }else{
-                throw error("El apellido del usuario no puede ser nulo o vacio")
-            }
-        }
-    var username: String = ""
-        get() = field
-        set(value){
-            if(!value.isEmpty()){
-                field = value
-            }else{
-                throw error("El username del usuario no puede ser nulo o vacio")
-            }
-        }
-    var paisResidencia: String = ""
-        get() = field
-        set(value){
-            if(!value.isEmpty()){
-                field = value
-            }else{
-                throw error("El pais de residencia del usuario no puede ser nulo o vacio")
-            }
-        }
-
-
 
 
     fun antiguedad() = ChronoUnit.YEARS.between(fechaAlta, LocalDate.now()).toInt()
