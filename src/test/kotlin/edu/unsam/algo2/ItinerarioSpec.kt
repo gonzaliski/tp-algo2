@@ -1,5 +1,5 @@
 package edu.unsam.algo2
-/*
+
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
@@ -13,52 +13,68 @@ class ItinerarioSpec : DescribeSpec({
             username = "cgomez",
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Chile",
-            diasDisponibles = 0,
+            diasDisponibles = 1,
             criterio = Criterio.Relajado
+        ).apply {
+            destinosDeseados = mutableListOf(
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "MDQ",
+                    costoBase = 25_000.0
+                ),
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "Buenos Aires",
+                    costoBase = 25_000.0
+                )
+            )
+        },
+        destino = Destino(
+            pais = "Chile",
+            ciudad = "Santiago",
+            costoBase = 2.0
         ),
-        Destino().apply { pais = "Chile"
-            ciudad = "Santiago"
-            costoBase = 2.0 }, mutableListOf(
+        dias = mutableListOf(
             Itinerario.DiaDeItinerario(
                 mutableListOf(
                     Actividad(
-                        0.0,
-                        "",
-                        LocalTime.now(),
-                        LocalTime.now(),
-                        Actividad.Dificultad.BAJA
+                        dificultad = Actividad.Dificultad.BAJA,
+                        descripcion = "asdjasdja",
+                        inicio = LocalTime.now(),
+                        fin = LocalTime.now().plusHours(2),
+                        costo = 0.0
+
                     ),
                     Actividad(
-                        0.0,
-                        "",
-                        LocalTime.now(),
-                        LocalTime.now(),
-                        Actividad.Dificultad.MEDIA
-                    )
+                        dificultad = Actividad.Dificultad.MEDIA,
+                        descripcion = "asdjasdjsa",
+                        inicio = LocalTime.now(),
+                        fin = LocalTime.now().plusHours(2),
+                        costo = 0.0                    )
                 )
             )
+        ),
+
         )
-    )
     it("con misma cantidad devuelve dificultad mayor") {
         itinerario.dificultad() shouldBe Actividad.Dificultad.MEDIA
     }
 
     it("devuelve la dificultad que mas se repite (ALTA)") {
         itinerario.dias.first().actividades.addAll(
-            listOf(
+            mutableListOf(
                 Actividad(
-                    0.0,
-                    "",
-                    LocalTime.now(),
-                    LocalTime.now(),
-                    Actividad.Dificultad.ALTA
-                ), Actividad(
-                    0.0,
-                    "",
-                    LocalTime.now(),
-                    LocalTime.now(),
-                    Actividad.Dificultad.ALTA
-                )
+                    dificultad = Actividad.Dificultad.ALTA,
+                    descripcion = "asdjasdja",
+                    inicio = LocalTime.now(),
+                    fin = LocalTime.now().plusHours(2),
+                    costo = 0.0                ),
+                Actividad(
+                    dificultad = Actividad.Dificultad.ALTA,
+                    descripcion = "asdjasdja",
+                    inicio = LocalTime.now(),
+                    fin = LocalTime.now().plusHours(2),
+                    costo = 0.0                )
             )
         )
         println(itinerario.dificultad())
@@ -67,24 +83,22 @@ class ItinerarioSpec : DescribeSpec({
 
     it("devuelve la dificultad que mas se repite (MEDIA)") {
         itinerario.dias.first().actividades.addAll(
-            listOf(
+            mutableListOf(
                 Actividad(
-                    0.0,
-                    "",
-                    LocalTime.now(),
-                    LocalTime.now(),
-                    Actividad.Dificultad.MEDIA
-                ), Actividad(
-                    0.0,
-                    "",
-                    LocalTime.now(),
-                    LocalTime.now(),
-                    Actividad.Dificultad.MEDIA
-                )
+                    dificultad = Actividad.Dificultad.MEDIA,
+                    descripcion = "dasdjasdja",
+                    inicio = LocalTime.now(),
+                    fin = LocalTime.now().plusHours(2),
+                    costo = 0.0                ),
+                Actividad(
+                    dificultad = Actividad.Dificultad.MEDIA,
+                    descripcion = "agsdjasdja",
+                    inicio = LocalTime.now(),
+                    fin = LocalTime.now().plusHours(2),
+                    costo = 0.0                )
             )
         )
         println(itinerario.dificultad())
         itinerario.dificultad() shouldBe Actividad.Dificultad.MEDIA
     }
 })
-*/
