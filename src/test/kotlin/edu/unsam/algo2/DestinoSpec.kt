@@ -1,5 +1,5 @@
 package edu.unsam.algo2
-/*
+
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
@@ -11,22 +11,35 @@ internal class DestinoSpec : DescribeSpec({
             apellido = "Rodriguez",
             username = "peper",
             fechaAlta = LocalDate.now().minusYears(2),
-            paisResidencia = "",
-            diasDisponibles = 0,
+            paisResidencia = "Uruguay",
+            diasDisponibles = 1,
+
             criterio = Criterio.Relajado
 
-        )
+        ).apply {
+            destinosDeseados = mutableListOf(
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "MDQ",
+                    costoBase = 25_000.0
+                ),
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "Buenos Aires",
+                    costoBase = 25_000.0
+                )
+            )
+        }
         describe("Destino local") {
-            val destino = Destino().apply {
-                pais = "Argentina"
-                ciudad = "MDQ"
+            val destino = Destino(
+                pais = "Argentina",
+                ciudad = "MDQ",
                 costoBase = 25_000.0
-            }
-            describe("Pais de residencia distinto al pais destino") {
-                usuario.paisResidencia = "Uruguay"
-                it("No tiene recargo ni descuento") {
-                    destino.costo(usuario = usuario) shouldBe destino.costoBase
-                }
+            )
+
+
+            it("No tiene recargo ni descuento") {
+                destino.costo(usuario = usuario) shouldBe destino.costoBase
             }
         }
     }
@@ -38,15 +51,29 @@ internal class DestinoSpec : DescribeSpec({
             username = "peperez",
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Argentina",
-            diasDisponibles = 0,
+            diasDisponibles = 1,
             criterio = Criterio.Relajado
-        )
+        ).apply {
+            destinosDeseados = mutableListOf(
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "MDQ",
+                    costoBase = 25_000.0
+                ),
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "Buenos Aires",
+                    costoBase = 25_000.0
+                )
+            )
+        }
         describe("Destino local") {
-            val buenosAires = Destino().apply {
-                pais = "Argentina"
-                ciudad = "Buenos Aires"
+            val buenosAires = Destino(
+                pais = "Argentina",
+                ciudad = "Buenos Aires",
                 costoBase = 40_000.0
-            }
+            )
+
             it("El costo es de 34000") {
                 buenosAires.costo(pepe) shouldBe 34_000.0
             }
@@ -55,32 +82,46 @@ internal class DestinoSpec : DescribeSpec({
 
     describe("Usuario con 16 años de antiguedad y pais de residencia Argentina") {
         val usuario = Usuario(
-            "Pepe",
-            "Rodriguez",
-            "peper",
-            LocalDate.now().minusYears(16),
-            "Argentina",
-            0,
+            nombre = "Pepe",
+            apellido = "Rodriguez",
+            username = "peper",
+            paisResidencia = "Argentina",
+            fechaAlta = LocalDate.now().minusYears(16),
+            diasDisponibles = 1,
             criterio = Criterio.Relajado
-        )
-
+        ).apply {
+            destinosDeseados = mutableListOf(
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "MDQ",
+                    costoBase = 25_000.0
+                ),
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "Buenos Aires",
+                    costoBase = 25_000.0
+                )
+            )
+        }
         describe("Destino local") {
-            val destino = Destino().apply {
-                pais ="Argentina"
-                ciudad = "MDQ"
+            val destino = Destino(
+                pais = "Argentina",
+                ciudad = "MDQ",
                 costoBase = 1000.00
-            }
+            )
+
             it("Con descuento del 1% por cada año de antiguedad") {
                 destino.costo(usuario) shouldBe 850.00 //15% sobre el costo base del destino
             }
         }
 
         describe("Pais de residencia distinto al pais destino") {
-            val destino = Destino().apply {
-                pais = "Estados Unidos"
-                ciudad = "New York"
+            val destino = Destino(
+                pais = "Estados Unidos",
+                ciudad = "New York",
                 costoBase = 5000.00
-            }//reasigno un nuevo destino no local
+            )
+
             it("Con recargo del 20% por ser destino NO local") {
                 destino.esLocal() shouldBe false
                 destino.costo(usuario) shouldBe 6000.00
@@ -96,16 +137,29 @@ internal class DestinoSpec : DescribeSpec({
             username = "cgomez",
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Chile",
-            diasDisponibles = 0,
+            diasDisponibles = 1,
             criterio = Criterio.Relajado
-        )
+        ).apply {
+            destinosDeseados = mutableListOf(
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "MDQ",
+                    costoBase = 25_000.0
+                ),
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "Buenos Aires",
+                    costoBase = 25_000.0
+                )
+            )
+        }
         describe("Destino no local") {
-            val destino = Destino().apply{
-                pais = "Brasil"
-                ciudad = "Florianopolis"
+            val destino = Destino(
+                pais = "Brasil",
+                ciudad = "Florianopolis",
                 costoBase = 30000.0
+            )
 
-            }
             it("El costo es de 36000") {
                 destino.costo(user) shouldBe 36000.0
             }
@@ -119,16 +173,30 @@ internal class DestinoSpec : DescribeSpec({
             username = "frarnold",
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Inglaterra",
-            diasDisponibles = 0,
+            diasDisponibles = 1,
             criterio = Criterio.Relajado
-        )
+        ).apply {
+            destinosDeseados = mutableListOf(
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "MDQ",
+                    costoBase = 25_000.0
+                ),
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "Buenos Aires",
+                    costoBase = 25_000.0
+                )
+            )
+        }
 
         describe("Test con destino no local") {
-            val londres = Destino().apply {
-                pais = "Inglaterra"
-                ciudad = "Londres"
+            val londres = Destino(
+                pais = "Inglaterra",
+                ciudad = "Londres",
                 costoBase = 60000.0
-            }
+            )
+
             it("20% más por no ser destino local y descuento por antiguedad (15%), costo de 63000") {
                 londres.costo(frank) shouldBe 63000.0
             }
@@ -137,4 +205,3 @@ internal class DestinoSpec : DescribeSpec({
 })
 
 
-*/
