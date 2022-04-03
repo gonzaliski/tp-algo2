@@ -12,10 +12,9 @@ class UsuarioSpec: DescribeSpec ({
         apellido = "Peter",
         username = "ppeter",
         fechaAlta = LocalDate.now(),
-        paisResidencia = "",
+        paisResidencia = "Venezuela",
         diasDisponibles = 15,
-        criterio = Criterio.Relajado
-    ).apply {
+        criterio = Criterio.Relajado,
         destinosDeseados = mutableListOf(
             Destino(
                 pais = "Italia",
@@ -29,6 +28,7 @@ class UsuarioSpec: DescribeSpec ({
                 costoBase = 3.0
             )
         )
+    ).apply {
         destinosVisitados = mutableListOf(
             Destino(
                 pais = "Chile",
@@ -47,8 +47,21 @@ class UsuarioSpec: DescribeSpec ({
                 username = "cgomez",
                 fechaAlta = LocalDate.now().minusYears(16),
                 paisResidencia = "Chile",
-                diasDisponibles = 0,
-                criterio = Criterio.Relajado
+                diasDisponibles = 1,
+                criterio = Criterio.Relajado,
+                destinosDeseados = mutableListOf(
+                    Destino(
+                        pais = "Italia",
+                        ciudad = "Roma",
+                        costoBase = 3.0
+                    ),
+
+                    Destino(
+                        pais ="Runcuncun",
+                        ciudad = "Cucurun",
+                        costoBase = 3.0
+                    )
+                )
             ),
             destino = usuario.destinosDeseados.first(),
             dias = mutableListOf(
@@ -114,8 +127,21 @@ class UsuarioSpec: DescribeSpec ({
                 username = "cgomez",
                 fechaAlta = LocalDate.now().minusYears(16),
                 paisResidencia = "Chile",
-                diasDisponibles = 0,
-                criterio = Criterio.Relajado
+                diasDisponibles = 1,
+                criterio = Criterio.Relajado,
+                destinosDeseados = mutableListOf(
+                    Destino(
+                        pais = "Italia",
+                        ciudad = "Roma",
+                        costoBase = 3.0
+                    ),
+
+                    Destino(
+                        pais ="Runcuncun",
+                        ciudad = "Cucurun",
+                        costoBase = 3.0
+                    )
+                )
             ),
             destino = Destino(
                 pais = "Bolivia",

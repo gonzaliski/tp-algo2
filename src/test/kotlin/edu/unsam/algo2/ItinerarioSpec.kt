@@ -14,8 +14,7 @@ class ItinerarioSpec : DescribeSpec({
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Chile",
             diasDisponibles = 1,
-            criterio = Criterio.Relajado
-        ).apply {
+            criterio = Criterio.Relajado,
             destinosDeseados = mutableListOf(
                 Destino(
                     pais = "Argentina",
@@ -28,7 +27,7 @@ class ItinerarioSpec : DescribeSpec({
                     costoBase = 25_000.0
                 )
             )
-        },
+        ),
         destino = Destino(
             pais = "Chile",
             ciudad = "Santiago",
