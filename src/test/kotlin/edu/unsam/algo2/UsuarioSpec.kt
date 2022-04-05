@@ -70,16 +70,16 @@ class UsuarioSpec: DescribeSpec ({
                         Actividad(
                             dificultad = Actividad.Dificultad.BAJA,
                             descripcion = "asdjasdja",
-                            inicio = LocalTime.now(),
-                            fin = LocalTime.now().plusHours(2),
+                            inicio = LocalTime.of(12,30,0,0),
+                            fin = LocalTime.of(14,30,0,0),
                             costo = 0.0
 
                         ),
                         Actividad(
                             dificultad = Actividad.Dificultad.MEDIA,
                             descripcion = "asdjasdjsa",
-                            inicio = LocalTime.now(),
-                            fin = LocalTime.now().plusHours(2),
+                            inicio = LocalTime.of(15,30,0,0),
+                            fin = LocalTime.of(17,30,0,0),
                             costo = 0.0                    )
                     )
                 )
@@ -100,15 +100,15 @@ class UsuarioSpec: DescribeSpec ({
                         Actividad(
                             dificultad = Actividad.Dificultad.BAJA,
                             descripcion = "asdjasdja",
-                            inicio = LocalTime.now(),
-                            fin = LocalTime.now().plusHours(2),
+                            inicio = LocalTime.of(12,30,0,0),
+                            fin = LocalTime.of(14,30,0,0),
                             costo = 0.0
                         ),
                         Actividad(
                             dificultad = Actividad.Dificultad.BAJA,
                             descripcion = "asdjasdja",
-                            inicio = LocalTime.now(),
-                            fin = LocalTime.now().plusHours(2),
+                            inicio = LocalTime.of(15,30,0,0),
+                            fin = LocalTime.of(17,30,0,0),
                             costo = 0.0
                         )
                     )
@@ -154,15 +154,15 @@ class UsuarioSpec: DescribeSpec ({
                         Actividad(
                             dificultad = Actividad.Dificultad.BAJA,
                             descripcion = "asdjasdja",
-                            inicio = LocalTime.now(),
-                            fin = LocalTime.now().plusHours(2),
+                            inicio = LocalTime.of(12,30,0,0),
+                            fin = LocalTime.of(14,30,0,0),
                             costo = 0.0
                         ),
                         Actividad(
                             dificultad = Actividad.Dificultad.BAJA,
                             descripcion = "asdjasdja",
-                            inicio = LocalTime.now(),
-                            fin = LocalTime.now().plusHours(2),
+                            inicio = LocalTime.of(15,30,0,0),
+                            fin = LocalTime.of(17,30,0,0),
                             costo = 0.0
                         )
                     )
