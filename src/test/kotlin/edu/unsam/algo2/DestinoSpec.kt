@@ -13,7 +13,7 @@ internal class DestinoSpec : DescribeSpec({
             fechaAlta = LocalDate.now().minusYears(2),
             paisResidencia = "Uruguay",
             diasDisponibles = 1,
-            criterio = Criterio.Relajado,
+            criterio = Relajado,
             destinosDeseados = mutableListOf(
                 Destino(
                     pais = "Argentina",
@@ -49,7 +49,7 @@ internal class DestinoSpec : DescribeSpec({
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Argentina",
             diasDisponibles = 1,
-            criterio = Criterio.Relajado,
+            criterio = Relajado,
             destinosDeseados = mutableListOf(
                 Destino(
                     pais = "Argentina",
@@ -84,7 +84,7 @@ internal class DestinoSpec : DescribeSpec({
             paisResidencia = "Argentina",
             fechaAlta = LocalDate.now().minusYears(16),
             diasDisponibles = 1,
-            criterio = Criterio.Relajado,
+            criterio = Relajado,
             destinosDeseados = mutableListOf(
                 Destino(
                     pais = "Argentina",
@@ -133,7 +133,7 @@ internal class DestinoSpec : DescribeSpec({
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Chile",
             diasDisponibles = 1,
-            criterio = Criterio.Relajado,
+            criterio = Relajado,
             destinosDeseados = mutableListOf(
                 Destino(
                     pais = "Argentina",
@@ -168,7 +168,7 @@ internal class DestinoSpec : DescribeSpec({
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Inglaterra",
             diasDisponibles = 1,
-            criterio = Criterio.Relajado,
+            criterio = Relajado,
             destinosDeseados = mutableListOf(
                 Destino(
                     pais = "Argentina",

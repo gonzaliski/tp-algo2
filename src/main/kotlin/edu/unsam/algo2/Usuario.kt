@@ -69,43 +69,44 @@ class Usuario(
         destinosDeseados.maxOf { destino -> destino.costo(this) } > destinoItinerario.costo(this)
 }
 
-sealed class Criterio() {
-    abstract fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean
+interface Criterio {
+     fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean
+}
 
-    object Relajado : Criterio() {
-        override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean = true
+
+object Relajado : Criterio {
+    override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean = true
+}
+
+object Precavido : Criterio {
+    override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
+        return usuario.conoce(itinerario.destino) || usuario.amigos.any { it.conoce(itinerario.destino) }
     }
+}
 
-    object Precavido : Criterio() {
-        override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
-            return usuario.conoce(itinerario.destino) || usuario.amigos.any { it.conoce(itinerario.destino) }
-        }
+object Localista : Criterio {
+    override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
+        return itinerario.destino.esLocal() // O igual a Argentina?
     }
+}
 
-    object Localista : Criterio() {
-        override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
-            return itinerario.destino.esLocal() // O igual a Argentina?
-        }
+object Soniador : Criterio {
+    override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
+        return usuario.destinosDeseados.contains(itinerario.destino) || usuario.esDestinoCaro(itinerario.destino)
     }
+}
 
-    object Soniador : Criterio() {
-        override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
-            return usuario.destinosDeseados.contains(itinerario.destino) || usuario.esDestinoCaro(itinerario.destino)
-        }
+object Activo : Criterio {
+    override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
+        return itinerario.tieneActividadesTodosLosDias()
     }
+}
 
-    object Activo : Criterio() {
-        override fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean {
-            return itinerario.tieneActividadesTodosLosDias()
-        }
-    }
-
-    class Exigente(var porcentaje: Double, var dificultad: Actividad.Dificultad) : Criterio() {
-        override fun puedeRealizar(
-            itinerario: Itinerario,
-            usuario: Usuario
-        ): Boolean {
-            return itinerario.porcentajeDeActividades(dificultad) >= porcentaje
-        }
+class Exigente(var porcentaje: Double, var dificultad: Actividad.Dificultad) : Criterio {
+    override fun puedeRealizar(
+        itinerario: Itinerario,
+        usuario: Usuario
+    ): Boolean {
+        return itinerario.porcentajeDeActividades(dificultad) >= porcentaje
     }
 }

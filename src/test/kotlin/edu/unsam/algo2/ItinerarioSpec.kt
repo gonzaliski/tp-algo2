@@ -15,7 +15,7 @@ class ItinerarioSpec : DescribeSpec({
             fechaAlta = LocalDate.now().minusYears(16),
             paisResidencia = "Chile",
             diasDisponibles = 1,
-            criterio = Criterio.Relajado,
+            criterio = Relajado,
             destinosDeseados = mutableListOf(
                 Destino(
                     pais = "Argentina",

@@ -14,7 +14,7 @@ class UsuarioSpec: DescribeSpec ({
         fechaAlta = LocalDate.now(),
         paisResidencia = "Venezuela",
         diasDisponibles = 15,
-        criterio = Criterio.Relajado,
+        criterio = Relajado,
         destinosDeseados = mutableListOf(
             Destino(
                 pais = "Italia",
@@ -48,7 +48,7 @@ class UsuarioSpec: DescribeSpec ({
                 fechaAlta = LocalDate.now().minusYears(16),
                 paisResidencia = "Chile",
                 diasDisponibles = 1,
-                criterio = Criterio.Relajado,
+                criterio = Relajado,
                 destinosDeseados = mutableListOf(
                     Destino(
                         pais = "Italia",
@@ -128,7 +128,7 @@ class UsuarioSpec: DescribeSpec ({
                 fechaAlta = LocalDate.now().minusYears(16),
                 paisResidencia = "Chile",
                 diasDisponibles = 1,
-                criterio = Criterio.Relajado,
+                criterio = Relajado,
                 destinosDeseados = mutableListOf(
                     Destino(
                         pais = "Italia",
