@@ -3,18 +3,34 @@ package edu.unsam.algo2
 class Itinerario(
     var creador: Usuario,
     var destino: Destino,
-    var dias: MutableList<DiaDeItinerario> = mutableListOf()
+    var dias: MutableList<DiaDeItinerario> = mutableListOf(),
+    var puntuaciones: MutableMap<Usuario,Int> = mutableMapOf()
+
 ) {
 
 
     init {
+        require(creador != null && destino != null){
+            "El creador/destino no puede ser nulo"
+        }
         require( dias.size > 0){
             "Las actividades del dia deben tener al menos 1 actividad "
         }
-        //TODO Puntuaciones
+        require(dias.all{dia -> !seSolapanActividades(dia.actividades)}){
+            "Los horarios de las actividades no se pueden solapar"
+        }
 
     }
 
+    fun seSolapanActividades(actividades: MutableList<Actividad>):Boolean{
+        var actividadesOrdenadas = actividades.sortedBy { actividad -> actividad.inicio }
+        var resultList = actividadesOrdenadas.mapIndexed { index, actividad ->
+            if(index != actividadesOrdenadas.lastIndex){
+              return@mapIndexed ( actividad.fin >= actividadesOrdenadas[index+1].inicio)
+            }else{ return@mapIndexed false}
+        }
+        return resultList.any{it}
+    }
 
 
     //Todo Las actividades del día no deben solaparse en horarios.
@@ -56,6 +72,8 @@ class Itinerario(
     fun tieneActividadesTodosLosDias(): Boolean = dias.all { dia -> dia.actividades.isNotEmpty() }
 
     fun actividades() = dias.flatMap { dia -> dia.actividades }
+
+    fun actividadesPorDia() = dias.map { dia -> dia.actividades }
 
     fun actividadesDeDificultad(dificultad: Actividad.Dificultad)= actividades().count { actividad -> actividad.dificultad == dificultad }
 

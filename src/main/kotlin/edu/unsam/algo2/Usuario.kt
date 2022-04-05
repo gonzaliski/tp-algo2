@@ -45,7 +45,17 @@ class Usuario(
         }
     }
 
+    fun puntuar(itinerario: Itinerario,puntuacion:Int) {
+        require(puntuacion in 1..10){
+            "Puntuacion solo puede ser un valor entre 1 y 10"
+        }
+        require(!itinerario.puntuaciones.keys.contains(this)){
+            "El usuario ya ha puntuado este itinerario"
+        }
+        itinerario.puntuaciones[this] = puntuacion
 
+
+    }
     fun antiguedad() = ChronoUnit.YEARS.between(fechaAlta, LocalDate.now()).toInt()
 
     fun conoce(destino: Destino) = destinosDeseados.contains(destino) || destinosVisitados.contains(destino)

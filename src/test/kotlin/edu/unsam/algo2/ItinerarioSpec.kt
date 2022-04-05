@@ -1,5 +1,6 @@
 package edu.unsam.algo2
 
+import io.kotest.assertions.throwables.shouldThrowMessage
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
@@ -39,17 +40,18 @@ class ItinerarioSpec : DescribeSpec({
                     Actividad(
                         dificultad = Actividad.Dificultad.BAJA,
                         descripcion = "asdjasdja",
-                        inicio = LocalTime.now(),
-                        fin = LocalTime.now().plusHours(2),
+                        inicio = LocalTime.of(12, 30, 0, 0),
+                        fin = LocalTime.of(14, 30, 0, 0),
                         costo = 0.0
 
                     ),
                     Actividad(
                         dificultad = Actividad.Dificultad.MEDIA,
                         descripcion = "asdjasdjsa",
-                        inicio = LocalTime.now(),
-                        fin = LocalTime.now().plusHours(2),
-                        costo = 0.0                    )
+                        inicio = LocalTime.of(15, 30, 0, 0),
+                        fin = LocalTime.of(17, 30, 0, 0),
+                        costo = 0.0
+                    )
                 )
             )
         ),
@@ -65,15 +67,17 @@ class ItinerarioSpec : DescribeSpec({
                 Actividad(
                     dificultad = Actividad.Dificultad.ALTA,
                     descripcion = "asdjasdja",
-                    inicio = LocalTime.now(),
-                    fin = LocalTime.now().plusHours(2),
-                    costo = 0.0                ),
+                    inicio = LocalTime.of(12, 30, 0, 0),
+                    fin = LocalTime.of(14, 30, 0, 0),
+                    costo = 0.0
+                ),
                 Actividad(
                     dificultad = Actividad.Dificultad.ALTA,
                     descripcion = "asdjasdja",
-                    inicio = LocalTime.now(),
-                    fin = LocalTime.now().plusHours(2),
-                    costo = 0.0                )
+                    inicio = LocalTime.of(15, 30, 0, 0),
+                    fin = LocalTime.of(17, 30, 0, 0),
+                    costo = 0.0
+                )
             )
         )
         println(itinerario.dificultad())
@@ -86,18 +90,22 @@ class ItinerarioSpec : DescribeSpec({
                 Actividad(
                     dificultad = Actividad.Dificultad.MEDIA,
                     descripcion = "dasdjasdja",
-                    inicio = LocalTime.now(),
-                    fin = LocalTime.now().plusHours(2),
-                    costo = 0.0                ),
+                    inicio = LocalTime.of(12, 30, 0, 0),
+                    fin = LocalTime.of(14, 30, 0, 0),
+                    costo = 0.0
+                ),
                 Actividad(
                     dificultad = Actividad.Dificultad.MEDIA,
                     descripcion = "agsdjasdja",
-                    inicio = LocalTime.now(),
-                    fin = LocalTime.now().plusHours(2),
-                    costo = 0.0                )
+                    inicio = LocalTime.of(15, 30, 0, 0),
+                    fin = LocalTime.of(17, 30, 0, 0),
+                    costo = 0.0
+                )
             )
         )
         println(itinerario.dificultad())
         itinerario.dificultad() shouldBe Actividad.Dificultad.MEDIA
     }
+
+
 })
