@@ -7,15 +7,15 @@ class Destino(
 ) {
 
     init {
-        require( ciudad.isNotBlank() ){
+        require(ciudad.isNotBlank()) {
             "Nombre de ciudad no puede ser nulo o vacio"
         }
 
-        require( pais.isNotBlank() ) {
+        require(pais.isNotBlank()) {
             "Nombre de pais no puede ser nulo o vacio"
         }
 
-        require( costoBase > 0.0 ){
+        require(costoBase > 0.0) {
             "Costo base no puede ser menor o igual a 0"
         }
     }
@@ -29,11 +29,11 @@ class Destino(
         pais.lowercase().trim() == LOCAL.lowercase().trim()
 
     fun costo(usuario: Usuario): Double {
-        var costo: Double = costoBase
-        return costo + recargo(costo) - descuentoPara(usuario, costo)
+        return costoBase + recargo(costoBase) - descuentoPara(usuario)
     }
 
     fun recargo(costo: Double): Double = if (!esLocal()) costo * 0.2 else 0.0
-    fun descuentoPara(usuario: Usuario, costo: Double): Double =
+
+    fun descuentoPara(usuario: Usuario): Double =
         if (usuario.paisResidencia == pais) (0.01 * costoBase) * minOf(usuario.antiguedad(), 15) else 0.0
 }
