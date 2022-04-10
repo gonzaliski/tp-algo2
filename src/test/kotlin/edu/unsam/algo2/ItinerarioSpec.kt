@@ -144,8 +144,8 @@ class ItinerarioSpec : DescribeSpec({
                         Actividad(
                             Actividad.Dificultad.MEDIA,
                             descripcion = "Un poquitito caminando y otro poquitito a pie",
-                            inicio = LocalTime.now().plusHours(5),
-                            fin = LocalTime.now().plusHours(10),
+                            inicio = LocalTime.of(10, 0, 0),
+                            fin = LocalTime.of(16, 0, 0),
                             costo = 600.0
                         )
                     )
