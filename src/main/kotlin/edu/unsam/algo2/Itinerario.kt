@@ -9,7 +9,7 @@ class Itinerario(
 ) {
 
     init {
-        require(dias.size > 0) {
+        require(cantidadDias() > 0) {
             "Las actividades del dia deben tener al menos 1 actividad "
         }
         require(dias.all { dia -> !seSolapanActividades(dia.actividades) }) {
@@ -35,7 +35,7 @@ class Itinerario(
     }
 
     // Suma duracion de actividades y dividir por cantidad de dias
-    fun duracionPromedioPorDia() = dias.sumOf { dia -> dia.duracion() } / dias.size
+    fun duracionPromedioPorDia() = dias.sumOf { dia -> dia.duracion() } / cantidadDias()
 
     fun cantidadDias() = dias.size
 
