@@ -1,7 +1,8 @@
 package edu.unsam.algo2
 
-import io.kotest.assertions.throwables.shouldThrowMessage
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 import java.time.LocalTime
@@ -107,5 +108,87 @@ class ItinerarioSpec : DescribeSpec({
         itinerario.dificultad() shouldBe Actividad.Dificultad.MEDIA
     }
 
+    describe("Dado un itinerario y un usuario...") {
+        // Arrange - Given
+        val pehuajo = Destino(
+            ciudad = "Pehuajo",
+            pais = "Argentina",
+            costoBase = 65_000.0
+        )
+        val nomeacuerdo = Destino(
+            ciudad = "Nomeacuerdo",
+            pais = "Nomeacuerdo",
+            costoBase = 0.01
+        )
+        val paris = Destino(
+            ciudad = "Paris",
+            pais = "Francia",
+            costoBase = 951_000.0
+        )
+        val creador = Usuario(
+            nombre = "Reina",
+            apellido = "Batata",
+            username = "batataqueen",
+            paisResidencia = nomeacuerdo.pais,
+            fechaAlta = LocalDate.now(),
+            diasDisponibles = 2,
+            criterio = Localista,
+            destinosDeseados = mutableListOf(pehuajo)
+        )
+        val itinerarioPehuajo = Itinerario(
+            creador = creador,
+            destino = pehuajo,
+            dias = mutableListOf(
+                Itinerario.DiaDeItinerario(
+                    mutableListOf(
+                        Actividad(
+                            Actividad.Dificultad.MEDIA,
+                            descripcion = "Un poquitito caminando y otro poquitito a pie",
+                            inicio = LocalTime.now().plusHours(5),
+                            fin = LocalTime.now().plusHours(10),
+                            costo = 600.0
+                        )
+                    )
+                )
+            ),
+            puntuaciones = mutableMapOf(),
+        )
+        val usuario = Usuario(
+            nombre = "Manuelita",
+            apellido = "La Tortuga",
+            username = "ninjaturtle",
+            paisResidencia = pehuajo.pais,
+            fechaAlta = LocalDate.now(),
+            diasDisponibles = 2,
+            criterio = Localista,
+            destinosDeseados = mutableListOf(
+                nomeacuerdo,
+                paris
+            )
+        )
+        it("que NO es CREADOR NI AMIGO del creador, NO puede editar el itinerario") {
+            // Assert - Then
+            itinerarioPehuajo.puedeSerEditadoPor(usuario).shouldBeFalse()
+        }
 
+        describe("que NO es CREADOR pero SI AMIGO del creador...") {
+            // Act - When
+            creador.amigos.add(usuario)
+            it("Usuario que NO CONOCE el destino NO puede editar el itinerario") {
+                // Assert - Then
+                itinerarioPehuajo.puedeSerEditadoPor(usuario).shouldBeFalse()
+            }
+
+            it("Usuario que SI CONOCE el destino puede editar el itinerario") {
+                usuario.destinosVisitados.add(pehuajo)
+                // Assert - Then
+                itinerarioPehuajo.puedeSerEditadoPor(usuario).shouldBeTrue()
+            }
+        }
+
+        it("que ES CREADOR del itinerario SI puede editar el itinerario") {
+            // Assert - Then
+            itinerarioPehuajo.puedeSerEditadoPor(creador).shouldBeTrue()
+        }
+    }
 })
