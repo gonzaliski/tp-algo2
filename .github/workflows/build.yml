@@ -31,4 +31,4 @@ jobs:
       - run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          ./codecov -t acá _escribir_el_token_del_step_2
+          ./codecov -t 14abb52b-6d92-4a44-9c3f-ac012f89cbbf
