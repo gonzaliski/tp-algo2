@@ -1,6 +1,7 @@
 package edu.unsam.algo2
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
@@ -118,7 +119,7 @@ internal class DestinoSpec : DescribeSpec({
             )
 
             it("Con recargo del 20% por ser destino NO local") {
-                destino.esLocal() shouldBe false
+                destino.esLocal().shouldBeFalse()
                 destino.costo(usuario) shouldBe 6000.00
             }
         }

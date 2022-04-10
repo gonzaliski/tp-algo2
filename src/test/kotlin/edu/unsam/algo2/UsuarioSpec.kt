@@ -2,6 +2,8 @@
 package edu.unsam.algo2
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 import java.time.LocalTime
@@ -86,7 +88,7 @@ class UsuarioSpec: DescribeSpec ({
             )
         )
 
-        usuario.puedePuntuar(itinerario) shouldBe true
+        usuario.puedePuntuar(itinerario).shouldBeTrue()
 
     }
 
@@ -116,7 +118,7 @@ class UsuarioSpec: DescribeSpec ({
             )
         )
 
-        usuario.puedePuntuar(itinerario) shouldBe false
+        usuario.puedePuntuar(itinerario).shouldBeFalse()
     }
 
     it("No puede puntuar porque no conoce el destino"){
@@ -170,7 +172,7 @@ class UsuarioSpec: DescribeSpec ({
             )
         )
 
-        usuario.puedePuntuar(itinerario) shouldBe false
+        usuario.puedePuntuar(itinerario).shouldBeFalse()
     }
 
 })
