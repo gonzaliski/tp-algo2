@@ -8,11 +8,7 @@ class Itinerario(
 
 ) {
 
-
     init {
-        require(creador != null && destino != null) {
-            "El creador/destino no puede ser nulo"
-        }
         require(dias.size > 0) {
             "Las actividades del dia deben tener al menos 1 actividad "
         }
@@ -31,9 +27,6 @@ class Itinerario(
         }
         return resultList.any { it }
     }
-
-
-    //Todo Las actividades del día no deben solaparse en horarios.
 
     class DiaDeItinerario(var actividades: MutableList<Actividad>) {
         fun costo() = actividades.sumOf { actividad -> actividad.costo }
