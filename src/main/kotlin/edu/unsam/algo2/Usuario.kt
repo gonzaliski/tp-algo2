@@ -16,46 +16,47 @@ class Usuario(
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
 
-    init{
-        require(nombre.isNotBlank()){
+    init {
+        require(nombre.isNotBlank()) {
             "El nombre del usuario no puede ser nulo o vacio"
         }
 
-        require(apellido.isNotBlank()){
+        require(apellido.isNotBlank()) {
             "El apellido del usuario no puede ser nulo o vacio"
         }
 
-        require(username.isNotBlank()){
+        require(username.isNotBlank()) {
             "El username del usuario no puede ser nulo o vacio"
         }
 
-        require(paisResidencia.isNotBlank()){
+        require(paisResidencia.isNotBlank()) {
             "El pais del usuario no puede ser nulo o vacio"
         }
 
-        require(fechaAlta <= LocalDate.now()){
+        require(fechaAlta <= LocalDate.now()) {
             "La fecha de alta no puede ser posterior a la del día."
         }
 
-        require(diasDisponibles > 0){
+        require(diasDisponibles > 0) {
             "Los días para viajar, deben ser mayores a cero."
         }
-        require(destinosDeseados.size > 0){
+        require(destinosDeseados.size > 0) {
             "Todos los usuarios deben tener al menos un destino deseado."
         }
     }
 
-    fun puntuar(itinerario: Itinerario,puntuacion:Int) {
-        require(puntuacion in 1..10){
+    fun puntuar(itinerario: Itinerario, puntuacion: Int) {
+        require(puntuacion in 1..10) {
             "Puntuacion solo puede ser un valor entre 1 y 10"
         }
-        require(!itinerario.puntuaciones.keys.contains(this)){
+        require(!itinerario.puntuaciones.keys.contains(this)) {
             "El usuario ya ha puntuado este itinerario"
         }
         itinerario.puntuaciones[this] = puntuacion
 
 
     }
+
     fun antiguedad() = ChronoUnit.YEARS.between(fechaAlta, LocalDate.now()).toInt()
 
     fun conoce(destino: Destino) = destinosDeseados.contains(destino) || destinosVisitados.contains(destino)
@@ -66,11 +67,13 @@ class Usuario(
         diasDisponibles >= itinerario.cantidadDias() && criterio.puedeRealizar(itinerario, this)
 
     fun esDestinoCaro(destinoItinerario: Destino): Boolean =
-        destinosDeseados.maxOf { destino -> destino.costo(this) } > destinoItinerario.costo(this)
+        destinosDeseados.maxOf { destino -> destino.costo(this) } < destinoItinerario.costo(this)
+
+    fun esAmigoDe(usuario: Usuario): Boolean = amigos.contains(usuario)
 }
 
 interface Criterio {
-     fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean
+    fun puedeRealizar(itinerario: Itinerario, usuario: Usuario): Boolean
 }
 
 

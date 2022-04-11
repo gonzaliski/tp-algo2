@@ -4,36 +4,29 @@ class Itinerario(
     var creador: Usuario,
     var destino: Destino,
     var dias: MutableList<DiaDeItinerario> = mutableListOf(),
-    var puntuaciones: MutableMap<Usuario,Int> = mutableMapOf()
+    var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
 ) {
 
-
     init {
-        require(creador != null && destino != null){
-            "El creador/destino no puede ser nulo"
-        }
-        require( dias.size > 0){
+        require(cantidadDias() > 0) {
             "Las actividades del dia deben tener al menos 1 actividad "
         }
-        require(dias.all{dia -> !seSolapanActividades(dia.actividades)}){
+        require(dias.all { dia -> !seSolapanActividades(dia.actividades) }) {
             "Los horarios de las actividades no se pueden solapar"
         }
 
     }
 
-    fun seSolapanActividades(actividades: MutableList<Actividad>):Boolean{
+    fun seSolapanActividades(actividades: MutableList<Actividad>): Boolean {
         var actividadesOrdenadas = actividades.sortedBy { actividad -> actividad.inicio }
         var resultList = actividadesOrdenadas.mapIndexed { index, actividad ->
             if(index != actividadesOrdenadas.lastIndex){
               return@mapIndexed ( actividad.fin >= actividadesOrdenadas[index+1].inicio)
             }else{ return@mapIndexed false}
         }
-        return resultList.any{it}
+        return resultList.any { it }
     }
-
-
-    //Todo Las actividades del día no deben solaparse en horarios.
 
     class DiaDeItinerario(var actividades: MutableList<Actividad>) {
         fun costo() = actividades.sumOf { actividad -> actividad.costo }
@@ -42,7 +35,7 @@ class Itinerario(
     }
 
     // Suma duracion de actividades y dividir por cantidad de dias
-    fun duracionPromedioPorDia() = dias.sumOf { dia -> dia.duracion() } / dias.size
+    fun duracionPromedioPorDia() = dias.sumOf { dia -> dia.duracion() } / cantidadDias()
 
     fun cantidadDias() = dias.size
 
@@ -59,7 +52,7 @@ class Itinerario(
             // Compara el valor de la tupla
             var comparacion = a.value.compareTo(b.value) // 0, 1, -1
 
-            if(comparacion == 0){ // Si tienen el mismo valor
+            if (comparacion == 0) { // Si tienen el mismo valor
                 return@maxWithOrNull a.key.compareTo(b.key)  // Compara por dificultad
             }
 
@@ -75,7 +68,14 @@ class Itinerario(
 
     fun actividadesPorDia() = dias.map { dia -> dia.actividades }
 
-    fun actividadesDeDificultad(dificultad: Actividad.Dificultad)= actividades().count { actividad -> actividad.dificultad == dificultad }
+    fun actividadesDeDificultad(dificultad: Actividad.Dificultad) =
+        actividades().count { actividad -> actividad.dificultad == dificultad }
 
-    fun porcentajeDeActividades(dificultad: Actividad.Dificultad) = actividadesDeDificultad(dificultad) / actividades().size
+    fun porcentajeDeActividades(dificultad: Actividad.Dificultad) =
+        actividadesDeDificultad(dificultad) / actividades().size
+
+    fun puedeSerEditadoPor(usuario: Usuario): Boolean =
+        fueCreadoPor(usuario) || (creador.esAmigoDe(usuario) && usuario.conoce(destino))
+
+    fun fueCreadoPor(usuario: Usuario): Boolean = usuario == creador
 }
