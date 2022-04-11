@@ -28,7 +28,7 @@ class Actividad(
 
     fun duracion() = ChronoUnit.MINUTES.between(fin, inicio)
 
-    enum class Dificultad(valor: Int) {
-        BAJA(1), MEDIA(2), ALTA(3)
+    enum class Dificultad(){
+        BAJA, MEDIA, ALTA
     }
 }
