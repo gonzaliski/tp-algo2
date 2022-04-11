@@ -157,7 +157,7 @@ class UsuarioSpec : DescribeSpec({
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
         }
 
-        it("con destino que conoce un amigo, puede realizar el itinerario"){
+        it("con destino que conoce un amigo, puede realizar el itinerario") {
             // Act - When
             itinerarioDeOtroUsuario.destino = laPaz
             otroUsuario.destinosVisitados.add(laPaz)
@@ -186,6 +186,38 @@ class UsuarioSpec : DescribeSpec({
 
             // Assert - Then
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+    }
+
+    describe("Dado un Usuario Soniador y un Itinerario...") {
+        usuario.criterio = Soniador
+
+        it("con destino deseado, puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.destino = usuario.destinosDeseados.first()
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+
+        it("con destino no deseado barato, NO puede realizar el itinerario") {
+            // Act - When
+            usuario.destinosDeseados = mutableListOf(roma)
+            laPaz.costoBase = roma.costoBase - 1.0
+            itinerarioDeOtroUsuario.destino = laPaz
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+
+        it("con destino no deseado caro, puede realizar el itinerario") {
+            // Act - When
+            usuario.destinosDeseados = mutableListOf(roma)
+            laPaz.costoBase = roma.costoBase + 1.0
+            itinerarioDeOtroUsuario.destino = laPaz
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
         }
     }
 })

@@ -67,7 +67,7 @@ class Usuario(
         diasDisponibles >= itinerario.cantidadDias() && criterio.puedeRealizar(itinerario, this)
 
     fun esDestinoCaro(destinoItinerario: Destino): Boolean =
-        destinosDeseados.maxOf { destino -> destino.costo(this) } > destinoItinerario.costo(this)
+        destinosDeseados.maxOf { destino -> destino.costo(this) } < destinoItinerario.costo(this)
 
     fun esAmigoDe(usuario: Usuario): Boolean = amigos.contains(usuario)
 }
