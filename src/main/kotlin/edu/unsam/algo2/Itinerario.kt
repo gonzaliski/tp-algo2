@@ -44,20 +44,18 @@ class Itinerario(
      * es decir que si prevalecen más actividades de un tipo de dificultad, esta debería ser la del itinerario,
      * llegado el caso que las cantidades sean iguales, se establece la de mayor dificultad.
      */
-    fun dificultad(): Actividad.Dificultad? {
-        // Obtenemos todas las dificultades
-        val dificultades = dias.flatMap { dia -> dia.actividades.map { actividad -> actividad.dificultad } } // [ALTA, BAJA, MEDIA, ALTA]
-        val dificultadesAgrupadas = dificultades.groupingBy { it }.eachCount() //{ BAJA: 1, MEDIA: 1, ALTA: 2 }
-        return dificultadesAgrupadas.maxWithOrNull { a, b ->
-            // Compara el valor de la tupla
-            var comparacion = a.value.compareTo(b.value) // 0, 1, -1
 
-            if (comparacion == 0) { // Si tienen el mismo valor
-                return@maxWithOrNull a.key.compareTo(b.key)  // Compara por dificultad
-            }
+    fun dificultadesItinerario() = dias.flatMap { dia -> dia.actividades.map { actividad -> actividad.dificultad } }
 
-            return@maxWithOrNull comparacion
-        }?.key
+    fun dificultadesAgrupadas() = dificultadesItinerario().groupBy { it }
+
+    fun dificultad(): Actividad.Dificultad?{
+        val dificultadMaxima = dificultadesAgrupadas().maxWithOrNull(compareBy(
+            {it.value.size}, // Primero comparo por cantidad de veces que se repite (tamanio de la lista)
+            {it.key} // En caso de empate comparo por valor de dificultad: BAJA < MEDIA < ALTA
+        ))
+
+        return dificultadMaxima?.key
     }
 
     fun costo() = dias.sumOf { dia -> dia.costo() }
@@ -71,8 +69,10 @@ class Itinerario(
     fun actividadesDeDificultad(dificultad: Actividad.Dificultad) =
         actividades().count { actividad -> actividad.dificultad == dificultad }
 
+    fun cantidadTotalActividades() = actividades().size
+
     fun porcentajeDeActividades(dificultad: Actividad.Dificultad) =
-        actividadesDeDificultad(dificultad) / actividades().size
+        actividadesDeDificultad(dificultad) / cantidadTotalActividades()
 
     fun puedeSerEditadoPor(usuario: Usuario): Boolean =
         fueCreadoPor(usuario) || (creador.esAmigoDe(usuario) && usuario.conoce(destino))
