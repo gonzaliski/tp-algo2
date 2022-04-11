@@ -167,5 +167,26 @@ class UsuarioSpec : DescribeSpec({
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
         }
     }
+
+    describe("Dado un Usuario Localista y un Itinerario...") {
+        usuario.criterio = Localista
+        val local = Destino(ciudad = "asd", pais = Destino.LOCAL, costoBase = 123_000.0)
+
+        it("con destino local, puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.destino = local
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+
+        it("con destino no local, NO puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.destino = laPaz
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+    }
 })
 
