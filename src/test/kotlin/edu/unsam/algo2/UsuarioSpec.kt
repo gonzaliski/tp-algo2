@@ -63,6 +63,13 @@ class UsuarioSpec : DescribeSpec({
             roma, cucurun
         )
     )
+    val itinerarioDeOtroUsuario = Itinerario(
+        creador = otroUsuario,
+        destino = laPaz,
+        dias = mutableListOf(
+            Itinerario.DiaDeItinerario(actividadesBasicas)
+        )
+    )
 
     it("Puede puntuar itinerario de otro cuyo destino conoce") {
         val itinerario = Itinerario(
@@ -101,13 +108,6 @@ class UsuarioSpec : DescribeSpec({
     }
 
     describe("Dado un usuario Relajado y un itinerario...") {
-        val itinerarioDeOtroUsuario = Itinerario(
-            creador = otroUsuario,
-            destino = laPaz,
-            dias = mutableListOf(
-                Itinerario.DiaDeItinerario(actividadesBasicas)
-            )
-        )
         it("con pocos dias, puede realizarlo") {
             // Act - Given
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
@@ -132,6 +132,36 @@ class UsuarioSpec : DescribeSpec({
                 dias.add(Itinerario.DiaDeItinerario(actividadesBasicas))
             }
             itinerarioDeOtroUsuario.dias = dias
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+    }
+
+    describe("Dado un Usuario Precavido y un Itinerario...") {
+        usuario.criterio = Precavido
+
+        it("con destino conocido, puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.destino = usuario.destinosDeseados.first()
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+
+        it("con destino desconocido, NO puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.destino = laPaz
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+
+        it("con destino que conoce un amigo, puede realizar el itinerario"){
+            // Act - When
+            itinerarioDeOtroUsuario.destino = laPaz
+            otroUsuario.destinosVisitados.add(laPaz)
+            usuario.amigos.add(otroUsuario)
 
             // Assert - Then
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
