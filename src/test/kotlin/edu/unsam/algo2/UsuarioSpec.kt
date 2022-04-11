@@ -46,6 +46,8 @@ class UsuarioSpec : DescribeSpec({
         destinosDeseados = mutableListOf(
             roma, cucurun
         )
+
+
     ).apply {
         destinosVisitados = mutableListOf(
             santiagoDeChile
@@ -139,7 +141,7 @@ class UsuarioSpec : DescribeSpec({
     }
 
     describe("Dado un Usuario Precavido y un Itinerario...") {
-        usuario.criterio = Precavido
+        usuario.criterio = Precavido(usuario)
 
         it("con destino conocido, puede realizar el itinerario") {
             // Act - When
@@ -190,7 +192,7 @@ class UsuarioSpec : DescribeSpec({
     }
 
     describe("Dado un Usuario Soniador y un Itinerario...") {
-        usuario.criterio = Soniador
+        usuario.criterio = Soniador(usuario)
 
         it("con destino deseado, puede realizar el itinerario") {
             // Act - When

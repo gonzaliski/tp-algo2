@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 
 internal class DestinoSpec : DescribeSpec({
-    describe("Usuario con poca antiguedad (-15)") {
+    describe("Usuario con poca antiguedad ") {
         val usuario = Usuario(
             nombre = "Pepe",
             apellido = "Rodriguez",
@@ -42,7 +42,7 @@ internal class DestinoSpec : DescribeSpec({
         }
     }
 
-    describe("Usuario con mucha antigüedad (+15) y pais residencia igual a pais destino") {
+    describe("Usuario con mucha antigüedad  y pais residencia igual a pais destino") {
         val pepe = Usuario(
             nombre = "Pepe",
             apellido = "Perez",
@@ -77,7 +77,7 @@ internal class DestinoSpec : DescribeSpec({
         }
     }
 
-    describe("Usuario con 16 años de antiguedad y pais de residencia Argentina") {
+    describe("Usuario con mucha antiguedad y pais de residencia igual al destino local") {
         val usuario = Usuario(
             nombre = "Pepe",
             apellido = "Rodriguez",
@@ -126,7 +126,7 @@ internal class DestinoSpec : DescribeSpec({
 
     }
 
-    describe("Usuario con mucha antigüedad (+15) con pais residencia distinto a pais destino") {
+    describe("Usuario con mucha antigüedad  con pais residencia distinto a pais destino") {
         val user = Usuario(
             nombre = "Carlos",
             apellido = "Gomez",
@@ -161,7 +161,7 @@ internal class DestinoSpec : DescribeSpec({
         }
     }
 
-    describe("Test con usuario con mucha antiguedad (+15), pais de residencia igual al pais destino ") {
+    describe("Test con usuario con mucha antiguedad, pais de residencia igual al pais destino ") {
         val frank = Usuario(
             nombre = "Frank",
             apellido = "Arnold",
@@ -191,7 +191,7 @@ internal class DestinoSpec : DescribeSpec({
                 costoBase = 60000.0
             )
 
-            it("20% más por no ser destino local y descuento por antiguedad (15%), costo de 63000") {
+            it("recargo demás por no ser destino local y descuento por antiguedad , calculamos costo") {
                 londres.costo(frank) shouldBe 63000.0
             }
         }
