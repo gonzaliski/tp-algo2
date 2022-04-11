@@ -100,5 +100,42 @@ class UsuarioSpec : DescribeSpec({
         usuario.puedePuntuar(itinerario).shouldBeFalse()
     }
 
+    describe("Dado un usuario Relajado y un itinerario...") {
+        val itinerarioDeOtroUsuario = Itinerario(
+            creador = otroUsuario,
+            destino = laPaz,
+            dias = mutableListOf(
+                Itinerario.DiaDeItinerario(actividadesBasicas)
+            )
+        )
+        it("con pocos dias, puede realizarlo") {
+            // Act - Given
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+
+        it("con muchos dias, NO puede realizarlo") {
+            // Act - Given
+            val dias = mutableListOf<Itinerario.DiaDeItinerario>()
+            repeat(usuario.diasDisponibles + 1) {
+                dias.add(Itinerario.DiaDeItinerario(actividadesBasicas))
+            }
+            itinerarioDeOtroUsuario.dias = dias
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+
+        it("con igual cantidad de dias, puede realizarlo") {
+            // Act - Given
+            val dias = mutableListOf<Itinerario.DiaDeItinerario>()
+            repeat(usuario.diasDisponibles) {
+                dias.add(Itinerario.DiaDeItinerario(actividadesBasicas))
+            }
+            itinerarioDeOtroUsuario.dias = dias
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+    }
 })
 
