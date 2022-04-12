@@ -222,5 +222,22 @@ class UsuarioSpec : DescribeSpec({
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
         }
     }
+
+    describe("Dado un Usuario Activo y un Itinerario...") {
+        usuario.criterio = Activo
+
+        it("con actividades todos los dias, puede realizar el itinerario") {
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+
+        it("con dias sin actividades, NO puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.dias.add(Itinerario.DiaDeItinerario(mutableListOf()))
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+    }
 })
 
