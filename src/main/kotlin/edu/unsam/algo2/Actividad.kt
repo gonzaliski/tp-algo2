@@ -28,6 +28,8 @@ class Actividad(
 
     fun duracion() = ChronoUnit.MINUTES.between(fin, inicio)
 
+    fun seSolapaCon(actividad:Actividad): Boolean = (this.fin > actividad.inicio) //Este metodo funciona para lista de Actividades ordenadas por su inicio ascendentemente
+
     enum class Dificultad(){
         BAJA, MEDIA, ALTA
     }
