@@ -1,5 +1,6 @@
 package edu.unsam.algo2
 
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -7,6 +8,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class UsuarioSpec : DescribeSpec({
+    isolationMode = IsolationMode.InstancePerTest
     val actividadesBasicas = mutableListOf(
         Actividad(
             dificultad = Actividad.Dificultad.BAJA,
@@ -217,6 +219,66 @@ class UsuarioSpec : DescribeSpec({
             usuario.destinosDeseados = mutableListOf(roma)
             laPaz.costoBase = roma.costoBase + 1.0
             itinerarioDeOtroUsuario.destino = laPaz
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+    }
+
+    describe("Dado un Usuario Activo y un Itinerario...") {
+        usuario.criterio = Activo
+
+        it("con actividades todos los dias, puede realizar el itinerario") {
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()
+        }
+
+        it("con dias sin actividades, NO puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.dias.add(Itinerario.DiaDeItinerario(mutableListOf()))
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+    }
+
+    describe("Dado un Usuario Exigente y un itinerario...") {
+        usuario.criterio = Exigente(porcentaje = 30.0, dificultad = Actividad.Dificultad.MEDIA)
+        it("con porcentaje bajo de dificultad deseada, no puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.dias.first().actividades.addAll(
+                mutableListOf(
+                    Actividad(
+                        dificultad = Actividad.Dificultad.BAJA,
+                        descripcion = "asdjasdja",
+                        inicio = LocalTime.of(19, 30, 0, 0),
+                        fin = LocalTime.of(20, 30, 0, 0),
+                        costo = 0.0
+
+                    ), Actividad(
+                        dificultad = Actividad.Dificultad.BAJA,
+                        descripcion = "asdjasdja",
+                        inicio = LocalTime.of(20, 30, 0, 0),
+                        fin = LocalTime.of(21, 30, 0, 0),
+                        costo = 0.0
+
+                    ), Actividad(
+                        dificultad = Actividad.Dificultad.BAJA,
+                        descripcion = "asdjasdja",
+                        inicio = LocalTime.of(21, 30, 0, 0),
+                        fin = LocalTime.of(22, 0, 0, 0),
+                        costo = 0.0
+
+                    )
+                )
+            )
+
+            // Assert - Then
+            usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()
+        }
+        it("con porcentaje alto de dificultad deseada, no puede realizar el itinerario") {
+            // Act - When
+            itinerarioDeOtroUsuario.dias.first().actividades = actividadesBasicas
 
             // Assert - Then
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeTrue()

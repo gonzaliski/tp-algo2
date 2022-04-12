@@ -1,6 +1,7 @@
 package edu.unsam.algo2
 
 import io.kotest.assertions.throwables.shouldNotThrowAny
+import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.assertions.throwables.shouldThrowMessage
 import io.kotest.core.spec.style.DescribeSpec
 import java.time.LocalDate
@@ -39,7 +40,7 @@ internal class ValidacionSpec : DescribeSpec({
             }
         }
         it("Usuario falla con fecha de alta en el futuro") {
-            shouldThrowMessage("La fecha de alta no puede ser posterior a la del día.") {
+            val bloque = {
                 Usuario(
                     nombre = "Peperoni",
                     fechaAlta = LocalDate.now().plusDays(3),
@@ -51,9 +52,11 @@ internal class ValidacionSpec : DescribeSpec({
                     destinosDeseados = mutableListOf(destino)
                 )
             }
+            shouldThrowMessage("La fecha de alta no puede ser posterior a la del día.", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
         }
         it("Usuario falla sin destinos deseados") {
-            shouldThrowMessage("Todos los usuarios deben tener al menos un destino deseado.") {
+            val bloque = {
                 Usuario(
                     nombre = "Peperoni",
                     fechaAlta = LocalDate.now(),
@@ -65,9 +68,11 @@ internal class ValidacionSpec : DescribeSpec({
                     destinosDeseados = mutableListOf()
                 )
             }
+            shouldThrowMessage("Todos los usuarios deben tener al menos un destino deseado.", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
         }
         it("Usuario falla si no tiene dias para viajar") {
-            shouldThrowMessage("Los días para viajar, deben ser mayores a cero.") {
+            val bloque = {
                 Usuario(
                     nombre = "Peperoni",
                     fechaAlta = LocalDate.now(),
@@ -79,10 +84,12 @@ internal class ValidacionSpec : DescribeSpec({
                     destinosDeseados = mutableListOf(destino)
                 )
             }
+            shouldThrowMessage("Los días para viajar, deben ser mayores a cero.", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
         }
     }
     it("Actividades con horarios solapados tira error") {
-        shouldThrowMessage("Los horarios de las actividades no se pueden solapar") {
+        val bloque = {
             Itinerario(
                 creador = Usuario(
                     nombre = "Carlos",
@@ -132,10 +139,12 @@ internal class ValidacionSpec : DescribeSpec({
                 ),
             )
         }
+        shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
+        shouldThrowExactly<IllegalArgumentException>(bloque)
 
     }
 
-    describe("puntuaciones"){
+    describe("puntuaciones") {
         val user = Usuario(
             nombre = "Peperoni",
             fechaAlta = LocalDate.now(),
@@ -157,7 +166,7 @@ internal class ValidacionSpec : DescribeSpec({
                 )
             )
         )
-       var itinerario = Itinerario(
+        val itinerario = Itinerario(
             creador = user,
             destino = Destino(
                 pais = "Argentina",
@@ -187,16 +196,20 @@ internal class ValidacionSpec : DescribeSpec({
         )
 
 
-        it("Puntuacion no esta entre 1 y 10 tira error"){
-            shouldThrowMessage("Puntuacion solo puede ser un valor entre 1 y 10"){
-                user.puntuar(itinerario,11)
+        it("Puntuacion no esta entre 1 y 10 tira error") {
+            val bloque = {
+                user.puntuar(itinerario, 11)
             }
+            shouldThrowMessage("Puntuacion solo puede ser un valor entre 1 y 10", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
         }
-        it("Usuario no puede puntuar mas de una vez"){
-            shouldThrowMessage("El usuario ya ha puntuado este itinerario"){
-                user.puntuar(itinerario,10)
-                user.puntuar(itinerario,10)
+        it("Usuario no puede puntuar mas de una vez") {
+            val bloque = {
+                user.puntuar(itinerario, 10)
+                user.puntuar(itinerario, 10)
             }
+            shouldThrowMessage("El usuario ya ha puntuado este itinerario", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
         }
     }
 })

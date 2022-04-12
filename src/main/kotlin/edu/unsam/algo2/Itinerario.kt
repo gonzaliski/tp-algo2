@@ -18,16 +18,19 @@ class Itinerario(
 
     }
 
-    fun actividadesOrdenadas(actividades: MutableList<Actividad>) = actividades.sortedBy { actividad -> actividad.inicio }
+    fun actividadesOrdenadas(actividades: MutableList<Actividad>) =
+        actividades.sortedBy { actividad -> actividad.inicio }
 
     fun seSolapanActividades(actividades: MutableList<Actividad>): Boolean {
         val actividadesOrdenadas = actividadesOrdenadas(actividades)
 
         val resultList = actividadesOrdenadas.mapIndexed { index, actividad ->
 
-            if(index != actividadesOrdenadas.lastIndex){
-              return@mapIndexed ( actividad.seSolapaCon( actividadesOrdenadas[index+1] ))
-            }else{ return@mapIndexed false}
+            if (index != actividadesOrdenadas.lastIndex) {
+                return@mapIndexed (actividad.seSolapaCon(actividadesOrdenadas[index + 1]))
+            } else {
+                return@mapIndexed false
+            }
         }
         return resultList.any { it }
     }
@@ -53,10 +56,10 @@ class Itinerario(
 
     fun dificultadesAgrupadas() = dificultadesItinerario().groupBy { it }
 
-    fun dificultad(): Actividad.Dificultad?{
+    fun dificultad(): Actividad.Dificultad? {
         val dificultadMaxima = dificultadesAgrupadas().maxWithOrNull(compareBy(
-            {it.value.size}, // Primero comparo por cantidad de veces que se repite (tamanio de la lista)
-            {it.key} // En caso de empate comparo por valor de dificultad: BAJA < MEDIA < ALTA
+            { it.value.size }, // Primero comparo por cantidad de veces que se repite (tamanio de la lista)
+            { it.key } // En caso de empate comparo por valor de dificultad: BAJA < MEDIA < ALTA
         ))
 
         return dificultadMaxima?.key
@@ -75,8 +78,8 @@ class Itinerario(
 
     fun cantidadTotalActividades() = actividades().size
 
-    fun porcentajeDeActividades(dificultad: Actividad.Dificultad) =
-        actividadesDeDificultad(dificultad) / cantidadTotalActividades()
+    fun porcentajeDeActividades(dificultad: Actividad.Dificultad): Double =
+        (actividadesDeDificultad(dificultad) / cantidadTotalActividades().toDouble()) * 100
 
     fun puedeSerEditadoPor(usuario: Usuario): Boolean =
         fueCreadoPor(usuario) || (creador.esAmigoDe(usuario) && usuario.conoce(destino))
