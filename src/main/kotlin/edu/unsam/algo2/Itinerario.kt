@@ -18,11 +18,15 @@ class Itinerario(
 
     }
 
+    fun actividadesOrdenadas(actividades: MutableList<Actividad>) = actividades.sortedBy { actividad -> actividad.inicio }
+
     fun seSolapanActividades(actividades: MutableList<Actividad>): Boolean {
-        var actividadesOrdenadas = actividades.sortedBy { actividad -> actividad.inicio }
-        var resultList = actividadesOrdenadas.mapIndexed { index, actividad ->
+        val actividadesOrdenadas = actividadesOrdenadas(actividades)
+
+        val resultList = actividadesOrdenadas.mapIndexed { index, actividad ->
+
             if(index != actividadesOrdenadas.lastIndex){
-              return@mapIndexed ( actividad.fin >= actividadesOrdenadas[index+1].inicio)
+              return@mapIndexed ( actividad.seSolapaCon( actividadesOrdenadas[index+1] ))
             }else{ return@mapIndexed false}
         }
         return resultList.any { it }
