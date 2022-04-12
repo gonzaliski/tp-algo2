@@ -59,7 +59,11 @@ class Usuario(
 
     fun antiguedad() = ChronoUnit.YEARS.between(fechaAlta, LocalDate.now()).toInt()
 
-    fun conoce(destino: Destino) = destinosDeseados.contains(destino) || destinosVisitados.contains(destino)
+    fun conoce(destino: Destino) = esDestinoDeseado(destino) || esDestinoVisitado(destino)
+
+    fun esDestinoDeseado(destino: Destino): Boolean = destinosDeseados.contains(destino)
+
+    fun esDestinoVisitado(destino: Destino): Boolean = destinosVisitados.contains(destino)
 
     fun puedePuntuar(itinerario: Itinerario): Boolean = itinerario.creador != this && conoce(itinerario.destino)
 
@@ -81,7 +85,7 @@ object Relajado : Criterio {
 
     override fun puedeRealizar(itinerario: Itinerario): Boolean = true
 }
-//voy
+
 class Precavido(val usuario: Usuario) : Criterio {
 
     override fun puedeRealizar(itinerario: Itinerario): Boolean {
@@ -97,7 +101,7 @@ object Localista : Criterio {
 
 class Soniador(val usuario: Usuario) : Criterio {
     override fun puedeRealizar(itinerario: Itinerario): Boolean {
-        return usuario.destinosDeseados.contains(itinerario.destino) || usuario.esDestinoCaro(itinerario.destino)
+        return usuario.esDestinoDeseado(itinerario.destino) || usuario.esDestinoCaro(itinerario.destino)
     }
 }
 
