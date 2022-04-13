@@ -85,4 +85,12 @@ class Itinerario(
         fueCreadoPor(usuario) || (creador.esAmigoDe(usuario) && usuario.conoce(destino))
 
     fun fueCreadoPor(usuario: Usuario): Boolean = usuario == creador
+
+    fun recibirPuntajeDe(usuario: Usuario, puntuacion: Int) {
+        puntuaciones[usuario] = puntuacion
+    }
+
+    fun fuePuntuadoPor(usuario: Usuario): Boolean = puntuaciones.keys.contains(usuario)
+
+    fun tieneDestinoLocal(): Boolean = destino.esLocal()
 }

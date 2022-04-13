@@ -49,12 +49,10 @@ class Usuario(
         require(puntuacion in 1..10) {
             "Puntuacion solo puede ser un valor entre 1 y 10"
         }
-        require(!itinerario.puntuaciones.keys.contains(this)) {
+        require(!itinerario.fuePuntuadoPor(this)) {
             "El usuario ya ha puntuado este itinerario"
         }
-        itinerario.puntuaciones[this] = puntuacion
-
-
+        itinerario.recibirPuntajeDe(this, puntuacion)
     }
 
     fun antiguedad() = ChronoUnit.YEARS.between(fechaAlta, LocalDate.now()).toInt()
@@ -65,7 +63,7 @@ class Usuario(
 
     fun esDestinoVisitado(destino: Destino): Boolean = destinosVisitados.contains(destino)
 
-    fun puedePuntuar(itinerario: Itinerario): Boolean = itinerario.creador != this && conoce(itinerario.destino)
+    fun puedePuntuar(itinerario: Itinerario): Boolean = !itinerario.fueCreadoPor(this) && conoce(itinerario.destino)
 
     fun puedeRealizar(itinerario: Itinerario): Boolean =
         diasDisponibles >= itinerario.cantidadDias() && criterio.puedeRealizar(itinerario)
@@ -74,6 +72,8 @@ class Usuario(
         destinosDeseados.maxOf { destino -> destino.costo(this) } < destinoItinerario.costo(this)
 
     fun esAmigoDe(usuario: Usuario): Boolean = amigos.contains(usuario)
+
+    fun algunAmigoConoce(destino: Destino): Boolean = amigos.any { it.conoce(destino) }
 }
 
 interface Criterio {
@@ -89,13 +89,13 @@ object Relajado : Criterio {
 class Precavido(val usuario: Usuario) : Criterio {
 
     override fun puedeRealizar(itinerario: Itinerario): Boolean {
-        return usuario.conoce(itinerario.destino) || usuario.amigos.any { it.conoce(itinerario.destino) }
+        return usuario.conoce(itinerario.destino) || usuario.algunAmigoConoce(itinerario.destino)
     }
 }
 
 object Localista : Criterio {
     override fun puedeRealizar(itinerario: Itinerario): Boolean {
-        return itinerario.destino.esLocal() // O igual a Argentina?
+        return itinerario.tieneDestinoLocal()
     }
 }
 
