@@ -71,7 +71,7 @@ class UsuarioSpec : DescribeSpec({
         creador = otroUsuario,
         destino = laPaz,
         dias = mutableListOf(
-            Itinerario.DiaDeItinerario(actividadesBasicas)
+            DiaDeItinerario(actividadesBasicas)
         )
     )
 
@@ -80,7 +80,7 @@ class UsuarioSpec : DescribeSpec({
             creador = otroUsuario,
             destino = usuario.destinosDeseados.first(),
             dias = mutableListOf(
-                Itinerario.DiaDeItinerario(actividadesBasicas)
+                DiaDeItinerario(actividadesBasicas)
             )
         )
 
@@ -92,7 +92,7 @@ class UsuarioSpec : DescribeSpec({
             creador = usuario,
             destino = usuario.destinosDeseados.first(),
             dias = mutableListOf(
-                Itinerario.DiaDeItinerario(actividadesBasicas)
+                DiaDeItinerario(actividadesBasicas)
             )
         )
 
@@ -104,7 +104,7 @@ class UsuarioSpec : DescribeSpec({
             creador = otroUsuario,
             destino = laPaz,
             dias = mutableListOf(
-                Itinerario.DiaDeItinerario(actividadesBasicas)
+                DiaDeItinerario(actividadesBasicas)
             )
         )
 
@@ -119,9 +119,9 @@ class UsuarioSpec : DescribeSpec({
 
         it("con muchos dias, NO puede realizarlo") {
             // Act - Given
-            val dias = mutableListOf<Itinerario.DiaDeItinerario>()
+            val dias = mutableListOf<DiaDeItinerario>()
             repeat(usuario.diasDisponibles + 1) {
-                dias.add(Itinerario.DiaDeItinerario(actividadesBasicas))
+                dias.add(DiaDeItinerario(actividadesBasicas))
             }
             itinerarioDeOtroUsuario.dias = dias
 
@@ -131,9 +131,9 @@ class UsuarioSpec : DescribeSpec({
 
         it("con igual cantidad de dias, puede realizarlo") {
             // Act - Given
-            val dias = mutableListOf<Itinerario.DiaDeItinerario>()
+            val dias = mutableListOf<DiaDeItinerario>()
             repeat(usuario.diasDisponibles) {
-                dias.add(Itinerario.DiaDeItinerario(actividadesBasicas))
+                dias.add(DiaDeItinerario(actividadesBasicas))
             }
             itinerarioDeOtroUsuario.dias = dias
 
@@ -235,7 +235,7 @@ class UsuarioSpec : DescribeSpec({
 
         it("con dias sin actividades, NO puede realizar el itinerario") {
             // Act - When
-            itinerarioDeOtroUsuario.dias.add(Itinerario.DiaDeItinerario(mutableListOf()))
+            itinerarioDeOtroUsuario.dias.add(DiaDeItinerario(mutableListOf()))
 
             // Assert - Then
             usuario.puedeRealizar(itinerarioDeOtroUsuario).shouldBeFalse()

@@ -35,12 +35,6 @@ class Itinerario(
         return resultList.any { it }
     }
 
-    class DiaDeItinerario(var actividades: MutableList<Actividad>) {
-        fun costo() = actividades.sumOf { actividad -> actividad.costo }
-
-        fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
-    }
-
     // Suma duracion de actividades y dividir por cantidad de dias
     fun duracionPromedioPorDia() = dias.sumOf { dia -> dia.duracion() } / cantidadDias()
 
@@ -93,4 +87,10 @@ class Itinerario(
     fun fuePuntuadoPor(usuario: Usuario): Boolean = puntuaciones.keys.contains(usuario)
 
     fun tieneDestinoLocal(): Boolean = destino.esLocal()
+}
+
+class DiaDeItinerario(var actividades: MutableList<Actividad>) {
+    fun costo() = actividades.sumOf { actividad -> actividad.costo }
+
+    fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
 }

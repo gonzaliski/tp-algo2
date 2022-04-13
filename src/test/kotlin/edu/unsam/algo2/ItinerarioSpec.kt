@@ -36,7 +36,7 @@ class ItinerarioSpec : DescribeSpec({
             costoBase = 2.0
         ),
         dias = mutableListOf(
-            Itinerario.DiaDeItinerario(
+            DiaDeItinerario(
                 mutableListOf(
                     Actividad(
                         dificultad = Actividad.Dificultad.BAJA,
@@ -139,7 +139,7 @@ class ItinerarioSpec : DescribeSpec({
             creador = creador,
             destino = pehuajo,
             dias = mutableListOf(
-                Itinerario.DiaDeItinerario(
+                DiaDeItinerario(
                     mutableListOf(
                         Actividad(
                             Actividad.Dificultad.MEDIA,

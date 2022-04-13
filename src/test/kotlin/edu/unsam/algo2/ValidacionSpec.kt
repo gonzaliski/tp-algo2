@@ -118,7 +118,7 @@ internal class ValidacionSpec : DescribeSpec({
                     costoBase = 2.0
                 ),
                 dias = mutableListOf(
-                    Itinerario.DiaDeItinerario(
+                    DiaDeItinerario(
                         mutableListOf(
                             Actividad(
                                 dificultad = Actividad.Dificultad.MEDIA,
@@ -174,7 +174,7 @@ internal class ValidacionSpec : DescribeSpec({
                 costoBase = 25_000.0
             ),
             dias = mutableListOf(
-                Itinerario.DiaDeItinerario(
+                DiaDeItinerario(
                     mutableListOf(
                         Actividad(
                             dificultad = Actividad.Dificultad.MEDIA,
