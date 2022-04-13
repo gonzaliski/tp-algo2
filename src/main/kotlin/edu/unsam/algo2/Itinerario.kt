@@ -61,7 +61,7 @@ class Itinerario(
 
     fun costo() = dias.sumOf { dia -> dia.costo() }
 
-    fun tieneActividadesTodosLosDias(): Boolean = dias.all { dia -> dia.actividades.isNotEmpty() }
+    fun tieneActividadesTodosLosDias(): Boolean = dias.all { dia -> dia.tieneActividades() }
 
     fun actividades() = dias.flatMap { dia -> dia.actividades }
 
@@ -93,4 +93,6 @@ class DiaDeItinerario(var actividades: MutableList<Actividad>) {
     fun costo() = actividades.sumOf { actividad -> actividad.costo }
 
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
+
+    fun tieneActividades() = actividades.isNotEmpty()
 }
