@@ -11,14 +11,14 @@ class UsuarioSpec : DescribeSpec({
     isolationMode = IsolationMode.InstancePerTest
     val actividadesBasicas = mutableListOf(
         Actividad(
-            dificultad = Actividad.Dificultad.BAJA,
+            dificultad = Dificultad.BAJA,
             descripcion = "asdjasdja",
             inicio = LocalTime.of(12, 30, 0, 0),
             fin = LocalTime.of(14, 30, 0, 0),
             costo = 0.0
 
         ), Actividad(
-            dificultad = Actividad.Dificultad.MEDIA,
+            dificultad = Dificultad.MEDIA,
             descripcion = "asdjasdjsa",
             inicio = LocalTime.of(15, 30, 0, 0),
             fin = LocalTime.of(17, 30, 0, 0),
@@ -243,27 +243,27 @@ class UsuarioSpec : DescribeSpec({
     }
 
     describe("Dado un Usuario Exigente y un itinerario...") {
-        usuario.criterio = Exigente(porcentaje = 30.0, dificultad = Actividad.Dificultad.MEDIA)
+        usuario.criterio = Exigente(porcentaje = 30.0, dificultad = Dificultad.MEDIA)
         it("con porcentaje bajo de dificultad deseada, no puede realizar el itinerario") {
             // Act - When
             itinerarioDeOtroUsuario.dias.first().actividades.addAll(
                 mutableListOf(
                     Actividad(
-                        dificultad = Actividad.Dificultad.BAJA,
+                        dificultad = Dificultad.BAJA,
                         descripcion = "asdjasdja",
                         inicio = LocalTime.of(19, 30, 0, 0),
                         fin = LocalTime.of(20, 30, 0, 0),
                         costo = 0.0
 
                     ), Actividad(
-                        dificultad = Actividad.Dificultad.BAJA,
+                        dificultad = Dificultad.BAJA,
                         descripcion = "asdjasdja",
                         inicio = LocalTime.of(20, 30, 0, 0),
                         fin = LocalTime.of(21, 30, 0, 0),
                         costo = 0.0
 
                     ), Actividad(
-                        dificultad = Actividad.Dificultad.BAJA,
+                        dificultad = Dificultad.BAJA,
                         descripcion = "asdjasdja",
                         inicio = LocalTime.of(21, 30, 0, 0),
                         fin = LocalTime.of(22, 0, 0, 0),

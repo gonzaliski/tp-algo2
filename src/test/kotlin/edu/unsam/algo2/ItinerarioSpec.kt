@@ -39,7 +39,7 @@ class ItinerarioSpec : DescribeSpec({
             DiaDeItinerario(
                 mutableListOf(
                     Actividad(
-                        dificultad = Actividad.Dificultad.BAJA,
+                        dificultad = Dificultad.BAJA,
                         descripcion = "asdjasdja",
                         inicio = LocalTime.of(12, 30, 0, 0),
                         fin = LocalTime.of(14, 30, 0, 0),
@@ -47,7 +47,7 @@ class ItinerarioSpec : DescribeSpec({
 
                     ),
                     Actividad(
-                        dificultad = Actividad.Dificultad.MEDIA,
+                        dificultad = Dificultad.MEDIA,
                         descripcion = "asdjasdjsa",
                         inicio = LocalTime.of(15, 30, 0, 0),
                         fin = LocalTime.of(17, 30, 0, 0),
@@ -59,21 +59,21 @@ class ItinerarioSpec : DescribeSpec({
 
         )
     it("con misma cantidad devuelve dificultad mayor") {
-        itinerario.dificultad() shouldBe Actividad.Dificultad.MEDIA
+        itinerario.dificultad() shouldBe Dificultad.MEDIA
     }
 
     it("devuelve la dificultad que mas se repite (ALTA)") {
         itinerario.dias.first().actividades.addAll(
             mutableListOf(
                 Actividad(
-                    dificultad = Actividad.Dificultad.ALTA,
+                    dificultad = Dificultad.ALTA,
                     descripcion = "asdjasdja",
                     inicio = LocalTime.of(12, 30, 0, 0),
                     fin = LocalTime.of(14, 30, 0, 0),
                     costo = 0.0
                 ),
                 Actividad(
-                    dificultad = Actividad.Dificultad.ALTA,
+                    dificultad = Dificultad.ALTA,
                     descripcion = "asdjasdja",
                     inicio = LocalTime.of(15, 30, 0, 0),
                     fin = LocalTime.of(17, 30, 0, 0),
@@ -82,21 +82,21 @@ class ItinerarioSpec : DescribeSpec({
             )
         )
         println(itinerario.dificultad())
-        itinerario.dificultad() shouldBe Actividad.Dificultad.ALTA
+        itinerario.dificultad() shouldBe Dificultad.ALTA
     }
 
     it("devuelve la dificultad que mas se repite (MEDIA)") {
         itinerario.dias.first().actividades.addAll(
             mutableListOf(
                 Actividad(
-                    dificultad = Actividad.Dificultad.MEDIA,
+                    dificultad = Dificultad.MEDIA,
                     descripcion = "dasdjasdja",
                     inicio = LocalTime.of(12, 30, 0, 0),
                     fin = LocalTime.of(14, 30, 0, 0),
                     costo = 0.0
                 ),
                 Actividad(
-                    dificultad = Actividad.Dificultad.MEDIA,
+                    dificultad = Dificultad.MEDIA,
                     descripcion = "agsdjasdja",
                     inicio = LocalTime.of(15, 30, 0, 0),
                     fin = LocalTime.of(17, 30, 0, 0),
@@ -105,7 +105,7 @@ class ItinerarioSpec : DescribeSpec({
             )
         )
         println(itinerario.dificultad())
-        itinerario.dificultad() shouldBe Actividad.Dificultad.MEDIA
+        itinerario.dificultad() shouldBe Dificultad.MEDIA
     }
 
     describe("Dado un itinerario y un usuario...") {
@@ -142,7 +142,7 @@ class ItinerarioSpec : DescribeSpec({
                 DiaDeItinerario(
                     mutableListOf(
                         Actividad(
-                            Actividad.Dificultad.MEDIA,
+                            Dificultad.MEDIA,
                             descripcion = "Un poquitito caminando y otro poquitito a pie",
                             inicio = LocalTime.of(10, 0, 0),
                             fin = LocalTime.of(16, 0, 0),

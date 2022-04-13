@@ -121,14 +121,14 @@ internal class ValidacionSpec : DescribeSpec({
                     DiaDeItinerario(
                         mutableListOf(
                             Actividad(
-                                dificultad = Actividad.Dificultad.MEDIA,
+                                dificultad = Dificultad.MEDIA,
                                 descripcion = "dasdjasdja",
                                 inicio = LocalTime.of(12, 30, 0, 0),
                                 fin = LocalTime.of(14, 30, 0, 0),
                                 costo = 3.0
                             ),
                             Actividad(
-                                dificultad = Actividad.Dificultad.MEDIA,
+                                dificultad = Dificultad.MEDIA,
                                 descripcion = "agsdjasdja",
                                 inicio = LocalTime.of(13, 0, 0, 0),
                                 fin = LocalTime.of(15, 30, 0, 0),
@@ -177,14 +177,14 @@ internal class ValidacionSpec : DescribeSpec({
                 DiaDeItinerario(
                     mutableListOf(
                         Actividad(
-                            dificultad = Actividad.Dificultad.MEDIA,
+                            dificultad = Dificultad.MEDIA,
                             descripcion = "dasdjasdja",
                             inicio = LocalTime.of(12, 30, 0, 0),
                             fin = LocalTime.of(14, 30, 0, 0),
                             costo = 3.0
                         ),
                         Actividad(
-                            dificultad = Actividad.Dificultad.MEDIA,
+                            dificultad = Dificultad.MEDIA,
                             descripcion = "agsdjasdja",
                             inicio = LocalTime.of(15, 0, 0, 0),
                             fin = LocalTime.of(16, 30, 0, 0),

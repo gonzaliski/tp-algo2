@@ -50,7 +50,7 @@ class Itinerario(
 
     fun dificultadesAgrupadas() = dificultadesItinerario().groupBy { it }
 
-    fun dificultad(): Actividad.Dificultad? {
+    fun dificultad(): Dificultad? {
         val dificultadMaxima = dificultadesAgrupadas().maxWithOrNull(compareBy(
             { it.value.size }, // Primero comparo por cantidad de veces que se repite (tamanio de la lista)
             { it.key } // En caso de empate comparo por valor de dificultad: BAJA < MEDIA < ALTA
@@ -67,12 +67,12 @@ class Itinerario(
 
     fun actividadesPorDia() = dias.map { dia -> dia.actividades }
 
-    fun actividadesDeDificultad(dificultad: Actividad.Dificultad) =
+    fun actividadesDeDificultad(dificultad: Dificultad) =
         actividades().count { actividad -> actividad.dificultad == dificultad }
 
     fun cantidadTotalActividades() = actividades().size
 
-    fun porcentajeDeActividades(dificultad: Actividad.Dificultad): Double =
+    fun porcentajeDeActividades(dificultad: Dificultad): Double =
         (actividadesDeDificultad(dificultad) / cantidadTotalActividades().toDouble()) * 100
 
     fun puedeSerEditadoPor(usuario: Usuario): Boolean =

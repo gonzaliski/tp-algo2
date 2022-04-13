@@ -111,7 +111,7 @@ object Activo : Criterio {
     }
 }
 
-class Exigente(var porcentaje: Double, var dificultad: Actividad.Dificultad) : Criterio {
+class Exigente(var porcentaje: Double, var dificultad: Dificultad) : Criterio {
     override fun puedeRealizar(
         itinerario: Itinerario
     ): Boolean {
