@@ -12,7 +12,7 @@ class Itinerario(
         require(cantidadDias() > 0) {
             "Las actividades del dia deben tener al menos 1 actividad "
         }
-        require(dias.all { dia -> !seSolapanActividades(dia.actividades) }) {
+        require(!seSolapanActividades()) {
             "Los horarios de las actividades no se pueden solapar"
         }
 
@@ -21,19 +21,7 @@ class Itinerario(
     fun actividadesOrdenadas(actividades: MutableList<Actividad>) =
         actividades.sortedBy { actividad -> actividad.inicio }
 
-    fun seSolapanActividades(actividades: MutableList<Actividad>): Boolean {
-        val actividadesOrdenadas = actividadesOrdenadas(actividades)
-
-        val resultList = actividadesOrdenadas.mapIndexed { index, actividad ->
-
-            if (index != actividadesOrdenadas.lastIndex) {
-                return@mapIndexed (actividad.seSolapaCon(actividadesOrdenadas[index + 1]))
-            } else {
-                return@mapIndexed false
-            }
-        }
-        return resultList.any { it }
-    }
+    fun seSolapanActividades(): Boolean = dias.any { dia -> dia.seSolapanActividades() }
 
     // Suma duracion de actividades y dividir por cantidad de dias
     fun duracionPromedioPorDia() = dias.sumOf { dia -> dia.duracion() } / cantidadDias()
@@ -95,4 +83,12 @@ class DiaDeItinerario(var actividades: MutableList<Actividad>) {
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
 
     fun tieneActividades() = actividades.isNotEmpty()
+
+    fun seSolapanActividades() = actividades.any { actividad ->
+        val actividadesSinActividad = actividadesSin(actividad)
+        actividad.seSolapaConAlguna(actividadesSinActividad)
+    }
+
+    /** Devuelve una lista de actividades pero sin la actividad recibida */
+    fun actividadesSin(actividad: Actividad) = actividades.filterNot { it == actividad }
 }

@@ -28,7 +28,9 @@ class Actividad(
 
     fun duracion() = ChronoUnit.MINUTES.between(fin, inicio)
 
-    /** Este metodo funciona para lista de Actividades ordenadas por su inicio ascendentemente */
-    fun seSolapaCon(actividad: Actividad): Boolean = this.fin > actividad.inicio
+    fun seSolapaCon(actividad: Actividad): Boolean =
+        fin.isBetween(actividad.inicio, actividad.fin) || inicio.isBetween(actividad.inicio, actividad.fin)
+
+    fun seSolapaConAlguna(actividades: List<Actividad>) = actividades.any { seSolapaCon(it) }
 
 }
