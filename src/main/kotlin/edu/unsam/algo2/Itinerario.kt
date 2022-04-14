@@ -6,7 +6,7 @@ class Itinerario(
     var dias: MutableList<DiaDeItinerario> = mutableListOf(),
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
-) {
+): NivelDificultad {
 
     init {
         require(cantidadDias() > 0) {
@@ -34,18 +34,7 @@ class Itinerario(
      * llegado el caso que las cantidades sean iguales, se establece la de mayor dificultad.
      */
 
-    fun dificultadesItinerario() = dias.flatMap { dia -> dia.actividades.map { actividad -> actividad.dificultad } }
-
-    fun dificultadesAgrupadas() = dificultadesItinerario().groupBy { it }
-
-    fun dificultad(): Dificultad? {
-        val dificultadMaxima = dificultadesAgrupadas().maxWithOrNull(compareBy(
-            { it.value.size }, // Primero comparo por cantidad de veces que se repite (tamanio de la lista)
-            { it.key } // En caso de empate comparo por valor de dificultad: BAJA < MEDIA < ALTA
-        ))
-
-        return dificultadMaxima?.key
-    }
+    override fun dificultades() = dias.map { it.dificultad() }
 
     fun costo() = dias.sumOf { dia -> dia.costo() }
 
@@ -77,7 +66,7 @@ class Itinerario(
     fun tieneDestinoLocal(): Boolean = destino.esLocal()
 }
 
-class DiaDeItinerario(var actividades: MutableList<Actividad>) {
+class DiaDeItinerario(var actividades: MutableList<Actividad>): NivelDificultad {
     fun costo() = actividades.sumOf { actividad -> actividad.costo }
 
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
@@ -91,4 +80,6 @@ class DiaDeItinerario(var actividades: MutableList<Actividad>) {
 
     /** Devuelve una lista de actividades pero sin la actividad recibida */
     fun actividadesSin(actividad: Actividad) = actividades.filterNot { it == actividad }
+
+    override fun dificultades() = actividades.map { it.dificultad }
 }
