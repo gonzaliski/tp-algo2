@@ -1,3 +1,3 @@
 
-rootProject.name = "nuevo-proyecto-kotest-jvmTarget14"
+rootProject.name = "tp-holamundo-2022-2022-grupo-3"
 
