@@ -13,9 +13,10 @@ class Usuario(
     var criterio: Criterio,
     var destinosDeseados: MutableList<Destino>,
     var vehiculoPreferencia: VehiculoPreferencia
-) {
+): Identificable {
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
+    override var id: Int? = null
 
     init {
         require(nombre.isNotBlank()) {
@@ -75,4 +76,11 @@ class Usuario(
     fun esAmigoDe(usuario: Usuario): Boolean = amigos.contains(usuario)
 
     fun algunAmigoConoce(destino: Destino): Boolean = amigos.any { it.conoce(destino) }
+
+    /** El valor de búsqueda debe coincidir parcialmente con su nombre o apellido,
+     * o exáctamente con su username.
+     */
+    override fun coincideCon(value: String): Boolean {
+        return nombre.contains(value) || apellido.contains(value) || value == username
+    }
 }

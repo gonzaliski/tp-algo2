@@ -4,7 +4,6 @@ import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 
 class Actividad(
-
     var dificultad: Dificultad = Dificultad.BAJA,
     var descripcion: String,
     var inicio: LocalTime,
@@ -33,4 +32,5 @@ class Actividad(
 
     fun seSolapaConAlguna(actividades: List<Actividad>) = actividades.any { seSolapaCon(it) }
 
+    fun coincideCon(value: String): Boolean = descripcion.contains(value)
 }

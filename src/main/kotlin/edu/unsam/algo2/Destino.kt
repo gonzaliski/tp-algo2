@@ -4,7 +4,7 @@ class Destino(
     var ciudad: String,
     var pais: String,
     var costoBase: Double
-) {
+):Identificable {
 
     init {
         require(ciudad.isNotBlank()) {
@@ -36,4 +36,11 @@ class Destino(
 
     fun descuentoPara(usuario: Usuario): Double =
         if (usuario.paisResidencia == pais) (0.01 * costoBase) * minOf(usuario.antiguedad(), 15) else 0.0
+
+    override var id: Int? = null
+
+    /**El valor de búsqueda debe coincidir parcialmente con el nombre del país, o con el nombre de la ciudad.*/
+    override fun coincideCon(value: String): Boolean {
+        return pais.contains(value) || ciudad.contains(value) // TODO: contains? o a que se refiere "parcialmente"?
+    }
 }

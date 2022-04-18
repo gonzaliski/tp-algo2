@@ -6,7 +6,8 @@ class Itinerario(
     var dias: MutableList<DiaDeItinerario> = mutableListOf(),
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
-): NivelDificultad {
+) : NivelDificultad, Identificable {
+    override var id: Int? = null
 
     init {
         require(cantidadDias() > 0) {
@@ -64,9 +65,15 @@ class Itinerario(
     fun fuePuntuadoPor(usuario: Usuario): Boolean = puntuaciones.keys.contains(usuario)
 
     fun tieneDestinoLocal(): Boolean = destino.esLocal()
+
+    /**El valor de búsqueda debe coincidir parcialmente con el país o ciudad del destino que corresponda
+     * o con alguna de las actividades.
+     */
+    override fun coincideCon(value: String): Boolean =
+        destino.coincideCon(value) || actividades().any { it.coincideCon(value) }
 }
 
-class DiaDeItinerario(var actividades: MutableList<Actividad>): NivelDificultad {
+class DiaDeItinerario(var actividades: MutableList<Actividad>) : NivelDificultad {
     fun costo() = actividades.sumOf { actividad -> actividad.costo }
 
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
