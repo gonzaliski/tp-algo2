@@ -35,7 +35,8 @@ internal class ValidacionSpec : DescribeSpec({
                     apellido = "Peter",
                     username = "ppeter",
                     paisResidencia = "Venezuela",
-                    destinosDeseados = mutableListOf(destino)
+                    destinosDeseados = mutableListOf(destino),
+                    vehiculoPreferencia = Caprichoso
                 )
             }
         }
@@ -49,7 +50,8 @@ internal class ValidacionSpec : DescribeSpec({
                     apellido = "Peter",
                     username = "ppeter",
                     paisResidencia = "Venezuela",
-                    destinosDeseados = mutableListOf(destino)
+                    destinosDeseados = mutableListOf(destino),
+                    vehiculoPreferencia = Caprichoso
                 )
             }
             shouldThrowMessage("La fecha de alta no puede ser posterior a la del día.", bloque)
@@ -65,7 +67,8 @@ internal class ValidacionSpec : DescribeSpec({
                     apellido = "Peter",
                     username = "ppeter",
                     paisResidencia = "Venezuela",
-                    destinosDeseados = mutableListOf()
+                    destinosDeseados = mutableListOf(),
+                    vehiculoPreferencia = Caprichoso
                 )
             }
             shouldThrowMessage("Todos los usuarios deben tener al menos un destino deseado.", bloque)
@@ -81,7 +84,8 @@ internal class ValidacionSpec : DescribeSpec({
                     apellido = "Peter",
                     username = "ppeter",
                     paisResidencia = "Venezuela",
-                    destinosDeseados = mutableListOf(destino)
+                    destinosDeseados = mutableListOf(destino),
+                    vehiculoPreferencia = Caprichoso
                 )
             }
             shouldThrowMessage("Los días para viajar, deben ser mayores a cero.", bloque)
@@ -110,7 +114,8 @@ internal class ValidacionSpec : DescribeSpec({
                             ciudad = "Buenos Aires",
                             costoBase = 25_000.0
                         )
-                    )
+                    ),
+                    vehiculoPreferencia = Caprichoso
                 ),
                 destino = Destino(
                     pais = "Chile",
@@ -164,7 +169,8 @@ internal class ValidacionSpec : DescribeSpec({
                     ciudad = "Buenos Aires",
                     costoBase = 25_000.0
                 )
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         )
         val itinerario = Itinerario(
             creador = user,

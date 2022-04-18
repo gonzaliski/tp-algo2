@@ -47,7 +47,8 @@ class UsuarioSpec : DescribeSpec({
         criterio = Relajado,
         destinosDeseados = mutableListOf(
             roma, cucurun
-        )
+        ),
+        vehiculoPreferencia = Caprichoso
 
 
     ).apply {
@@ -65,7 +66,8 @@ class UsuarioSpec : DescribeSpec({
         criterio = Relajado,
         destinosDeseados = mutableListOf(
             roma, cucurun
-        )
+        ),
+        vehiculoPreferencia = Caprichoso
     )
     val itinerarioDeOtroUsuario = Itinerario(
         creador = otroUsuario,

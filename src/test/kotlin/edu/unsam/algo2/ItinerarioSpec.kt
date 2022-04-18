@@ -28,7 +28,8 @@ class ItinerarioSpec : DescribeSpec({
                     ciudad = "Buenos Aires",
                     costoBase = 25_000.0
                 )
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         ),
         destino = Destino(
             pais = "Chile",
@@ -133,7 +134,8 @@ class ItinerarioSpec : DescribeSpec({
             fechaAlta = LocalDate.now(),
             diasDisponibles = 2,
             criterio = Localista,
-            destinosDeseados = mutableListOf(pehuajo)
+            destinosDeseados = mutableListOf(pehuajo),
+            vehiculoPreferencia = Caprichoso
         )
         val itinerarioPehuajo = Itinerario(
             creador = creador,
@@ -164,7 +166,8 @@ class ItinerarioSpec : DescribeSpec({
             destinosDeseados = mutableListOf(
                 nomeacuerdo,
                 paris
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         )
         it("que NO es CREADOR NI AMIGO del creador, NO puede editar el itinerario") {
             // Assert - Then

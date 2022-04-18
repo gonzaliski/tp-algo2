@@ -16,9 +16,9 @@ abstract class Vehiculo(
 
     fun antiguedad() = LocalDate.now().year - anioFabricacion
     fun tieneConvenio() = empresasConvenio.contains(marca)
-    abstract fun costoDeAlquiler():Double
+    abstract fun costoDeAlquiler(): Double
     fun costoTotal() = costoDeAlquiler() - descuentoPorConvenio()
-    fun descuentoPorConvenio() = if(this.tieneConvenio()) costoDeAlquiler()*0.1 else 0.0
+    fun descuentoPorConvenio() = if (this.tieneConvenio()) costoDeAlquiler() * 0.1 else 0.0
 
 
     companion object {
@@ -48,7 +48,7 @@ class Moto(
     fun costoCilindrada() =
         if (cilindrada > 250) (500 * diasDeAlquiler) else 0 //hacer algo mas general para el precio extra por cilindrada
 
-    override fun costoDeAlquiler() = costoBase() + costoCilindrada() // este metodo podria ser interfaz (?
+    override fun costoDeAlquiler() = costoBase() + costoCilindrada()
 }
 
 class Auto(
