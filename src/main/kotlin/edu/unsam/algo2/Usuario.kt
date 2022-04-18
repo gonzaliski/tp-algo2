@@ -11,7 +11,8 @@ class Usuario(
     val fechaAlta: LocalDate,
     var diasDisponibles: Int,
     var criterio: Criterio,
-    var destinosDeseados: MutableList<Destino>
+    var destinosDeseados: MutableList<Destino>,
+    var vehiculoPreferencia: VehiculoPreferencia
 ) {
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
