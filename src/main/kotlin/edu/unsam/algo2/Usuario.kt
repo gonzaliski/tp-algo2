@@ -12,14 +12,14 @@ class Usuario(
     var diasDisponibles: Int,
     var criterio: Criterio,
     var destinosDeseados: MutableList<Destino>,
-    var vehiculoPreferencia: VehiculoPreferencia
+    var vehiculoPreferencia: PreferenciaDeVehiculo
 ): Identidad {
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     override var id: Int? = null
 
     fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
-    
+
     init {
         require(nombre.isNotBlank()) {
             "El nombre del usuario no puede ser nulo o vacio"
