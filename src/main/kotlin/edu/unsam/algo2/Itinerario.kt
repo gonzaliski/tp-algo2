@@ -6,7 +6,7 @@ class Itinerario(
     var dias: MutableList<DiaDeItinerario> = mutableListOf(),
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
-) : NivelDificultad, Identificable {
+) : NivelDificultad, Identidad {
     override var id: Int? = null
 
     init {

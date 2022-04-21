@@ -3,7 +3,7 @@ package edu.unsam.algo2
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-class Usuario(
+abstract class Usuario(
     var nombre: String,
     var apellido: String,
     var username: String,
@@ -13,12 +13,14 @@ class Usuario(
     var criterio: Criterio,
     var destinosDeseados: MutableList<Destino>,
     var vehiculoPreferencia: VehiculoPreferencia
-): Identificable {
+): Identidad {
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     override var id: Int? = null
 
-    init {
+    fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
+
+    init{
         require(nombre.isNotBlank()) {
             "El nombre del usuario no puede ser nulo o vacio"
         }
@@ -83,4 +85,6 @@ class Usuario(
     override fun coincideCon(value: String): Boolean {
         return nombre.contains(value) || apellido.contains(value) || value == username
     }
+
+
 }

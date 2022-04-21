@@ -2,7 +2,7 @@ package edu.unsam.algo2
 
 // val repo = Repositorio<Usuario>()
 
-class Repositorio<T : Identificable> {
+class Repositorio<T : Identidad> {
     var nextID = 0
         private set
     val elementos: MutableList<T> = mutableListOf()
