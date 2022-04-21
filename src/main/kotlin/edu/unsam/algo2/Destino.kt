@@ -4,7 +4,7 @@ class Destino(
     var ciudad: String,
     var pais: String,
     var costoBase: Double
-):Identificable {
+):Identidad {
 
     init {
         require(ciudad.isNotBlank()) {

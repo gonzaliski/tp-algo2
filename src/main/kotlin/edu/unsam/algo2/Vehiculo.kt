@@ -9,7 +9,7 @@ abstract class Vehiculo(
     var costoDiario: Double,
     val diasDeAlquiler: Int,
     var kilometrajeLibre: Boolean
-) : Identificable {
+) : Identidad {
     override var id: Int? = null
 
     fun costoBase() = costoDiario * diasDeAlquiler
