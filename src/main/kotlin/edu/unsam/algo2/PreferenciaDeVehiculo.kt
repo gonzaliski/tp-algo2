@@ -5,24 +5,22 @@ interface PreferenciaDeVehiculo {
 }
 
 object Neofilo : PreferenciaDeVehiculo {
-    override fun leGusta(vehiculo: Vehiculo): Boolean = vehiculo.antiguedad() < 2
+    override fun leGusta(vehiculo: Vehiculo): Boolean = vehiculo.noEsMuyAntiguo()
 }
 
 /** solo quiere vehículos fabricados en años pares*/
 object Supersticioso : PreferenciaDeVehiculo {
-    override fun leGusta(vehiculo: Vehiculo): Boolean = vehiculo.anioFabricacion.isEven()
+    override fun leGusta(vehiculo: Vehiculo): Boolean = vehiculo.anioFabricacionPar()
 }
 
 /** le gustan los vehículos cuya inicial de la marca, coincida con la inicial del modelo. */
 object Caprichoso : PreferenciaDeVehiculo {
-    override fun leGusta(vehiculo: Vehiculo): Boolean =
-        vehiculo.marca.trim().first() == vehiculo.modelo.trim().first() // TODO: Delegar a Vehiculo
-    // vehiculo.coincidenInciales()
+    override fun leGusta(vehiculo: Vehiculo): Boolean = vehiculo.coincidenInciales()
 }
 
 /** siempre que el vehículo sea de una marca específica.*/
 class Selectivo(private val marca: String) : PreferenciaDeVehiculo {
-    override fun leGusta(vehiculo: Vehiculo): Boolean = vehiculo.marca == marca
+    override fun leGusta(vehiculo: Vehiculo): Boolean = vehiculo.esDeMarca(marca)
 }
 
 /** quiere que tenga el kilometraje libre*/
