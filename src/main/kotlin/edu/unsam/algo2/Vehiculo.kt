@@ -16,11 +16,14 @@ abstract class Vehiculo(
 
     fun antiguedad() = LocalDate.now().year - anioFabricacion
     fun tieneConvenio() = empresasConvenio.contains(marca)
-    abstract fun costoDeAlquiler(): Double
-    fun costoTotal() = costoDeAlquiler() - descuentoPorConvenio()
-    fun descuentoPorConvenio() = if (this.tieneConvenio()) costoDeAlquiler() * 0.1 else 0.0
-
-
+    abstract fun costoParticular(): Double
+    fun subTotal() = costoBase() + costoParticular()
+    fun costoTotal() = subTotal() - descuentoPorConvenio()
+    fun descuentoPorConvenio() = if (this.tieneConvenio()) subTotal() * 0.1 else 0.0
+    fun anioFabricacionPar() = anioFabricacion.isEven()
+    fun coincidenInciales() = marca.trim().first() == modelo.trim().first()
+    fun esDeMarca(marcaDeseada: String) = marcaDeseada == marca
+    fun noEsMuyAntiguo(antiguedadMax: Int = 2) = antiguedad() < antiguedadMax
     companion object {
         val empresasConvenio: MutableList<String> = mutableListOf("Honda")
     }
@@ -29,6 +32,9 @@ abstract class Vehiculo(
     override fun coincideCon(value: String): Boolean {
         return marca == value || modelo.startsWith(value)
     }
+
+
+
 
 }
 
@@ -43,12 +49,8 @@ class Moto(
     val cilindrada: Int
 
 ) : Vehiculo(marca, modelo, anioFabricacion, costoDiario, diasDeAlquiler, kilometrajeLibre) {
+    override fun costoParticular(): Double = if (cilindrada > 250.0) (500.0 * diasDeAlquiler) else 0.0 //hacer algo mas general para el precio extra por cilindrada
 
-
-    fun costoCilindrada() =
-        if (cilindrada > 250) (500 * diasDeAlquiler) else 0 //hacer algo mas general para el precio extra por cilindrada
-
-    override fun costoDeAlquiler() = costoBase() + costoCilindrada()
 }
 
 class Auto(
@@ -63,8 +65,7 @@ class Auto(
 ) : Vehiculo(marca, modelo, anioFabricacion, costoDiario, diasDeAlquiler, kilometrajeLibre) {
 
     fun porcentajeHatchback() = if (esHatchback) 0.1 else 0.25
-    fun costoHatchback() = costoBase() * porcentajeHatchback()
-    override fun costoDeAlquiler() = costoBase() + costoHatchback()
+    override fun costoParticular() = costoBase() * porcentajeHatchback()
 }
 
 
@@ -83,7 +84,7 @@ class Camioneta(
     fun diasDeExceso() = maxOf(diasDeAlquiler - 7, 1) //buscar algo mas general para la resta del 7 (seria maximo)
     fun costoPorExceso() = if (!alquilerExcesivo()) 10000 else (10000 + (1000 * diasDeExceso())) //intentar desacoplar
     fun costoTodoTerreno() = if (esTodoTerreno) (costoPorExceso() * 0.5) else 0.0      //duda del 50%
-    override fun costoDeAlquiler() = costoBase() + costoPorExceso() + costoTodoTerreno()
+    override fun costoParticular() = costoPorExceso() + costoTodoTerreno()
 
 }
 
