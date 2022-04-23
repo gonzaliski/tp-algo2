@@ -9,7 +9,7 @@ abstract class Vehiculo(
     var costoDiario: Double,
     val diasDeAlquiler: Int,
     var kilometrajeLibre: Boolean
-) : Identidad {
+) : Entidad {
     override var id: Int? = null
 
     companion object {

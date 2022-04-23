@@ -13,7 +13,7 @@ class Usuario(
     var criterio: Criterio,
     var destinosDeseados: MutableList<Destino>,
     var vehiculoPreferencia: PreferenciaDeVehiculo
-): Identidad {
+): Entidad {
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     override var id: Int? = null

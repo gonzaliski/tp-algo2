@@ -1,6 +1,6 @@
 package edu.unsam.algo2
 
-interface Identidad {
+interface Entidad {
     var id: Int?
 
     fun coincideCon(value: String): Boolean
