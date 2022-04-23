@@ -6,6 +6,7 @@ import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -77,7 +78,7 @@ internal class RepositorioSpec : DescribeSpec({
 
             it("al intentar una busqueda, devuelve una lista vacia") {
                 // Assert - Then
-                repo.search(usuario.username).isEmpty().shouldBeTrue()
+                repo.search(usuario.username).shouldBeEmpty()
             }
         }
     }
