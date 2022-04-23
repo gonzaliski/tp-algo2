@@ -1,13 +1,17 @@
 package edu.unsam.algo2
 
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.doubles.shouldBeExactly
+import io.kotest.matchers.doubles.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 import java.time.LocalTime
 
 class ItinerarioSpec : DescribeSpec({
+    isolationMode = IsolationMode.InstancePerTest
     val itinerario = Itinerario(
         creador = Usuario(
             nombre = "Carlos",
@@ -194,7 +198,7 @@ class ItinerarioSpec : DescribeSpec({
         }
     }
     describe("Duracion promedio por dia del itinerario...") {
-        val tiempo = LocalTime.of(10,0,0)
+        val tiempo = LocalTime.of(10, 0, 0)
         val dia = DiaDeItinerario(
             mutableListOf(
                 Actividad(
@@ -235,6 +239,27 @@ class ItinerarioSpec : DescribeSpec({
 
             // Assert - Then
             itinerario.duracionPromedioPorDia() shouldBe duracionPromedioDeDias
+        }
+    }
+
+    describe("El costo de un Itinerario...") {
+        it("es la suma de los costos de los dias") {
+            itinerario.costo() shouldBe 0.0
+        }
+        it("si los costos de los dias no es cero el del itinerario tampoco") {
+            val dia = DiaDeItinerario(
+                mutableListOf(
+                    Actividad(
+                        descripcion = "asdad",
+                        inicio = LocalTime.of(10, 0, 0),
+                        fin = LocalTime.of(10, 0, 0).plusHours(5),
+                        costo = 1200.0
+                    )
+                )
+            )
+            itinerario.dias.add(dia)
+
+            itinerario.costo() shouldBeExactly dia.costo()
         }
     }
 })
