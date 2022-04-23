@@ -78,6 +78,8 @@ class DiaDeItinerario(var actividades: MutableList<Actividad>) : NivelDificultad
 
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
 
+    fun duracionPromedio() = duracion() / actividades.size
+
     fun tieneActividades() = actividades.isNotEmpty()
 
     fun seSolapanActividades() = actividades.any { actividad ->

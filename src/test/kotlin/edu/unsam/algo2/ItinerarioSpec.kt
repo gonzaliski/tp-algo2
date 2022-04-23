@@ -57,8 +57,7 @@ class ItinerarioSpec : DescribeSpec({
                 )
             )
         ),
-
-        )
+    )
     it("con misma cantidad devuelve dificultad mayor") {
         itinerario.dificultad() shouldBe Dificultad.MEDIA
     }
@@ -192,6 +191,50 @@ class ItinerarioSpec : DescribeSpec({
         it("que ES CREADOR del itinerario SI puede editar el itinerario") {
             // Assert - Then
             itinerarioPehuajo.puedeSerEditadoPor(creador).shouldBeTrue()
+        }
+    }
+    describe("Duracion promedio por dia del itinerario...") {
+        val tiempo = LocalTime.of(10,0,0)
+        val dia = DiaDeItinerario(
+            mutableListOf(
+                Actividad(
+                    descripcion = "asdasd",
+                    inicio = tiempo,
+                    fin = tiempo.plusHours(2),
+                    costo = 1200.0
+                )
+            )
+        )
+        it("si hay 1 solo dia, es el promedio de este") {
+            // Act - When
+            itinerario.dias = mutableListOf(dia)
+
+            val duracionPromedioDelDia = dia.duracionPromedio()
+            // Assert - Then
+            itinerario.duracionPromedioPorDia() shouldBe duracionPromedioDelDia
+        }
+        it("si hay mas dias, es el promedio de sus promedios") {
+            // Arrage - Given
+            val dia2 = DiaDeItinerario(
+                mutableListOf(
+                    Actividad(
+                        descripcion = "asdad",
+                        inicio = tiempo,
+                        fin = tiempo.plusHours(5),
+                        costo = 1200.0
+                    )
+                )
+            )
+            val dias = mutableListOf(dia, dia2)
+
+            // Act - When
+            itinerario.dias = dias
+
+            val duracionPromedioDeDias =
+                (dia.duracionPromedio() + dia2.duracionPromedio()) / 2
+
+            // Assert - Then
+            itinerario.duracionPromedioPorDia() shouldBe duracionPromedioDeDias
         }
     }
 })
