@@ -83,6 +83,8 @@ class Usuario(
      * o exáctamente con su username.
      */
     override fun coincideCon(value: String): Boolean {
-        return nombre.contains(value) || apellido.contains(value) || value == username
+        return nombre.contains(value, ignoreCase = true) ||
+                apellido.contains(value, ignoreCase = true) ||
+                username.equals(value, ignoreCase = true)
     }
 }

@@ -4,7 +4,7 @@ class Destino(
     var ciudad: String,
     var pais: String,
     var costoBase: Double
-):Identidad {
+) : Identidad {
 
     init {
         require(ciudad.isNotBlank()) {
@@ -26,7 +26,7 @@ class Destino(
     }
 
     fun esLocal() =
-        pais.lowercase().trim() == LOCAL.lowercase().trim()
+        pais.trim().equals(LOCAL.trim(), ignoreCase = true)
 
     fun costo(usuario: Usuario): Double {
         return costoBase + recargo(costoBase) - descuentoPara(usuario)
@@ -35,12 +35,15 @@ class Destino(
     fun recargo(costo: Double): Double = if (!esLocal()) costo * 0.2 else 0.0
 
     fun descuentoPara(usuario: Usuario): Double =
-        if (usuario.paisResidencia == pais) (0.01 * costoBase) * minOf(usuario.antiguedad(), 15) else 0.0
+        if (usuario.paisResidencia.equals(pais, ignoreCase = true)) (0.01 * costoBase) * minOf(
+            usuario.antiguedad(),
+            15
+        ) else 0.0
 
     override var id: Int? = null
 
     /**El valor de búsqueda debe coincidir parcialmente con el nombre del país, o con el nombre de la ciudad.*/
     override fun coincideCon(value: String): Boolean {
-        return pais.contains(value) || ciudad.contains(value) // TODO: contains? o a que se refiere "parcialmente"?
+        return pais.contains(value, ignoreCase = true) || ciudad.contains(value, ignoreCase = true)
     }
 }

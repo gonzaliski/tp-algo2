@@ -32,5 +32,5 @@ class Actividad(
 
     fun seSolapaConAlguna(actividades: List<Actividad>) = actividades.any { seSolapaCon(it) }
 
-    fun coincideCon(value: String): Boolean = descripcion.contains(value)
+    fun coincideCon(value: String): Boolean = descripcion.contains(value, ignoreCase = true)
 }
