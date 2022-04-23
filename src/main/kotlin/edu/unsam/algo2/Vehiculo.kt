@@ -12,29 +12,29 @@ abstract class Vehiculo(
 ) : Identidad {
     override var id: Int? = null
 
-    fun costoBase() = costoDiario * diasDeAlquiler
-
-    fun antiguedad() = LocalDate.now().year - anioFabricacion
-    fun tieneConvenio() = empresasConvenio.contains(marca)
-    abstract fun costoParticular(): Double
-    fun subTotal() = costoBase() + costoParticular()
-    fun costoTotal() = subTotal() - descuentoPorConvenio()
-    fun descuentoPorConvenio() = if (this.tieneConvenio()) subTotal() * 0.1 else 0.0
-    fun anioFabricacionPar() = anioFabricacion.isEven()
-    fun coincidenInciales() = marca.trim().first() == modelo.trim().first()
-    fun esDeMarca(marcaDeseada: String) = marcaDeseada == marca
-    fun noEsMuyAntiguo(antiguedadMax: Int = 2) = antiguedad() < antiguedadMax
     companion object {
         val empresasConvenio: MutableList<String> = mutableListOf("Honda")
     }
 
+    fun costoBase() = costoDiario * diasDeAlquiler
+    fun antiguedad() = LocalDate.now().year - anioFabricacion
+    fun tieneConvenio() = empresasConvenio.contains(marca)
+
+    // Calculo del costo
+    abstract fun costoParticular(): Double
+    fun subTotal() = costoBase() + costoParticular()
+    fun costoTotal() = subTotal() - descuentoPorConvenio()
+    fun descuentoPorConvenio() = if (this.tieneConvenio()) subTotal() * 0.1 else 0.0
+
+    fun anioFabricacionPar() = anioFabricacion.isEven()
+    fun coincidenInciales() = marca.trim().first().equals(modelo.trim().first(), ignoreCase = true)
+    fun esDeMarca(marcaDeseada: String) = marcaDeseada.equals(marca, ignoreCase = true)
+    fun noEsMuyAntiguo(antiguedadMax: Int = 2) = antiguedad() < antiguedadMax
+
     /**El valor de búsqueda debe coincidir exactamente con la marca o con el comienzo del modelo.*/
     override fun coincideCon(value: String): Boolean {
-        return marca == value || modelo.startsWith(value)
+        return esDeMarca(value) || modelo.startsWith(value, ignoreCase = true)
     }
-
-
-
 
 }
 
