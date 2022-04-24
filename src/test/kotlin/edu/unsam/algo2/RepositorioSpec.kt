@@ -54,31 +54,46 @@ internal class RepositorioSpec : DescribeSpec({
                 }
             }
 
-            it("al intentar eliminar un usuario, no cambia nada") {
+            it("al intentar eliminar un usuario, lanza error") {
                 // Act - When
-                repo.delete(usuario)
+                val bloque = {
+                    repo.delete(usuario)
+                }
 
                 // Assert - Then
-                repo.elementos.contains(usuario).shouldBeFalse()
-                usuario.id.shouldBeNull()
+                shouldThrowExactly<InvalidElementException>(bloque)
+                shouldThrowMessage("Elemento invalido: El elemento no ha sido encontrado", bloque)
             }
 
             it("al intentar cambiar un usuario, lanza un error") {
                 val bloque = {
                     repo.update(usuario)
                 }
-                shouldThrowExactly<NullPointerException>(bloque)
-                shouldThrowMessage("El elemento buscado no ha sido encontrado", bloque)
+                shouldThrowExactly<InvalidElementException>(bloque)
+                shouldThrowMessage("Elemento invalido: El elemento no ha sido encontrado", bloque)
             }
 
-            it("al intentar buscar un Id, devuelve null") {
+            it("al intentar buscar un Id, devuelve null y da error") {
                 // Assert - Then
-                repo.getById(0).shouldBeNull()
+
+                val bloque = {
+                    repo.getById(0)
+                }
+
+                // Assert - Then
+                shouldThrowExactly<InvalidElementException>(bloque)
+                shouldThrowMessage("Elemento invalido: No se encontro un elemento con ese ID", bloque)
             }
 
             it("al intentar una busqueda, devuelve una lista vacia") {
                 // Assert - Then
-                repo.search(usuario.username).shouldBeEmpty()
+                val bloque = {
+                    repo.search(usuario.username)
+                }
+
+                // Assert - Then
+                shouldThrowExactly<InvalidElementException>(bloque)
+                shouldThrowMessage("Elemento invalido: No existen elementos con ese criterio", bloque)
             }
         }
     }
