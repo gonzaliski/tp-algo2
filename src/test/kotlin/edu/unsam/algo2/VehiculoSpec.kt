@@ -64,4 +64,64 @@ class VehiculoSpec : DescribeSpec({
             }
         }
     }
+
+    describe("Tests de Autos..."){
+        describe("sin convenio..."){
+            val auto = Auto(
+                marca = "bmw",
+                modelo = "x1 2022",
+                anioFabricacion = 2022,
+                costoDiario = 1.0,
+                diasDeAlquiler = 1,
+                kilometrajeLibre = false,
+                esHatchback = true
+            )
+            it("que es hatchback"){
+                auto.costoTotal() shouldBe auto.costoBase() * 1.1
+            }
+            it("que no es hatchback"){
+                val autoSinHatchback = Auto(
+                    marca = "bmw",
+                    modelo = "x1 2022",
+                    anioFabricacion = 2022,
+                    costoDiario = 1.0,
+                    diasDeAlquiler = 1,
+                    kilometrajeLibre = false,
+                    esHatchback = false
+                )
+
+                autoSinHatchback.costoTotal() shouldBe auto.costoBase() * 1.25
+            }
+        }
+        describe("con convenio..."){
+            val auto = Auto(
+                marca = "honda",
+                modelo = "HR-V",
+                anioFabricacion = 2022,
+                costoDiario = 1.0,
+                diasDeAlquiler = 1,
+                kilometrajeLibre = false,
+                esHatchback = true
+            )
+            it("que es hatchback"){
+                val agregadoHatchback = auto.costoBase() * 0.1
+                val descuentoConvenio = (auto.costoBase() + agregadoHatchback) * 0.1
+                auto.costoTotal() shouldBe auto.costoBase() + agregadoHatchback - descuentoConvenio
+            }
+            it("que no es hatchback"){
+                val autoSinHatchback = Auto(
+                    marca = "honda",
+                    modelo = "HR-V",
+                    anioFabricacion = 2022,
+                    costoDiario = 1.0,
+                    diasDeAlquiler = 1,
+                    kilometrajeLibre = false,
+                    esHatchback = false
+                )
+                val agregadoHatchback = autoSinHatchback.costoBase() * 0.25
+                val descuentoConvenio = (autoSinHatchback.costoBase() + agregadoHatchback) * 0.1
+                autoSinHatchback.costoTotal() shouldBe autoSinHatchback.costoBase() + agregadoHatchback - descuentoConvenio
+            }
+        }
+    }
 })
