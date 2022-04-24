@@ -18,7 +18,7 @@ abstract class Vehiculo(
 
     fun costoBase() = costoDiario * diasDeAlquiler
     fun antiguedad() = LocalDate.now().year - anioFabricacion
-    fun tieneConvenio() = empresasConvenio.contains(marca)
+    fun tieneConvenio() = empresasConvenio.any { it.equals(marca, ignoreCase = true) }
 
     // Calculo del costo
     abstract fun costoParticular(): Double
