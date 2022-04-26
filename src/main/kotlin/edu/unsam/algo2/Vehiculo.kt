@@ -53,15 +53,14 @@ class Moto(
         if (cilindrada > 250.0) (500.0 * diasDeAlquiler) else 0.0 //hacer algo mas general para el precio extra por cilindrada
 
     override fun <T> actualizarDatos(elemento: T) {
-        with(elemento as Moto) {
+        val moto = elemento as Moto
 //            marca = elemento.marca
 //            modelo = elemento.modelo
 //            anioFabricacion = elemento.anioFabricacion
-            costoDiario = elemento.costoDiario
+        costoDiario = elemento.costoDiario
 //            diasDeAlquiler = elemento.diasDeAlquiler
-            kilometrajeLibre = elemento.kilometrajeLibre
+        kilometrajeLibre = elemento.kilometrajeLibre
 //            cilindrada = elemento.cilindrada
-        }
     }
 }
 
@@ -80,15 +79,14 @@ class Auto(
     override fun costoParticular() = costoBase() * porcentajeHatchback()
 
     override fun <T> actualizarDatos(elemento: T) {
-        with(elemento as Auto) {
+        val auto = elemento as Auto
 //            marca = elemento.marca
 //            modelo = elemento.modelo
 //            anioFabricacion = elemento.anioFabricacion
-            costoDiario = elemento.costoDiario
+        costoDiario = elemento.costoDiario
 //            diasDeAlquiler = elemento.diasDeAlquiler
-            kilometrajeLibre = elemento.kilometrajeLibre
+        kilometrajeLibre = elemento.kilometrajeLibre
 //            esHatchback = elemento.esHatchback
-        }
     }
 }
 
@@ -111,15 +109,14 @@ class Camioneta(
     override fun costoParticular() = costoPorExceso() + costoTodoTerreno()
 
     override fun <T> actualizarDatos(elemento: T) {
-        with(elemento as Camioneta) {
+        val camioneta = elemento as Camioneta
 //            marca = elemento.marca
 //            modelo = elemento.modelo
 //            anioFabricacion = elemento.anioFabricacion
-            costoDiario = elemento.costoDiario
+        costoDiario = elemento.costoDiario
 //            diasDeAlquiler = elemento.diasDeAlquiler
-            kilometrajeLibre = elemento.kilometrajeLibre
+        kilometrajeLibre = elemento.kilometrajeLibre
 //            esTodoTerreno = elemento.esTodoTerreno
-        }
     }
 }
 

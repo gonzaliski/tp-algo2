@@ -73,13 +73,11 @@ class Itinerario(
         destino.coincideCon(value) || actividades().any { it.coincideCon(value) }
 
     override fun <T> actualizarDatos(elemento: T) {
-        with(elemento as Itinerario){
-            creador = elemento.creador
-            destino = elemento.destino
-            dias = elemento.dias
-            puntuaciones = elemento.puntuaciones
-
-        }
+        val itinerario = elemento as Itinerario
+        creador = itinerario.creador
+        destino = itinerario.destino
+        dias = itinerario.dias
+        puntuaciones = itinerario.puntuaciones
     }
 }
 

@@ -89,16 +89,15 @@ class Usuario(
     }
 
     override fun <T> actualizarDatos(elemento: T) {
-        with(elemento as Usuario){
-            nombre = elemento.nombre
-            apellido = elemento.apellido
-            username = elemento.username
-            paisResidencia = elemento.paisResidencia
-//            fechaAlta = elemento.fechaAlta // No se puede actualizar porque es constante
-            diasDisponibles = elemento.diasDisponibles
-            criterio = elemento.criterio
-            destinosDeseados = elemento.destinosDeseados
-            vehiculoPreferencia = elemento.vehiculoPreferencia
-        }
+        val usuario = elemento as Usuario
+        nombre = usuario.nombre
+        apellido = usuario.apellido
+        username = usuario.username
+        paisResidencia = usuario.paisResidencia
+//            fechaAlta = usuario.fechaAlta // No se puede actualizar porque es constante
+        diasDisponibles = usuario.diasDisponibles
+        criterio = usuario.criterio
+        destinosDeseados = usuario.destinosDeseados
+        vehiculoPreferencia = usuario.vehiculoPreferencia
     }
 }

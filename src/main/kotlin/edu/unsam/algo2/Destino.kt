@@ -1,6 +1,6 @@
 package edu.unsam.algo2
 
-class Destino(
+data class Destino(
     var ciudad: String,
     var pais: String,
     var costoBase: Double
@@ -48,10 +48,9 @@ class Destino(
     }
 
     override fun <T> actualizarDatos(elemento: T) {
-        with(elemento as Destino) {
-            ciudad = elemento.ciudad
-            pais = elemento.pais
-            costoBase = elemento.costoBase
-        }
+        val destino = elemento as Destino
+        ciudad = destino.ciudad
+        pais = destino.pais
+        costoBase = destino.costoBase
     }
 }
