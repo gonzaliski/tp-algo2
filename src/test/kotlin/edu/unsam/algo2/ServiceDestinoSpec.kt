@@ -3,7 +3,10 @@ package edu.unsam.algo2
 import com.google.gson.GsonBuilder
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.collections.shouldNotContain
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -33,22 +36,27 @@ class ServiceDestinoSpec : DescribeSpec({
         // Assert - Then
         verify(exactly = 1) { mockedServiceDestino.getDestinos() }
         repo.elementos.shouldNotBeEmpty()
-        repo.existenTodos(destinos)
+        destinos.shouldContainAll(repo.elementos)
     }
     it("Al recibir objetos con ID, son actualizados sus datos") {
         // Act - When
-        destinos.add(
-            Destino(
-                pais = "Brasil",
-                ciudad = "Florianopolis",
-                costoBase = 30000.0
-            ).apply { id = 1 }
+        val brasil = Destino(
+            pais = "Brasil",
+            ciudad = "Florianopolis",
+            costoBase = 30000.0
+        ).apply { id = 1 }
+        val eeuu = Destino(
+            pais = "Estados Unidos",
+            ciudad = "New York",
+            costoBase = 5000.00
         )
+        destinos.add(brasil)
         actualizador.updateDestinos()
         // Assert - Then
         verify(exactly = 1) { mockedServiceDestino.getDestinos() }
         repo.elementos.shouldNotBeEmpty()
-        repo.existenTodos(destinos)
+        repo.elementos.shouldContain(brasil)
+        repo.elementos.shouldNotContain(eeuu)
     }
 })
 
