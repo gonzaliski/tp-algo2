@@ -1,7 +1,5 @@
 package edu.unsam.algo2
 
-// val repo = Repositorio<Usuario>()
-
 class Repositorio<T : Entidad> {
     var nextID = 0
         private set
@@ -69,6 +67,5 @@ class Repositorio<T : Entidad> {
 
     fun existe(elemento: T) = elementos.any { elemento.id == it.id }
 
-    fun existenTodos(lista: MutableList<T>) = lista.all { elemento -> existe(elemento) }
 
 }

@@ -3,9 +3,6 @@ package edu.unsam.algo2
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import java.util.logging.Level
-import java.util.logging.LogManager
-import java.util.logging.Logger
 
 class ActualizadorDestino(var repositorio: Repositorio<Destino> = Repositorio()) {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
