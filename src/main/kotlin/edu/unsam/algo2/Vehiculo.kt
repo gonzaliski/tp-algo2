@@ -49,8 +49,20 @@ class Moto(
     val cilindrada: Int
 
 ) : Vehiculo(marca, modelo, anioFabricacion, costoDiario, diasDeAlquiler, kilometrajeLibre) {
-    override fun costoParticular(): Double = if (cilindrada > 250.0) (500.0 * diasDeAlquiler) else 0.0 //hacer algo mas general para el precio extra por cilindrada
+    override fun costoParticular(): Double =
+        if (cilindrada > 250.0) (500.0 * diasDeAlquiler) else 0.0 //hacer algo mas general para el precio extra por cilindrada
 
+    override fun <T> actualizarDatos(elemento: T) {
+        with(elemento as Moto) {
+//            marca = elemento.marca
+//            modelo = elemento.modelo
+//            anioFabricacion = elemento.anioFabricacion
+            costoDiario = elemento.costoDiario
+//            diasDeAlquiler = elemento.diasDeAlquiler
+            kilometrajeLibre = elemento.kilometrajeLibre
+//            cilindrada = elemento.cilindrada
+        }
+    }
 }
 
 class Auto(
@@ -66,6 +78,18 @@ class Auto(
 
     fun porcentajeHatchback() = if (esHatchback) 0.1 else 0.25
     override fun costoParticular() = costoBase() * porcentajeHatchback()
+
+    override fun <T> actualizarDatos(elemento: T) {
+        with(elemento as Auto) {
+//            marca = elemento.marca
+//            modelo = elemento.modelo
+//            anioFabricacion = elemento.anioFabricacion
+            costoDiario = elemento.costoDiario
+//            diasDeAlquiler = elemento.diasDeAlquiler
+            kilometrajeLibre = elemento.kilometrajeLibre
+//            esHatchback = elemento.esHatchback
+        }
+    }
 }
 
 
@@ -86,6 +110,17 @@ class Camioneta(
     fun costoTodoTerreno() = if (esTodoTerreno) (costoPorExceso() * 0.5) else 0.0      //duda del 50%
     override fun costoParticular() = costoPorExceso() + costoTodoTerreno()
 
+    override fun <T> actualizarDatos(elemento: T) {
+        with(elemento as Camioneta) {
+//            marca = elemento.marca
+//            modelo = elemento.modelo
+//            anioFabricacion = elemento.anioFabricacion
+            costoDiario = elemento.costoDiario
+//            diasDeAlquiler = elemento.diasDeAlquiler
+            kilometrajeLibre = elemento.kilometrajeLibre
+//            esTodoTerreno = elemento.esTodoTerreno
+        }
+    }
 }
 
 

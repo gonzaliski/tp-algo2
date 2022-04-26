@@ -37,7 +37,7 @@ class Repositorio<T : Entidad> {
         val elementoEncontrado = elemento.id?.let { getById(it) }
             ?: throw InvalidElementException("El elemento no ha sido encontrado")
 
-        //TODO: preguntar que es lo que hay que modificar en caso de que el objeto se encuentre en la coleccion.
+        elemento.actualizarDatos(elementoEncontrado)
     }
 
 

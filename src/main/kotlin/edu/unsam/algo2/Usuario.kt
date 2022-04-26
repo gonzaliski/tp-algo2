@@ -87,4 +87,18 @@ class Usuario(
                 apellido.contains(value, ignoreCase = true) ||
                 username.equals(value, ignoreCase = true)
     }
+
+    override fun <T> actualizarDatos(elemento: T) {
+        with(elemento as Usuario){
+            nombre = elemento.nombre
+            apellido = elemento.apellido
+            username = elemento.username
+            paisResidencia = elemento.paisResidencia
+//            fechaAlta = elemento.fechaAlta // No se puede actualizar porque es constante
+            diasDisponibles = elemento.diasDisponibles
+            criterio = elemento.criterio
+            destinosDeseados = elemento.destinosDeseados
+            vehiculoPreferencia = elemento.vehiculoPreferencia
+        }
+    }
 }

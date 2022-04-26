@@ -71,6 +71,16 @@ class Itinerario(
      */
     override fun coincideCon(value: String): Boolean =
         destino.coincideCon(value) || actividades().any { it.coincideCon(value) }
+
+    override fun <T> actualizarDatos(elemento: T) {
+        with(elemento as Itinerario){
+            creador = elemento.creador
+            destino = elemento.destino
+            dias = elemento.dias
+            puntuaciones = elemento.puntuaciones
+
+        }
+    }
 }
 
 class DiaDeItinerario(var actividades: MutableList<Actividad>) : NivelDificultad {

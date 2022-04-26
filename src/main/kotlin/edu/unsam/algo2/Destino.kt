@@ -46,4 +46,12 @@ class Destino(
     override fun coincideCon(value: String): Boolean {
         return pais.contains(value, ignoreCase = true) || ciudad.contains(value, ignoreCase = true)
     }
+
+    override fun <T> actualizarDatos(elemento: T) {
+        with(elemento as Destino) {
+            ciudad = elemento.ciudad
+            pais = elemento.pais
+            costoBase = elemento.costoBase
+        }
+    }
 }
