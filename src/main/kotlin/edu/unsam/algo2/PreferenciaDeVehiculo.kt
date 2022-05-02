@@ -33,8 +33,12 @@ object SinLimite : PreferenciaDeVehiculo {
 class Combinado(private val preferencias: MutableList<PreferenciaDeVehiculo>) : PreferenciaDeVehiculo {
     override fun leGusta(vehiculo: Vehiculo): Boolean =
         preferencias.all { preferencia -> preferencia.leGusta(vehiculo) }
-    fun addPreferencia(preferenciaDeVehiculo: PreferenciaDeVehiculo) =
-        if(!preferencias.contains(preferenciaDeVehiculo))preferencias.add(preferenciaDeVehiculo) else println("Ya tiene esta preferencia")
-    fun removePreferencia(preferenciaDeVehiculo: PreferenciaDeVehiculo) =
-        if(preferencias.contains(preferenciaDeVehiculo))preferencias.remove(preferenciaDeVehiculo) else println("No posee esta preferencia")
+
+    fun addPreferencia(preferenciaDeVehiculo: PreferenciaDeVehiculo) {
+        if (!preferencias.contains(preferenciaDeVehiculo)) preferencias.add(preferenciaDeVehiculo) else println("Ya tiene esta preferencia")
+    }
+
+    fun removePreferencia(preferenciaDeVehiculo: PreferenciaDeVehiculo) {
+        if (preferencias.contains(preferenciaDeVehiculo)) preferencias.remove(preferenciaDeVehiculo) else println("No posee esta preferencia")
+    }
 }
