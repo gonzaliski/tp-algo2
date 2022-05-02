@@ -1,31 +1,47 @@
 package edu.unsam.algo2
 
-import com.google.gson.GsonBuilder
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.collections.shouldContainAll
-import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.collections.*
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 
 class ServiceDestinoSpec : DescribeSpec({
     isolationMode = IsolationMode.InstancePerTest
-    val destinos = mutableListOf(
+    val destinosIniciales = mutableListOf(
         Destino(
-            pais = "Inglaterra",
-            ciudad = "Londres",
-            costoBase = 60000.0
+            pais = "Argentina",
+            ciudad = "MDQ",
+            costoBase = 1.0
         ),
         Destino(
-            pais = "Estados Unidos",
-            ciudad = "New York",
-            costoBase = 5000.00
+            pais = "Brasil",
+            ciudad = "rio",
+            costoBase = 2.0
         )
     )
-    val mockedServiceDestino = mockServiceDestino(destinos)
-    val repo = Repositorio<Destino>()
+    val destinos = mutableListOf(
+        Destino(
+            pais = "Argentina",
+            ciudad = "Mar del Plata",
+            costoBase = 10000.0
+        ),
+        Destino(
+            pais = "Brasil",
+            ciudad = "Rio de Janeiro",
+            costoBase = 20000.0
+        ),
+        Destino(
+            pais = "Indonesia",
+            ciudad = "Bali",
+            costoBase = 30000.0
+        )
+    )
+    val mockedServiceDestino = mockServiceDestino()
+    val repo = Repositorio<Destino>().apply {
+        destinosIniciales.forEach{ this.create(it) }
+    }
     val actualizador = ActualizadorDestino(repo, serviceDestino = mockedServiceDestino)
 
     it("Al actualizar el repositorio, se hace una llamada al servicio") {
@@ -35,30 +51,40 @@ class ServiceDestinoSpec : DescribeSpec({
         // Assert - Then
         verify(exactly = 1) { mockedServiceDestino.getDestinos() }
         repo.elementos.shouldNotBeEmpty()
-        destinos.shouldContainAll(repo.elementos)
     }
     it("Al recibir objetos con ID, son actualizados sus datos") {
-        val brasil = Destino(
-            pais = "Brasil",
-            ciudad = "Florianopolis",
-            costoBase = 30000.0
-        ).apply { id = 1 }
-        // Act - When
-        destinos.add(brasil)
         actualizador.updateDestinos()
         // Assert - Then
-        verify(exactly = 1) { mockedServiceDestino.getDestinos() }
-        repo.elementos.shouldNotBeEmpty()
-        repo.elementos.shouldContain(brasil)
-        repo.elementos.shouldNotContain(exactly = 1, ofCollection = destinos)
+        destinos.shouldContainAll(repo.elementos)
+        repo.elementos.shouldNotContain(destinosIniciales)
     }
 })
 
-fun mockServiceDestino(destinos: MutableList<Destino>): ServiceDestino {
+fun mockServiceDestino(): ServiceDestino {
     val service = mockk<ServiceDestino>(relaxUnitFun = true)
-    val gson = GsonBuilder().setPrettyPrinting().create()
+    val json = """
+ [
+    {
+        "id": 1,
+        "pais": "Argentina",
+        "ciudad": "Mar del Plata",
+        "costo": 10000
+    }, 
+    {
+        "id": 2,
+        "pais": "Brasil",
+        "ciudad": "Rio de Janeiro",
+        "costo": 20000
+    },
+    {
+        "pais": "Indonesia",
+        "ciudad": "Bali",
+        "costo": 30000
+    }
+]
+"""
 
-    every { service.getDestinos() } answers { gson.toJson(destinos) }
+    every { service.getDestinos() } answers { json }
 
     return service
 }
