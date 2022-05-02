@@ -11,8 +11,8 @@ class ActualizadorDestino(var repositorio: Repositorio<Destino> = Repositorio())
     fun updateDestinos() {
         parseDestinos(serviceDestino.getDestinos())
             .forEach {
-                if(it.id != null) repositorio.update(it)
-                else repositorio.create(it)
+                if (it.esNuevo()) repositorio.create(it)
+                else repositorio.update(it)
             }
     }
 

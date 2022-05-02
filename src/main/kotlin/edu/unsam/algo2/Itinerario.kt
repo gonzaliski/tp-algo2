@@ -7,7 +7,7 @@ class Itinerario(
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
 ) : NivelDificultad, Entidad {
-    override var id: Int? = null
+    override var id: Int = Entidad.ID_INICIAL
 
     init {
         require(cantidadDias() > 0) {

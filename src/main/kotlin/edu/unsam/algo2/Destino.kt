@@ -40,7 +40,7 @@ data class Destino(
             15
         ) else 0.0
 
-    override var id: Int? = null
+    override var id: Int = Entidad.ID_INICIAL
 
     /**El valor de búsqueda debe coincidir parcialmente con el nombre del país, o con el nombre de la ciudad.*/
     override fun coincideCon(value: String): Boolean {

@@ -10,7 +10,7 @@ abstract class Vehiculo(
     val diasDeAlquiler: Int,
     var kilometrajeLibre: Boolean
 ) : Entidad {
-    override var id: Int? = null
+    override var id: Int = Entidad.ID_INICIAL
 
     companion object {
         val empresasConvenio: MutableList<String> = mutableListOf("Honda")

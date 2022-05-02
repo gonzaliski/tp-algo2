@@ -16,7 +16,7 @@ class Usuario(
 ): Entidad {
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
-    override var id: Int? = null
+    override var id: Int = Entidad.ID_INICIAL
 
     fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
 
