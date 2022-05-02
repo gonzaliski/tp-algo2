@@ -5,7 +5,6 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.doubles.shouldBeExactly
-import io.kotest.matchers.doubles.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 import java.time.LocalTime
@@ -85,7 +84,6 @@ class ItinerarioSpec : DescribeSpec({
                 )
             )
         )
-        println(itinerario.dificultad())
         itinerario.dificultad() shouldBe Dificultad.ALTA
     }
 
@@ -108,7 +106,6 @@ class ItinerarioSpec : DescribeSpec({
                 )
             )
         )
-        println(itinerario.dificultad())
         itinerario.dificultad() shouldBe Dificultad.MEDIA
     }
 

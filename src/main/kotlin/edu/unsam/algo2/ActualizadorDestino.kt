@@ -20,7 +20,6 @@ class ActualizadorDestino(var repositorio: Repositorio<Destino>, var serviceDest
     }
 
     private fun parseDestinos(destinos: String): MutableList<Destino> {
-        println(destinos)
         return gson.fromJson(
             destinos,
             object : TypeToken<MutableList<Destino>>() {}.type
