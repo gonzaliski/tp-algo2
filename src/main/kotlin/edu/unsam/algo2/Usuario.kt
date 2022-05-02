@@ -3,7 +3,7 @@ package edu.unsam.algo2
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-abstract class Usuario(
+class Usuario(
     var nombre: String,
     var apellido: String,
     var username: String,
@@ -12,15 +12,15 @@ abstract class Usuario(
     var diasDisponibles: Int,
     var criterio: Criterio,
     var destinosDeseados: MutableList<Destino>,
-    var vehiculoPreferencia: VehiculoPreferencia
-): Identidad {
+    var vehiculoPreferencia: PreferenciaDeVehiculo
+): Entidad {
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
-    override var id: Int? = null
+    override var id: Int = Entidad.ID_INICIAL
 
     fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
 
-    init{
+    init {
         require(nombre.isNotBlank()) {
             "El nombre del usuario no puede ser nulo o vacio"
         }
@@ -83,8 +83,21 @@ abstract class Usuario(
      * o exáctamente con su username.
      */
     override fun coincideCon(value: String): Boolean {
-        return nombre.contains(value) || apellido.contains(value) || value == username
+        return nombre.contains(value, ignoreCase = true) ||
+                apellido.contains(value, ignoreCase = true) ||
+                username.equals(value, ignoreCase = true)
     }
 
-
+    override fun <T> actualizarDatos(elemento: T) {
+        val usuario = elemento as Usuario
+        nombre = usuario.nombre
+        apellido = usuario.apellido
+        username = usuario.username
+        paisResidencia = usuario.paisResidencia
+//            fechaAlta = usuario.fechaAlta // No se puede actualizar porque es constante
+        diasDisponibles = usuario.diasDisponibles
+        criterio = usuario.criterio
+        destinosDeseados = usuario.destinosDeseados
+        vehiculoPreferencia = usuario.vehiculoPreferencia
+    }
 }

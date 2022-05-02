@@ -1,13 +1,16 @@
 package edu.unsam.algo2
 
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
 import java.time.LocalTime
 
 class ItinerarioSpec : DescribeSpec({
+    isolationMode = IsolationMode.InstancePerTest
     val itinerario = Itinerario(
         creador = Usuario(
             nombre = "Carlos",
@@ -57,8 +60,7 @@ class ItinerarioSpec : DescribeSpec({
                 )
             )
         ),
-
-        )
+    )
     it("con misma cantidad devuelve dificultad mayor") {
         itinerario.dificultad() shouldBe Dificultad.MEDIA
     }
@@ -82,7 +84,6 @@ class ItinerarioSpec : DescribeSpec({
                 )
             )
         )
-        println(itinerario.dificultad())
         itinerario.dificultad() shouldBe Dificultad.ALTA
     }
 
@@ -105,7 +106,6 @@ class ItinerarioSpec : DescribeSpec({
                 )
             )
         )
-        println(itinerario.dificultad())
         itinerario.dificultad() shouldBe Dificultad.MEDIA
     }
 
@@ -192,6 +192,71 @@ class ItinerarioSpec : DescribeSpec({
         it("que ES CREADOR del itinerario SI puede editar el itinerario") {
             // Assert - Then
             itinerarioPehuajo.puedeSerEditadoPor(creador).shouldBeTrue()
+        }
+    }
+    describe("Duracion promedio por dia del itinerario...") {
+        val tiempo = LocalTime.of(10, 0, 0)
+        val dia = DiaDeItinerario(
+            mutableListOf(
+                Actividad(
+                    descripcion = "asdasd",
+                    inicio = tiempo,
+                    fin = tiempo.plusHours(2),
+                    costo = 1200.0
+                )
+            )
+        )
+        it("si hay 1 solo dia, es el promedio de este") {
+            // Act - When
+            itinerario.dias = mutableListOf(dia)
+
+            val duracionPromedioDelDia = dia.duracionPromedio()
+            // Assert - Then
+            itinerario.duracionPromedioPorDia() shouldBe duracionPromedioDelDia
+        }
+        it("si hay mas dias, es el promedio de sus promedios") {
+            // Arrage - Given
+            val dia2 = DiaDeItinerario(
+                mutableListOf(
+                    Actividad(
+                        descripcion = "asdad",
+                        inicio = tiempo,
+                        fin = tiempo.plusHours(5),
+                        costo = 1200.0
+                    )
+                )
+            )
+            val dias = mutableListOf(dia, dia2)
+
+            // Act - When
+            itinerario.dias = dias
+
+            val duracionPromedioDeDias =
+                (dia.duracionPromedio() + dia2.duracionPromedio()) / 2
+
+            // Assert - Then
+            itinerario.duracionPromedioPorDia() shouldBe duracionPromedioDeDias
+        }
+    }
+
+    describe("El costo de un Itinerario...") {
+        it("es la suma de los costos de los dias") {
+            itinerario.costo() shouldBe 0.0
+        }
+        it("si los costos de los dias no es cero el del itinerario tampoco") {
+            val dia = DiaDeItinerario(
+                mutableListOf(
+                    Actividad(
+                        descripcion = "asdad",
+                        inicio = LocalTime.of(10, 0, 0),
+                        fin = LocalTime.of(10, 0, 0).plusHours(5),
+                        costo = 1200.0
+                    )
+                )
+            )
+            itinerario.dias.add(dia)
+
+            itinerario.costo() shouldBeExactly dia.costo()
         }
     }
 })

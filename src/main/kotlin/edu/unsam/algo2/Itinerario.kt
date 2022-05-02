@@ -6,8 +6,8 @@ class Itinerario(
     var dias: MutableList<DiaDeItinerario> = mutableListOf(),
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
-) : NivelDificultad, Identidad {
-    override var id: Int? = null
+) : NivelDificultad, Entidad {
+    override var id: Int = Entidad.ID_INICIAL
 
     init {
         require(cantidadDias() > 0) {
@@ -71,12 +71,22 @@ class Itinerario(
      */
     override fun coincideCon(value: String): Boolean =
         destino.coincideCon(value) || actividades().any { it.coincideCon(value) }
+
+    override fun <T> actualizarDatos(elemento: T) {
+        val itinerario = elemento as Itinerario
+        creador = itinerario.creador
+        destino = itinerario.destino
+        dias = itinerario.dias
+        puntuaciones = itinerario.puntuaciones
+    }
 }
 
 class DiaDeItinerario(var actividades: MutableList<Actividad>) : NivelDificultad {
     fun costo() = actividades.sumOf { actividad -> actividad.costo }
 
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
+
+    fun duracionPromedio() = duracion() / actividades.size
 
     fun tieneActividades() = actividades.isNotEmpty()
 

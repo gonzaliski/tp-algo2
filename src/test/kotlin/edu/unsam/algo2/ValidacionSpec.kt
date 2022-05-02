@@ -92,7 +92,21 @@ internal class ValidacionSpec : DescribeSpec({
             shouldThrowExactly<IllegalArgumentException>(bloque)
         }
     }
-    it("Actividades con horarios solapados tira error") {
+    describe("Actividades con horarios solapados tira error") {
+        val actividad1 = Actividad(
+            dificultad = Dificultad.MEDIA,
+            descripcion = "dasdjasdja",
+            inicio = LocalTime.of(12, 0, 0),
+            fin = LocalTime.of(18, 0, 0),
+            costo = 3.0
+        )
+        val actividad2 = Actividad(
+            dificultad = Dificultad.MEDIA,
+            descripcion = "agsdjasdja",
+            inicio = actividad1.inicio.plusHours(1),
+            fin = actividad1.fin.plusHours(2),
+            costo = 3.0
+        )
         val bloque = {
             Itinerario(
                 creador = Usuario(
@@ -125,28 +139,57 @@ internal class ValidacionSpec : DescribeSpec({
                 dias = mutableListOf(
                     DiaDeItinerario(
                         mutableListOf(
-                            Actividad(
-                                dificultad = Dificultad.MEDIA,
-                                descripcion = "dasdjasdja",
-                                inicio = LocalTime.of(12, 30, 0, 0),
-                                fin = LocalTime.of(14, 30, 0, 0),
-                                costo = 3.0
-                            ),
-                            Actividad(
-                                dificultad = Dificultad.MEDIA,
-                                descripcion = "agsdjasdja",
-                                inicio = LocalTime.of(13, 0, 0, 0),
-                                fin = LocalTime.of(15, 30, 0, 0),
-                                costo = 3.0
-                            )
+                            actividad1,
+                            actividad2
                         )
                     )
                 ),
             )
         }
-        shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
-        shouldThrowExactly<IllegalArgumentException>(bloque)
-
+        it("Inicio de la segunda esta en medio del horario de la primera") {
+            shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
+        }
+        it("Inicio y Fin de la segunda estan en medio del horario de la primera") {
+            actividad2.apply {
+                inicio = actividad1.inicio.plusHours(2)
+                fin = actividad1.fin.minusHours(2)
+            }
+            shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
+        }
+        it("Fin de la segunda esta en medio del horario de la primera") {
+            actividad2.apply {
+                inicio = actividad1.inicio.minusHours(1)
+                fin = actividad1.fin.minusHours(1)
+            }
+            shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
+        }
+        it("Inicio de la primera esta en medio del horario de la segunda") {
+            actividad1.apply {
+                inicio = actividad2.inicio.plusHours(1)
+                fin = actividad2.fin.plusHours(1)
+            }
+            shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
+        }
+        it("Inicio y Fin de la primera estan en medio del horario de la segunda") {
+            actividad1.apply {
+                inicio = actividad2.inicio.plusHours(2)
+                fin = actividad2.fin.minusHours(2)
+            }
+            shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
+        }
+        it("Fin de la primera esta en medio del horario de la segunda") {
+            actividad1.apply {
+                inicio = actividad2.inicio.minusHours(1)
+                fin = actividad2.fin.minusHours(1)
+            }
+            shouldThrowMessage("Los horarios de las actividades no se pueden solapar", bloque)
+            shouldThrowExactly<IllegalArgumentException>(bloque)
+        }
     }
 
     describe("puntuaciones") {
