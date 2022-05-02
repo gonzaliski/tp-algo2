@@ -4,9 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
-class ActualizadorDestino(var repositorio: Repositorio<Destino> = Repositorio()) {
+class ActualizadorDestino(var repositorio: Repositorio<Destino>, var serviceDestino: ServiceDestino) {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
-    lateinit var serviceDestino: ServiceDestino
 
     fun updateDestinos() {
         parseDestinos(serviceDestino.getDestinos())

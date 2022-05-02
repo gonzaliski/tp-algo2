@@ -26,7 +26,7 @@ class ServiceDestinoSpec : DescribeSpec({
     )
     val mockedServiceDestino = mockServiceDestino(destinos)
     val repo = Repositorio<Destino>()
-    val actualizador = ActualizadorDestino(repo).apply { serviceDestino = mockedServiceDestino }
+    val actualizador = ActualizadorDestino(repo, serviceDestino = mockedServiceDestino)
 
     it("Al actualizar el repositorio, se hace una llamada al servicio") {
         // Act - When
