@@ -10,9 +10,13 @@ class ActualizadorDestino(var repositorio: Repositorio<Destino>, var serviceDest
     fun updateDestinos() {
         parseDestinos(serviceDestino.getDestinos())
             .forEach {
-                if (it.esNuevo()) repositorio.create(it)
-                else repositorio.update(it)
+                actualizarOCrear(it)
             }
+    }
+
+    private fun actualizarOCrear(destino: Destino) {
+        if (destino.esNuevo()) repositorio.create(destino)
+        else repositorio.update(destino)
     }
 
     private fun parseDestinos(destinos: String): MutableList<Destino> {
