@@ -5,3 +5,5 @@ class InvalidIdException(val id :Int?, val mensaje: String) : IllegalArgumentExc
 
 class InvalidElementException(val mensaje: String) : NullPointerException("Elemento invalido: $mensaje")  {
 }
+
+class ShouldNotContainExactly(mensaje: String): AssertionError("Assertion error: $mensaje")
