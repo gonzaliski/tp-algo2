@@ -56,14 +56,15 @@ class Moto(
 
     override fun <T> actualizarDatos(elemento: T) {
         val moto = elemento as Moto
-//            marca = elemento.marca
-//            modelo = elemento.modelo
-//            anioFabricacion = elemento.anioFabricacion
-        costoDiario = elemento.costoDiario
-//            diasDeAlquiler = elemento.diasDeAlquiler
-        kilometrajeLibre = elemento.kilometrajeLibre
-//            cilindrada = elemento.cilindrada
+//            marca = moto.marca
+//            modelo = moto.modelo
+//            anioFabricacion = moto.anioFabricacion
+        costoDiario = moto.costoDiario
+//            diasDeAlquiler = moto.diasDeAlquiler
+        kilometrajeLibre = moto.kilometrajeLibre
+//            cilindrada = moto.cilindrada
     }
+
     companion object {
         val cilindradaMax: Double = 250.0
         val costoExtraPorCilindrada: Double = 500.0
@@ -86,13 +87,13 @@ class Auto(
 
     override fun <T> actualizarDatos(elemento: T) {
         val auto = elemento as Auto
-//            marca = elemento.marca
-//            modelo = elemento.modelo
-//            anioFabricacion = elemento.anioFabricacion
-        costoDiario = elemento.costoDiario
-//            diasDeAlquiler = elemento.diasDeAlquiler
-        kilometrajeLibre = elemento.kilometrajeLibre
-//            esHatchback = elemento.esHatchback
+//            marca = auto.marca
+//            modelo = auto.modelo
+//            anioFabricacion = auto.anioFabricacion
+        costoDiario = auto.costoDiario
+//            diasDeAlquiler = auto.diasDeAlquiler
+        kilometrajeLibre = auto.kilometrajeLibre
+//            esHatchback = auto.esHatchback
     }
 }
 
@@ -108,20 +109,22 @@ class Camioneta(
 
 ) : Vehiculo(marca, modelo, anioFabricacion, costoDiario, diasDeAlquiler, kilometrajeLibre) {
 
-    fun diasDeExceso() = maxOf(diasDeAlquiler - diasDeAlquilerMax, 0) //buscar algo mas general para la resta del 7 (seria maximo)
-    fun costoPorExceso() =  10000 + ( 1000 * diasDeExceso() )
+    fun diasDeExceso() =
+        maxOf(diasDeAlquiler - diasDeAlquilerMax, 0) //buscar algo mas general para la resta del 7 (seria maximo)
+
+    fun costoPorExceso() = 10000 + (1000 * diasDeExceso())
     fun costoTodoTerreno() = if (esTodoTerreno) 1.5 else 1.0
     override fun costoParticular() = costoPorExceso() * costoTodoTerreno()
 
     override fun <T> actualizarDatos(elemento: T) {
         val camioneta = elemento as Camioneta
-//            marca = elemento.marca
-//            modelo = elemento.modelo
-//            anioFabricacion = elemento.anioFabricacion
-        costoDiario = elemento.costoDiario
-//            diasDeAlquiler = elemento.diasDeAlquiler
-        kilometrajeLibre = elemento.kilometrajeLibre
-//            esTodoTerreno = elemento.esTodoTerreno
+//            marca = camioneta.marca
+//            modelo = camioneta.modelo
+//            anioFabricacion = camioneta.anioFabricacion
+        costoDiario = camioneta.costoDiario
+//            diasDeAlquiler = camioneta.diasDeAlquiler
+        kilometrajeLibre = camioneta.kilometrajeLibre
+//            esTodoTerreno = camioneta.esTodoTerreno
     }
 
     companion object {
