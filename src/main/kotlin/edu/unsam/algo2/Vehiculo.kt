@@ -3,16 +3,17 @@ package edu.unsam.algo2
 import java.time.LocalDate
 
 abstract class Vehiculo(
-    val marca: String,
-    val modelo: String,
-    val anioFabricacion: Int,
+    var marca: String,
+    var modelo: String,
+    var anioFabricacion: Int,
     var costoDiario: Double,
-    val diasDeAlquiler: Int,
+    var diasDeAlquiler: Int,
     var kilometrajeLibre: Boolean
 ) : Entidad {
-    init{
+    init {
         validarEntidad()
     }
+
     override fun validarEntidad() {
         require(marca.isNotBlank()) {
             "Los vehiculos deben tener una marca."
@@ -58,7 +59,23 @@ abstract class Vehiculo(
         return esDeMarca(value) || modelo.startsWith(value, ignoreCase = true)
     }
 
+    override fun <T> actualizarDatos(elemento: T) {
+        actualizacionGeneral(elemento)
+        actualizacionExtra(elemento)
+    }
 
+    abstract fun <T> actualizacionExtra(elemento: T)
+
+    private fun <T> actualizacionGeneral(elemento: T) {
+        (elemento as Vehiculo).let {
+            marca = it.marca
+            modelo = it.modelo
+            anioFabricacion = it.anioFabricacion
+            costoDiario = it.costoDiario
+            diasDeAlquiler = it.diasDeAlquiler
+            kilometrajeLibre = it.kilometrajeLibre
+        }
+    }
 
 }
 
@@ -70,21 +87,14 @@ class Moto(
     costoDiario: Double,
     diasDeAlquiler: Int,
     kilometrajeLibre: Boolean,
-    val cilindrada: Int
+    var cilindrada: Int
 
 ) : Vehiculo(marca, modelo, anioFabricacion, costoDiario, diasDeAlquiler, kilometrajeLibre) {
     override fun costoParticular(): Double =
         if (cilindrada > cilindradaMax) (costoExtraPorCilindrada * diasDeAlquiler) else 0.0 //hacer algo mas general para el precio extra por cilindrada
 
-    override fun <T> actualizarDatos(elemento: T) {
-        val moto = elemento as Moto
-//            marca = moto.marca
-//            modelo = moto.modelo
-//            anioFabricacion = moto.anioFabricacion
-        costoDiario = moto.costoDiario
-//            diasDeAlquiler = moto.diasDeAlquiler
-        kilometrajeLibre = moto.kilometrajeLibre
-//            cilindrada = moto.cilindrada
+    override fun <T> actualizacionExtra(elemento: T) {
+        (elemento as Moto).let { cilindrada = it.cilindrada }
     }
 
     companion object {
@@ -100,22 +110,15 @@ class Auto(
     costoDiario: Double,
     diasDeAlquiler: Int,
     kilometrajeLibre: Boolean,
-    val esHatchback: Boolean
+    var esHatchback: Boolean
 
 ) : Vehiculo(marca, modelo, anioFabricacion, costoDiario, diasDeAlquiler, kilometrajeLibre) {
 
     fun porcentajeHatchback() = if (esHatchback) 0.1 else 0.25
     override fun costoParticular() = costoBase() * porcentajeHatchback()
 
-    override fun <T> actualizarDatos(elemento: T) {
-        val auto = elemento as Auto
-//            marca = auto.marca
-//            modelo = auto.modelo
-//            anioFabricacion = auto.anioFabricacion
-        costoDiario = auto.costoDiario
-//            diasDeAlquiler = auto.diasDeAlquiler
-        kilometrajeLibre = auto.kilometrajeLibre
-//            esHatchback = auto.esHatchback
+    override fun <T> actualizacionExtra(elemento: T) {
+        (elemento as Auto).let { esHatchback = it.esHatchback }
     }
 }
 
@@ -127,7 +130,7 @@ class Camioneta(
     costoDiario: Double,
     diasDeAlquiler: Int,
     kilometrajeLibre: Boolean,
-    val esTodoTerreno: Boolean
+    var esTodoTerreno: Boolean
 
 ) : Vehiculo(marca, modelo, anioFabricacion, costoDiario, diasDeAlquiler, kilometrajeLibre) {
 
@@ -138,15 +141,8 @@ class Camioneta(
     fun costoTodoTerreno() = if (esTodoTerreno) 1.5 else 1.0
     override fun costoParticular() = costoPorExceso() * costoTodoTerreno()
 
-    override fun <T> actualizarDatos(elemento: T) {
-        val camioneta = elemento as Camioneta
-//            marca = camioneta.marca
-//            modelo = camioneta.modelo
-//            anioFabricacion = camioneta.anioFabricacion
-        costoDiario = camioneta.costoDiario
-//            diasDeAlquiler = camioneta.diasDeAlquiler
-        kilometrajeLibre = camioneta.kilometrajeLibre
-//            esTodoTerreno = camioneta.esTodoTerreno
+    override fun <T> actualizacionExtra(elemento: T) {
+        (elemento as Camioneta).let { esTodoTerreno = it.esTodoTerreno }
     }
 
     companion object {
