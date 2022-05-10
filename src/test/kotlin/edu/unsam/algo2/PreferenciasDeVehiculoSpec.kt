@@ -97,4 +97,41 @@ class UsuarioConPreferenciasSpec : DescribeSpec({
             }
         }
     }
+
+    describe("Tests con usuario Caprichoso...") {
+        usuario.vehiculoPreferencia = Caprichoso
+
+        describe("vehiculo: Moto...") {
+            it("cuyas iniciales (marca y modelo) no coinciden") {
+                // Act - When
+                val moto = Moto(
+                    marca = "asd",
+                    modelo = "qwe",
+                    anioFabricacion = 2001,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(moto).shouldBeFalse()
+            }
+            it("cuyas iniciales (marca y modelo) coinciden") {
+                // Act - When
+                val moto = Moto(
+                    marca = "asd",
+                    modelo = "Aqwe",
+                    anioFabricacion = 2000,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(moto).shouldBeTrue()
+            }
+        }
+    }
 })
