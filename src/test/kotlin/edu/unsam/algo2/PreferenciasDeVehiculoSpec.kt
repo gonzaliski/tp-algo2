@@ -209,4 +209,87 @@ class UsuarioConPreferenciasSpec : DescribeSpec({
             }
         }
     }
+
+    describe("Tests con usuario Combinado...") {
+        usuario.vehiculoPreferencia = Combinado(
+            mutableListOf()
+        )
+
+        describe("vehiculo: Moto...") {
+            it("sin ninguna preferencia") {
+                // Act - When
+                val moto = Moto(
+                    marca = "asd",
+                    modelo = "qwe",
+                    anioFabricacion = 2001,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                usuario.leGusta(moto).shouldBeTrue()
+            }
+            it("cuando todas sus preferencias se cumplen") {
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(SinLimite)
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(Neofilo)
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(Supersticioso)
+                val anioDeseado = LocalDate.now()
+                    .apply {
+                        minusYears((year % 2).toLong())
+                    }.year // Es este año si es par, o si no lo es, entonces el anterior
+                // Act - When
+                val moto = Moto(
+                    marca = "asd",
+                    modelo = "qwe",
+                    anioFabricacion = anioDeseado,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = true,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(moto).shouldBeTrue()
+            }
+            it("ninguna preferencia se cumple") {
+                val marcaDeseada = "abc"
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(SinLimite)
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(Neofilo)
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(Selectivo(marcaDeseada))
+                // Act - When
+                val moto = Moto(
+                    marca = "marcaDeseada",
+                    modelo = "Aqwe",
+                    anioFabricacion = LocalDate.now().minusYears(3).year,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(moto).shouldBeFalse()
+            }
+            it("algunas preferencias se cumplen") {
+                val marcaDeseada = "abc"
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(SinLimite)
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(Neofilo)
+                (usuario.vehiculoPreferencia as Combinado).addPreferencia(Selectivo(marcaDeseada))
+                // Act - When
+                val moto = Moto(
+                    marca = marcaDeseada,
+                    modelo = "Aqwe",
+                    anioFabricacion = 2000,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = true,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(moto).shouldBeFalse()
+            }
+        }
+    }
 })
