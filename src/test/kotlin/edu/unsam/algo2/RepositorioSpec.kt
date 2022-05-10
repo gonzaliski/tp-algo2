@@ -60,7 +60,7 @@ internal class RepositorioSpec : DescribeSpec({
 
                 // Assert - Then
                 shouldThrowExactly<InvalidElementException>(bloque)
-                shouldThrowMessage("Elemento invalido: El elemento no ha sido encontrado", bloque)
+                shouldThrowMessage("Elemento invalido: No se encontro un elemento con ese ID", bloque)
             }
 
             it("al intentar cambiar un usuario, lanza un error") {

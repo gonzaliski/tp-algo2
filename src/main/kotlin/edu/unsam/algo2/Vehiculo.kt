@@ -10,6 +10,27 @@ abstract class Vehiculo(
     val diasDeAlquiler: Int,
     var kilometrajeLibre: Boolean
 ) : Entidad {
+    init{
+        validarEntidad()
+    }
+    override fun validarEntidad() {
+        require(marca.isNotBlank()) {
+            "Los vehiculos deben tener una marca."
+        }
+        require(modelo.isNotBlank()) {
+            "Los vehiculos deben tener un modelo."
+        }
+        require(anioFabricacion > 1920) {
+            "Los vehiculos deben tener un año de fabricacion valido."
+        }
+        require(costoDiario > 0) {
+            "Los vehiculos deben tener un costo diario mayor a 0."
+        }
+        require(diasDeAlquiler > 0) {
+            "Los vehiculos deben tener por lo menos 1 dia de alquiler."
+        }
+    }
+
     override var id: Int = Entidad.ID_INICIAL
 
     companion object {
@@ -36,6 +57,7 @@ abstract class Vehiculo(
     override fun coincideCon(value: String): Boolean {
         return esDeMarca(value) || modelo.startsWith(value, ignoreCase = true)
     }
+
 
 
 }

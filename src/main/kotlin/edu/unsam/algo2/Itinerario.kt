@@ -8,8 +8,10 @@ class Itinerario(
 
 ) : NivelDificultad, Entidad {
     override var id: Int = Entidad.ID_INICIAL
-
-    init {
+    init{
+        validarEntidad()
+    }
+    override fun validarEntidad() {
         require(cantidadDias() > 0) {
             "Las actividades del dia deben tener al menos 1 actividad "
         }

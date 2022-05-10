@@ -9,6 +9,6 @@ interface Entidad {
 
     fun coincideCon(value: String): Boolean
     fun <T> actualizarDatos(elemento: T)
-
     fun esNuevo(): Boolean = id == ID_INICIAL
+    abstract fun validarEntidad()
 }

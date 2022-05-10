@@ -8,6 +8,7 @@ class Repositorio<T : Entidad> {
     /**Agrega un nuevo objeto a la colección, y le asigna un identificador único (id).
      * El identificador puede ser autoincremental para evitar que se repita.*/
     fun create(elemento: T) {
+        elemento.validarEntidad()
         validarID(elemento.id)
         elemento.id = getNewID()
         elementos.add(elemento)
@@ -23,8 +24,8 @@ class Repositorio<T : Entidad> {
 
     /** Elimina el objeto de la colección.*/
     fun delete(elemento: T) {
-        existeElemento(elemento)
-        elementos.remove(elemento)
+        val elementoAEliminar = getById(elemento.id)
+        elementos.remove(elementoAEliminar)
     }
 
     private fun existeElemento(elemento: T) {
@@ -36,6 +37,7 @@ class Repositorio<T : Entidad> {
     /**Modifica el objeto dentro de la colección.
      * De no existir el objeto buscado, es decir, un objeto con ese id, se debe lanzar una excepción.*/
     fun update(elemento: T) {
+        elemento.validarEntidad()
         if (elemento.esNuevo()) throw InvalidElementException("El elemento no existe en el repositorio")
         val elementoEncontrado = getById(elemento.id)
 

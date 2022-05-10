@@ -9,7 +9,7 @@ import java.time.LocalTime
 
 internal class ValidacionSpec : DescribeSpec({
     describe("Validacion de destino") {
-        it("No tira error xD") {
+        it("No tira error ") {
             shouldNotThrowAny {
                 Destino(
                     pais = "Argentina",

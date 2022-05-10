@@ -14,13 +14,18 @@ class Usuario(
     var destinosDeseados: MutableList<Destino>,
     var vehiculoPreferencia: PreferenciaDeVehiculo
 ): Entidad {
+
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     override var id: Int = Entidad.ID_INICIAL
 
     fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
 
-    init {
+    init{
+        validarEntidad()
+    }
+
+    override fun validarEntidad() {
         require(nombre.isNotBlank()) {
             "El nombre del usuario no puede ser nulo o vacio"
         }

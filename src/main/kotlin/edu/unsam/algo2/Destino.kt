@@ -11,7 +11,11 @@ data class Destino(
     var costoBase: Double
 ) : Entidad {
 
-    init {
+    init{
+        validarEntidad()
+    }
+
+    override fun validarEntidad() {
         require(ciudad.isNotBlank()) {
             "Nombre de ciudad no puede ser nulo o vacio"
         }
