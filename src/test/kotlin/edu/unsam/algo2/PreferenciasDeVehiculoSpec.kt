@@ -134,4 +134,42 @@ class UsuarioConPreferenciasSpec : DescribeSpec({
             }
         }
     }
+
+    describe("Tests con usuario Selectivo...") {
+        val marcaDeseada = "hYunDai"
+        usuario.vehiculoPreferencia = Selectivo(marcaDeseada)
+
+        describe("vehiculo: Moto...") {
+            it("cuya marca no es la deseada") {
+                // Act - When
+                val moto = Moto(
+                    marca = "asd",
+                    modelo = "qwe",
+                    anioFabricacion = 2001,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(moto).shouldBeFalse()
+            }
+            it("cuya marca es la deseada") {
+                // Act - When
+                val moto = Moto(
+                    marca = marcaDeseada,
+                    modelo = "Aqwe",
+                    anioFabricacion = 2000,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(moto).shouldBeTrue()
+            }
+        }
+    }
 })
