@@ -61,4 +61,40 @@ class UsuarioConPreferenciasSpec : DescribeSpec({
             }
         }
     }
+    describe("Tests con usuario Supersticioso...") {
+        usuario.vehiculoPreferencia = Supersticioso
+
+        describe("vehiculo: Moto...") {
+            it("con anio de fabricacion impar") {
+                // Act - When
+                val motoAntigua = Moto(
+                    marca = "asd",
+                    modelo = "qwe",
+                    anioFabricacion = 2001,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(motoAntigua).shouldBeFalse()
+            }
+            it("con anio de fabricacion par") {
+                // Act - When
+                val motoNueva = Moto(
+                    marca = "asd",
+                    modelo = "qwe",
+                    anioFabricacion = 2000,
+                    costoDiario = 100.0,
+                    diasDeAlquiler = 3,
+                    kilometrajeLibre = false,
+                    cilindrada = 200
+                )
+
+                // Assert - Then
+                usuario.leGusta(motoNueva).shouldBeTrue()
+            }
+        }
+    }
 })
