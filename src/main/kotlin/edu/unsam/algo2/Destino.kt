@@ -3,9 +3,7 @@ package edu.unsam.algo2
 import com.google.gson.annotations.SerializedName
 
 data class Destino(
-    @SerializedName("ciudad")
     var ciudad: String,
-    @SerializedName("pais")
     var pais: String,
     @SerializedName("costoBase", alternate = ["costo"])
     var costoBase: Double
