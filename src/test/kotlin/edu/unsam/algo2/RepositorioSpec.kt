@@ -43,7 +43,7 @@ internal class RepositorioSpec : DescribeSpec({
                 it("se le asigna un ID") {
                     // Assert - Then
                     usuario.id.shouldNotBeNull()
-                    usuario.id shouldBe repo.nextID - 1
+                    usuario.id shouldBe 1
                 }
 
                 it("se agrega a la lista") {

@@ -209,7 +209,7 @@ class UsuarioSpec : DescribeSpec({
         it("con destino no deseado barato, NO puede realizar el itinerario") {
             // Act - When
             usuario.destinosDeseados = mutableListOf(roma)
-            laPaz.costoBase = roma.costoBase - 1.0
+            laPaz.costoBase = 3.0 // roma.costoBase
             itinerarioDeOtroUsuario.destino = laPaz
 
             // Assert - Then
@@ -219,7 +219,7 @@ class UsuarioSpec : DescribeSpec({
         it("con destino no deseado caro, puede realizar el itinerario") {
             // Act - When
             usuario.destinosDeseados = mutableListOf(roma)
-            laPaz.costoBase = roma.costoBase + 1.0
+            laPaz.costoBase = 4.0 // roma.costoBase + 1
             itinerarioDeOtroUsuario.destino = laPaz
 
             // Assert - Then

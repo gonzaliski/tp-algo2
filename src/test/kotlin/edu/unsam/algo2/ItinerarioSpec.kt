@@ -210,9 +210,8 @@ class ItinerarioSpec : DescribeSpec({
             // Act - When
             itinerario.dias = mutableListOf(dia)
 
-            val duracionPromedioDelDia = dia.duracionPromedio()
             // Assert - Then
-            itinerario.duracionPromedioPorDia() shouldBe duracionPromedioDelDia
+            itinerario.duracionPromedioPorDia() shouldBe 120L
         }
         it("si hay mas dias, es el promedio de sus promedios") {
             // Arrage - Given
@@ -231,11 +230,8 @@ class ItinerarioSpec : DescribeSpec({
             // Act - When
             itinerario.dias = dias
 
-            val duracionPromedioDeDias =
-                (dia.duracionPromedio() + dia2.duracionPromedio()) / 2
-
             // Assert - Then
-            itinerario.duracionPromedioPorDia() shouldBe duracionPromedioDeDias
+            itinerario.duracionPromedioPorDia() shouldBe 210L
         }
     }
 
@@ -256,7 +252,7 @@ class ItinerarioSpec : DescribeSpec({
             )
             itinerario.dias.add(dia)
 
-            itinerario.costo() shouldBeExactly dia.costo()
+            itinerario.costo() shouldBeExactly 1200.0
         }
     }
 })
