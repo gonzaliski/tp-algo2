@@ -20,7 +20,7 @@ class VehiculoSpec : DescribeSpec({
                 cilindrada = 350
             )
             it("con mucha cilindrada") {
-                moto.costoTotal() shouldBe moto.costoBase() + 500.0 * moto.diasDeAlquiler
+                moto.costoTotal() shouldBe 1503.0
             }
             it("con poca cilindrada") {
                 val motoPocaCilindrada = Moto(
@@ -33,7 +33,7 @@ class VehiculoSpec : DescribeSpec({
                     cilindrada = 249
                 )
 
-                motoPocaCilindrada.costoTotal() shouldBe motoPocaCilindrada.costoBase()
+                motoPocaCilindrada.costoTotal() shouldBe 3
             }
         }
         describe("con convenio...") {
@@ -47,8 +47,7 @@ class VehiculoSpec : DescribeSpec({
                 cilindrada = 330
             )
             it("con mucha cilindrada") {
-                val costoAlquiler = moto.costoBase() + 500.0 * moto.diasDeAlquiler
-                moto.costoTotal() shouldBe costoAlquiler * 0.9
+                moto.costoTotal() shouldBe 1352.7
             }
             it("con poca cilindrada") {
                 val motoPocaCilindrada = Moto(
@@ -61,7 +60,7 @@ class VehiculoSpec : DescribeSpec({
                     cilindrada = 249
                 )
 
-                motoPocaCilindrada.costoTotal() shouldBe motoPocaCilindrada.costoBase() * 0.9
+                motoPocaCilindrada.costoTotal() shouldBe 2.7
             }
         }
     }
@@ -78,7 +77,7 @@ class VehiculoSpec : DescribeSpec({
                 esHatchback = true
             )
             it("que es hatchback"){
-                auto.costoTotal() shouldBe auto.costoBase() * 1.1
+                auto.costoTotal() shouldBe 1.1
             }
             it("que no es hatchback"){
                 val autoSinHatchback = Auto(
@@ -91,7 +90,7 @@ class VehiculoSpec : DescribeSpec({
                     esHatchback = false
                 )
 
-                autoSinHatchback.costoTotal() shouldBe auto.costoBase() * 1.25
+                autoSinHatchback.costoTotal() shouldBe 1.25
             }
         }
         describe("con convenio..."){
@@ -105,9 +104,7 @@ class VehiculoSpec : DescribeSpec({
                 esHatchback = true
             )
             it("que es hatchback"){
-                val agregadoHatchback = auto.costoBase() * 0.1
-                val descuentoConvenio = (auto.costoBase() + agregadoHatchback) * 0.1
-                auto.costoTotal() shouldBe auto.costoBase() + agregadoHatchback - descuentoConvenio
+                auto.costoTotal() shouldBe 0.99.plusOrMinus(0.0001)
             }
             it("que no es hatchback"){
                 val autoSinHatchback = Auto(
@@ -119,9 +116,7 @@ class VehiculoSpec : DescribeSpec({
                     kilometrajeLibre = false,
                     esHatchback = false
                 )
-                val agregadoHatchback = autoSinHatchback.costoBase() * 0.25
-                val descuentoConvenio = (autoSinHatchback.costoBase() + agregadoHatchback) * 0.1
-                autoSinHatchback.costoTotal() shouldBe autoSinHatchback.costoBase() + agregadoHatchback - descuentoConvenio
+                autoSinHatchback.costoTotal() shouldBe 1.125
             }
         }
     }
