@@ -2,6 +2,7 @@ package edu.unsam.algo2
 
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.shouldBe
 
 class VehiculoSpec : DescribeSpec({
@@ -121,6 +122,125 @@ class VehiculoSpec : DescribeSpec({
                 val agregadoHatchback = autoSinHatchback.costoBase() * 0.25
                 val descuentoConvenio = (autoSinHatchback.costoBase() + agregadoHatchback) * 0.1
                 autoSinHatchback.costoTotal() shouldBe autoSinHatchback.costoBase() + agregadoHatchback - descuentoConvenio
+            }
+        }
+    }
+
+    describe("Tests de Camionetas..."){
+        describe("sin convenio..."){
+            val marcaSinConvenio = "alknsfd"
+            describe("con pocos dias de alquiler...") {
+                val diasDeAlquiler = 7
+                it("que es todo terreno") {
+                    val camioneta = Camioneta(
+                        marca = marcaSinConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = true
+                    )
+                    camioneta.costoTotal() shouldBe 15_007
+                }
+                it("que no es todo terreno") {
+                    val camioneta = Camioneta(
+                        marca = marcaSinConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = false
+                    )
+
+                    camioneta.costoTotal() shouldBe 10_007
+                }
+            }
+            describe("con muchos dias de alquiler...") {
+                val diasDeAlquiler = 8
+                it("que es todo terreno") {
+                    val camioneta = Camioneta(
+                        marca = marcaSinConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = true
+                    )
+                    camioneta.costoTotal() shouldBe 16_508.0
+                }
+                it("que no es todo terreno") {
+                    val camioneta = Camioneta(
+                        marca = marcaSinConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = false
+                    )
+
+                    camioneta.costoTotal() shouldBe 11_008.0
+                }
+            }
+        }
+        describe("con convenio..."){
+            val marcaConConvenio = "honda"
+            describe("con pocos dias de alquiler..."){
+                val diasDeAlquiler = 7
+                it("que es todo terreno"){
+                    val camioneta = Camioneta(
+                        marca = marcaConConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = true
+                    )
+                    camioneta.costoTotal() shouldBe 13_506.3.plusOrMinus(0.0001)
+                }
+                it("que no es todo terreno"){
+                    val camioneta = Camioneta(
+                        marca = marcaConConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = false
+                    )
+                    camioneta.costoTotal() shouldBe 9_006.3.plusOrMinus(0.0001)
+                }
+            }
+            describe("con muchos dias de alquiler..."){
+                val diasDeAlquiler = 8
+                it("que es todo terreno"){
+                    val camioneta = Camioneta(
+                        marca = marcaConConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = true
+                    )
+                    camioneta.costoTotal() shouldBe 14_857.2
+                }
+                it("que no es todo terreno"){
+                    val camioneta = Camioneta(
+                        marca = marcaConConvenio,
+                        modelo = "2022",
+                        anioFabricacion = 2022,
+                        costoDiario = 1.0,
+                        diasDeAlquiler = diasDeAlquiler,
+                        kilometrajeLibre = false,
+                        esTodoTerreno = false
+                    )
+                    camioneta.costoTotal() shouldBe 9_907.2
+                }
             }
         }
     }
