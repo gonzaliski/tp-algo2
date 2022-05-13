@@ -12,6 +12,7 @@ import io.kotest.matchers.date.shouldNotHaveSameDayAs
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import java.time.LocalDate
+import java.time.LocalTime
 
 internal class RepositorioSpec : DescribeSpec({
     isolationMode = IsolationMode.InstancePerTest
@@ -179,6 +180,92 @@ internal class RepositorioSpec : DescribeSpec({
                 it("hay coincidencia por username") {
                     repo.search("pperez") shouldContain usuarioEnRepo
                 }
+            }
+        }
+    }
+
+    describe("Repositorio de Destinos") {
+        val repo = Repositorio<Destino>()
+        val destinoEnRepo = Destino("Bariloche", "Argentina", costoBase = 230_000.0)
+
+        repo.create(destinoEnRepo)
+
+        describe("Al intentar una búsqueda") {
+            it("hay coincidencia por pais") {
+                repo.search("barilo") shouldContain destinoEnRepo
+            }
+            it("hay coincidencia por ciudad") {
+                repo.search("argent") shouldContain destinoEnRepo
+            }
+        }
+    }
+
+    describe("Repositorio de Itinerarios") {
+        val usuario = Usuario(
+            nombre = "lala",
+            apellido = "lele",
+            username = "lalalele",
+            paisResidencia = "Colombia",
+            fechaAlta = LocalDate.now(),
+            diasDisponibles = 3,
+            criterio = Localista,
+            destinosDeseados = mutableListOf(
+                Destino(
+                    ciudad = "Salta",
+                    pais = "Argentina",
+                    costoBase = 500.0
+                )
+            ),
+            vehiculoPreferencia = Caprichoso
+        )
+        val repo = Repositorio<Itinerario>()
+        val itinerarioEnRepo = Itinerario(
+            usuario, Destino("Bariloche", "Argentina", costoBase = 230_000.0), dias = mutableListOf(
+                DiaDeItinerario(
+                    mutableListOf(
+                        Actividad(
+                            descripcion = "una descripcion",
+                            inicio = LocalTime.of(15, 0, 0),
+                            fin = LocalTime.of(18, 30, 0),
+                            costo = 86.0
+                        )
+                    )
+                )
+            )
+        )
+
+        repo.create(itinerarioEnRepo)
+
+        describe("Al intentar una búsqueda") {
+            it("hay coincidencia por destino") {
+                repo.search("barilo") shouldContain itinerarioEnRepo
+            }
+            it("hay coincidencia por actividad") {
+                repo.search("desc") shouldContain itinerarioEnRepo
+            }
+        }
+    }
+
+    describe("Repositorio de Vehiculos") {
+        val repo = Repositorio<Vehiculo>()
+        val vehiculoEnRepo = Moto(
+            marca = "abc",
+            modelo = "def",
+            anioFabricacion = 2003,
+            costoDiario = 200.0,
+            diasDeAlquiler = 6,
+            kilometrajeLibre = true,
+            cilindrada = 420
+        )
+
+        repo.create(vehiculoEnRepo)
+
+        describe("Al intentar una búsqueda") {
+            it("hay coincidencia por marca") {
+                repo.search("aBC") shouldContain vehiculoEnRepo
+            }
+            it("hay coincidencia por modelo") {
+                repo.search("DE") shouldContain vehiculoEnRepo
             }
         }
     }
