@@ -26,7 +26,8 @@ internal class DestinoSpec : DescribeSpec({
                     ciudad = "Buenos Aires",
                     costoBase = 25_000.0
                 )
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         )
         describe("Destino local") {
             val destino = Destino(
@@ -62,7 +63,8 @@ internal class DestinoSpec : DescribeSpec({
                     ciudad = "Buenos Aires",
                     costoBase = 25_000.0
                 )
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         )
         describe("Destino local") {
             val buenosAires = Destino(
@@ -97,7 +99,8 @@ internal class DestinoSpec : DescribeSpec({
                     ciudad = "Buenos Aires",
                     costoBase = 25_000.0
                 )
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         )
         describe("Destino local") {
             val destino = Destino(
@@ -146,7 +149,8 @@ internal class DestinoSpec : DescribeSpec({
                     ciudad = "Buenos Aires",
                     costoBase = 25_000.0
                 )
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         )
         describe("Destino no local") {
             val destino = Destino(
@@ -181,7 +185,8 @@ internal class DestinoSpec : DescribeSpec({
                     ciudad = "Buenos Aires",
                     costoBase = 25_000.0
                 )
-            )
+            ),
+            vehiculoPreferencia = Caprichoso
         )
 
         describe("Test con destino no local") {

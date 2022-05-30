@@ -6,9 +6,12 @@ class Itinerario(
     var dias: MutableList<DiaDeItinerario> = mutableListOf(),
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
-): NivelDificultad {
-
-    init {
+) : NivelDificultad, Entidad {
+    override var id: Int = Entidad.ID_INICIAL
+    init{
+        validarEntidad()
+    }
+    override fun validarEntidad() {
         require(cantidadDias() > 0) {
             "Las actividades del dia deben tener al menos 1 actividad "
         }
@@ -64,12 +67,28 @@ class Itinerario(
     fun fuePuntuadoPor(usuario: Usuario): Boolean = puntuaciones.keys.contains(usuario)
 
     fun tieneDestinoLocal(): Boolean = destino.esLocal()
+
+    /**El valor de búsqueda debe coincidir parcialmente con el país o ciudad del destino que corresponda
+     * o con alguna de las actividades.
+     */
+    override fun coincideCon(value: String): Boolean =
+        destino.coincideCon(value) || actividades().any { it.coincideCon(value) }
+
+    override fun <T> actualizarDatos(elemento: T) {
+        val itinerario = elemento as Itinerario
+        creador = itinerario.creador
+        destino = itinerario.destino
+        dias = itinerario.dias
+        puntuaciones = itinerario.puntuaciones
+    }
 }
 
-class DiaDeItinerario(var actividades: MutableList<Actividad>): NivelDificultad {
+class DiaDeItinerario(var actividades: MutableList<Actividad>) : NivelDificultad {
     fun costo() = actividades.sumOf { actividad -> actividad.costo }
 
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
+
+    fun duracionPromedio() = duracion() / actividades.size
 
     fun tieneActividades() = actividades.isNotEmpty()
 

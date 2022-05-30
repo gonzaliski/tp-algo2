@@ -11,12 +11,21 @@ class Usuario(
     val fechaAlta: LocalDate,
     var diasDisponibles: Int,
     var criterio: Criterio,
-    var destinosDeseados: MutableList<Destino>
-) {
+    var destinosDeseados: MutableList<Destino>,
+    var vehiculoPreferencia: PreferenciaDeVehiculo
+): Entidad {
+
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
+    override var id: Int = Entidad.ID_INICIAL
 
-    init {
+    fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
+
+    init{
+        validarEntidad()
+    }
+
+    override fun validarEntidad() {
         require(nombre.isNotBlank()) {
             "El nombre del usuario no puede ser nulo o vacio"
         }
@@ -74,4 +83,26 @@ class Usuario(
     fun esAmigoDe(usuario: Usuario): Boolean = amigos.contains(usuario)
 
     fun algunAmigoConoce(destino: Destino): Boolean = amigos.any { it.conoce(destino) }
+
+    /** El valor de búsqueda debe coincidir parcialmente con su nombre o apellido,
+     * o exáctamente con su username.
+     */
+    override fun coincideCon(value: String): Boolean {
+        return nombre.contains(value, ignoreCase = true) ||
+                apellido.contains(value, ignoreCase = true) ||
+                username.equals(value, ignoreCase = true)
+    }
+
+    override fun <T> actualizarDatos(elemento: T) {
+        val usuario = elemento as Usuario
+        nombre = usuario.nombre
+        apellido = usuario.apellido
+        username = usuario.username
+        paisResidencia = usuario.paisResidencia
+//            fechaAlta = usuario.fechaAlta // No se puede actualizar porque es constante
+        diasDisponibles = usuario.diasDisponibles
+        criterio = usuario.criterio
+        destinosDeseados = usuario.destinosDeseados
+        vehiculoPreferencia = usuario.vehiculoPreferencia
+    }
 }

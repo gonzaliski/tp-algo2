@@ -2,9 +2,9 @@ package edu.unsam.algo2
 
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
+import kotlin.math.absoluteValue
 
 class Actividad(
-
     var dificultad: Dificultad = Dificultad.BAJA,
     var descripcion: String,
     var inicio: LocalTime,
@@ -26,11 +26,12 @@ class Actividad(
         }
     }
 
-    fun duracion() = ChronoUnit.MINUTES.between(fin, inicio)
+    fun duracion() = ChronoUnit.MINUTES.between(inicio, fin).absoluteValue
 
     fun seSolapaCon(actividad: Actividad): Boolean =
         fin.isBetween(actividad.inicio, actividad.fin) || inicio.isBetween(actividad.inicio, actividad.fin)
 
     fun seSolapaConAlguna(actividades: List<Actividad>) = actividades.any { seSolapaCon(it) }
 
+    fun coincideCon(value: String): Boolean = descripcion.contains(value, ignoreCase = true)
 }
