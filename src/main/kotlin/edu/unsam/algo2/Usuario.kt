@@ -13,15 +13,17 @@ class Usuario(
     var criterio: Criterio,
     var destinosDeseados: MutableList<Destino>,
     var vehiculoPreferencia: PreferenciaDeVehiculo
-): Entidad {
+) : Entidad {
 
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
+    val itinerariosAPuntuar: MutableList<Itinerario> = mutableListOf()
+
     override var id: Int = Entidad.ID_INICIAL
 
     fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
 
-    init{
+    init {
         validarEntidad()
     }
 
@@ -54,6 +56,21 @@ class Usuario(
         }
     }
 
+    fun realizar(viaje: Viaje) {
+        destinosVisitados.add(viaje.destino()) //TODO: Desacoplar
+    }
+
+    /* Darle un puntaje a los itinerarios a puntuar.
+    Para eso de debe especificar el puntaje que queremos darle a todos los itinerarios */
+    fun puntuarTodos(puntuacion: Int) {
+        itinerariosAPuntuar.forEach { puntuar(it, puntuacion) }
+    }
+
+    /* TODO: Transferir todos sus itinerarios al amigo que menos destinos visitados tenga */
+    fun transferirItinerarios() {
+
+    }
+
     fun puntuar(itinerario: Itinerario, puntuacion: Int) {
         require(puntuacion in 1..10) {
             "Puntuacion solo puede ser un valor entre 1 y 10"
@@ -61,6 +78,7 @@ class Usuario(
         require(!itinerario.fuePuntuadoPor(this)) {
             "El usuario ya ha puntuado este itinerario"
         }
+        if (!puedePuntuar(itinerario)) throw InvalidAction(this, itinerario)
         itinerario.recibirPuntajeDe(this, puntuacion)
     }
 
