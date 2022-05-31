@@ -18,7 +18,13 @@ class Usuario(
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     val itinerariosAPuntuar: MutableList<Itinerario> = mutableListOf()
-    val funcionalidades: MutableList<Funcionalidad> = mutableListOf()
+    val funcionalidades: MutableList<ViajeObserver> = mutableListOf()
+    var itinerarios: MutableList<Itinerario> = mutableListOf()
+    var tareas: MutableList<Tarea> = mutableListOf()
+
+    fun realizarTareas(){
+        tareas.forEach{it.execute()}
+    }
 
     override var id: Int = Entidad.ID_INICIAL
 
@@ -115,6 +121,23 @@ class Usuario(
 
     fun esAmigoDe(usuario: Usuario): Boolean = amigos.contains(usuario)
 
+    fun agregarAmigo(usuario: Usuario) {
+        amigos.add(usuario)
+    }
+
+    fun agregarItinerarios(itinerario: List<Itinerario>){
+        itinerarios.addAll(itinerario)
+    }
+
+    fun agregarDestinosDeseados(destinos: List<Destino>){
+        destinosDeseados.addAll(destinos)
+    }
+
+    fun validarDestinos()= destinosDeseados.maxByOrNull { it.costo(this) }?: throw Exception("No se encontro")
+
+    fun destinoMasCaro() = validarDestinos()
+
+
     fun algunAmigoConoce(destino: Destino): Boolean = amigos.any { it.conoce(destino) }
 
     /** El valor de búsqueda debe coincidir parcialmente con su nombre o apellido,
@@ -140,4 +163,14 @@ class Usuario(
     }
 
     fun amigosConDestinoDeseado(destino: Destino): List<Usuario> = amigos.filter { it.esDestinoDeseado(destino) }
+
+    fun totalDestinosVisitados() = destinosVisitados.size
+
+    fun validarAmigos()= amigos.minByOrNull { it.totalDestinosVisitados() }?: throw Exception("No se encontro")
+
+    fun amigoConMenorDestinosVisitados():Usuario = validarAmigos()!!
+
+    fun transferirItinerarios(amigo: Usuario) {
+        amigo.agregarItinerarios(this.itinerarios)
+    }
 }

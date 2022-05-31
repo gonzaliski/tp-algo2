@@ -1,11 +1,11 @@
 package edu.unsam.algo2
 
-interface Funcionalidad {
+interface ViajeObserver {
     fun realizarAccion(viaje: Viaje, usuario: Usuario)
 }
 
 /* Enviar a los amigos que desean el destino del viaje un mail avisando que visitaron el destino. */
-class AvisoPorMail(val mailSender: MailSender) : Funcionalidad {
+class AvisoPorMail(val mailSender: MailSender) : ViajeObserver {
     override fun realizarAccion(viaje: Viaje, usuario: Usuario) {
         usuario.amigosConDestinoDeseado(viaje.destino())
             .forEach { enviarMail(it, usuario, viaje.destino()) }
@@ -30,7 +30,7 @@ class AvisoPorMail(val mailSender: MailSender) : Funcionalidad {
      de itinerario a localista, esto le asegura al usuario que la app va a
      proponer destinos locales para cuando quiera armar un nuevo viaje.
 * */
-class ModificarCriterio : Funcionalidad {
+class ModificarCriterio : ViajeObserver {
     override fun realizarAccion(viaje: Viaje, usuario: Usuario) {
         if (viaje.esLocal()) {
             usuario.criterio = Localista
@@ -39,7 +39,7 @@ class ModificarCriterio : Funcionalidad {
 }
 
 /* Agregar a los itinerarios a puntuar el itinerario del viaje.*/
-class AgregarParaPuntuar : Funcionalidad {
+class AgregarParaPuntuar : ViajeObserver {
     override fun realizarAccion(viaje: Viaje, usuario: Usuario) {
         usuario.itinerariosAPuntuar.add(viaje.itinerario)
     }
