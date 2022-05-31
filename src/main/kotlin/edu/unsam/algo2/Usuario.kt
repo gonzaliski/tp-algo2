@@ -18,6 +18,7 @@ class Usuario(
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     val itinerariosAPuntuar: MutableList<Itinerario> = mutableListOf()
+    val funcionalidades: MutableList<Funcionalidad> = mutableListOf()
 
     override var id: Int = Entidad.ID_INICIAL
 
@@ -56,8 +57,22 @@ class Usuario(
         }
     }
 
+    /* El usuario confirma realizar el viaje. Esto debe actualizar los destinos visitados por él. */
     fun realizar(viaje: Viaje) {
-        destinosVisitados.add(viaje.destino()) //TODO: Desacoplar
+        destinosVisitados.add(viaje.destino())
+        funcionalidades.forEach { it.realizarAccion(viaje, this) }
+    }
+
+    fun activarAvisoPorMail(mailSender: MailSender){
+        funcionalidades.add(AvisoPorMail(mailSender))
+    }
+
+    fun activarModificacionDeCriterio(){
+        funcionalidades.add(ModificarCriterio())
+    }
+
+    fun activarAgregarParaPuntuar(){
+        funcionalidades.add(AgregarParaPuntuar())
     }
 
     /* Darle un puntaje a los itinerarios a puntuar.
@@ -123,4 +138,6 @@ class Usuario(
         destinosDeseados = usuario.destinosDeseados
         vehiculoPreferencia = usuario.vehiculoPreferencia
     }
+
+    fun amigosConDestinoDeseado(destino: Destino): List<Usuario> = amigos.filter { it.esDestinoDeseado(destino) }
 }
