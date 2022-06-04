@@ -7,6 +7,7 @@ class Usuario(
     var nombre: String,
     var apellido: String,
     var username: String,
+    var email: String,
     var paisResidencia: String,
     val fechaAlta: LocalDate,
     var diasDisponibles: Int,
@@ -18,12 +19,12 @@ class Usuario(
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     val itinerariosAPuntuar: MutableList<Itinerario> = mutableListOf()
-    val funcionalidades: MutableList<ViajeObserver> = mutableListOf()
-    var itinerarios: MutableList<Itinerario> = mutableListOf()
+    val viajeObservers: MutableList<ViajeObserver> = mutableListOf()
+    var itinerarios: MutableList<Itinerario> = mutableListOf() // TODO: No tener bidireccion
     var tareas: MutableList<Tarea> = mutableListOf()
 
-    fun realizarTareas(){
-        tareas.forEach{it.execute()}
+    fun realizarTareas() {
+        tareas.forEach { it.execute(this) }
     }
 
     override var id: Int = Entidad.ID_INICIAL
@@ -65,20 +66,24 @@ class Usuario(
 
     /* El usuario confirma realizar el viaje. Esto debe actualizar los destinos visitados por él. */
     fun realizar(viaje: Viaje) {
-        destinosVisitados.add(viaje.destino())
-        funcionalidades.forEach { it.realizarAccion(viaje, this) }
+        agregarDestinoVisitado(viaje.destino())
+        viajeObservers.forEach { it.viajeRealizado(viaje, this) }
     }
 
-    fun activarAvisoPorMail(mailSender: MailSender){
-        funcionalidades.add(AvisoPorMail(mailSender))
+    fun activarAvisoPorMail(mailSender: MailSender) {
+        viajeObservers.add(AvisoPorMail(mailSender))
     }
 
-    fun activarModificacionDeCriterio(){
-        funcionalidades.add(ModificarCriterio())
+    fun activarModificacionDeCriterio() {
+        viajeObservers.add(ModificarCriterio)
     }
 
-    fun activarAgregarParaPuntuar(){
-        funcionalidades.add(AgregarParaPuntuar())
+    fun activarAgregarParaPuntuar() {
+        viajeObservers.add(AgregarParaPuntuar)
+    }
+
+    fun activarPriorizarConvenio() {
+        viajeObservers.add(PriorizarConvenio)
     }
 
     /* Darle un puntaje a los itinerarios a puntuar.
@@ -90,6 +95,14 @@ class Usuario(
     /* TODO: Transferir todos sus itinerarios al amigo que menos destinos visitados tenga */
     fun transferirItinerarios() {
 
+    }
+
+    fun agregarItinerarioAPuntuar(itinerario: Itinerario) {
+        itinerariosAPuntuar.add(itinerario)
+    }
+
+    fun agregarDestinoVisitado(destino: Destino) {
+        destinosVisitados.add(destino)
     }
 
     fun puntuar(itinerario: Itinerario, puntuacion: Int) {
@@ -125,18 +138,16 @@ class Usuario(
         amigos.add(usuario)
     }
 
-    fun agregarItinerarios(itinerario: List<Itinerario>){
+    fun agregarItinerarios(itinerario: List<Itinerario>) {
         itinerarios.addAll(itinerario)
     }
 
-    fun agregarDestinosDeseados(destinos: List<Destino>){
+    fun agregarDestinosDeseados(destinos: List<Destino>) {
         destinosDeseados.addAll(destinos)
     }
 
-    fun validarDestinos()= destinosDeseados.maxByOrNull { it.costo(this) }?: throw Exception("No se encontro")
-
-    fun destinoMasCaro() = validarDestinos()
-
+    fun destinoMasCaro() = destinosDeseados.maxByOrNull { it.costo(this) }
+        ?: throw Exception("No se encontró el destino más caro")
 
     fun algunAmigoConoce(destino: Destino): Boolean = amigos.any { it.conoce(destino) }
 
@@ -166,11 +177,19 @@ class Usuario(
 
     fun totalDestinosVisitados() = destinosVisitados.size
 
-    fun validarAmigos()= amigos.minByOrNull { it.totalDestinosVisitados() }?: throw Exception("No se encontro")
-
-    fun amigoConMenorDestinosVisitados():Usuario = validarAmigos()!!
+    fun amigoConMenorDestinosVisitados(): Usuario =
+        amigos.minByOrNull { it.totalDestinosVisitados() }
+            ?: throw Exception("No se encontró amigos con la menor cantidad de destinos visitados")
 
     fun transferirItinerarios(amigo: Usuario) {
         amigo.agregarItinerarios(this.itinerarios)
+    }
+
+    fun modificarPreferencia(nuevaPreferenciaDeVehiculo: PreferenciaDeVehiculo) {
+        vehiculoPreferencia = nuevaPreferenciaDeVehiculo
+    }
+
+    fun modificarCriterio(nuevoCriterio: Criterio) {
+        criterio = nuevoCriterio
     }
 }

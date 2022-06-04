@@ -11,5 +11,7 @@ class Viaje(
 
     fun destino() = itinerario.destino
 
+    fun tieneVehiculoConConvenio(): Boolean = vehiculo.tieneConvenio()
+
 }
 

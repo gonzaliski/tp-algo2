@@ -35,6 +35,8 @@ abstract class Vehiculo(
     override var id: Int = Entidad.ID_INICIAL
 
     companion object {
+        fun primerEmpresaConConvenio(): String = empresasConvenio.first()
+
         val empresasConvenio: MutableList<String> = mutableListOf("Honda")
         val antiguedadMax: Int = 2
     }

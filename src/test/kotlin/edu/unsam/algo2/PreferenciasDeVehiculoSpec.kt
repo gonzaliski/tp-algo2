@@ -18,6 +18,7 @@ class UsuarioConPreferenciasSpec : DescribeSpec({
         nombre = "Alejandro",
         apellido = "Zapata",
         username = "azapata",
+        email = "alejandro.zapata@mail.com",
         paisResidencia = "Argentina",
         fechaAlta = LocalDate.now(),
         diasDisponibles = 10,

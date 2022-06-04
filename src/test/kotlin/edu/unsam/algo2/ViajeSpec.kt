@@ -18,6 +18,7 @@ class ViajeSpec : DescribeSpec({
             nombre = "asd",
             apellido = "qwe",
             username = "asdqwe",
+            email = "asd.qwe@mail.com",
             paisResidencia = "zxc",
             fechaAlta = LocalDate.now(),
             diasDisponibles = 4,
@@ -85,6 +86,7 @@ class ViajeSpec : DescribeSpec({
                     nombre = "Billy",
                     apellido = "Kimpbell",
                     username = "billy",
+                    email = "billy.kimpbell@mail.com",
                     paisResidencia = "Inglaterra",
                     fechaAlta = LocalDate.now(),
                     diasDisponibles = 2,
@@ -102,7 +104,7 @@ class ViajeSpec : DescribeSpec({
                     mockedMailSender.sendMail(
                         Mail(
                             from = "app@holamundo.com",
-                            to = amigoConDestinoDeseado.username,
+                            to = amigoConDestinoDeseado.email,
                             subject = "Visitaron un destino que te puede interesar",
                             content = "Hola! ${amigoConDestinoDeseado.nombre}, ${usuario.nombre + usuario.apellido} visitó ${destino}."
                         )
