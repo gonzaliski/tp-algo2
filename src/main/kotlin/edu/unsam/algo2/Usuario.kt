@@ -192,4 +192,8 @@ class Usuario(
     fun modificarCriterio(nuevoCriterio: Criterio) {
         criterio = nuevoCriterio
     }
+
+    fun hacerseAmigoDeTodos(usuarios: List<Usuario>) {
+        usuarios.forEach { usr -> this.agregarAmigo(usr) }
+    }
 }

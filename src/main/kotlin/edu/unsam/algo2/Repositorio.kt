@@ -1,6 +1,6 @@
 package edu.unsam.algo2
 
-class Repositorio<T : Entidad> {
+open class Repositorio<T : Entidad> {
     var nextID = Entidad.ID_INICIAL + 1
         private set
     val elementos: MutableList<T> = mutableListOf()
@@ -61,4 +61,8 @@ class Repositorio<T : Entidad> {
     /**Devuelve los objetos que coincidan con la búsqueda de acuerdo a los siguientes criterios:*/
     fun search(value: String): List<T> = elementos.filter { it.coincideCon(value) }
 
+}
+
+class RepositorioDeUsuarios : Repositorio<Usuario>() {
+    fun usuariosQueConocenDestino(destino: Destino) = elementos.filter { usr -> usr.conoce(destino) }
 }

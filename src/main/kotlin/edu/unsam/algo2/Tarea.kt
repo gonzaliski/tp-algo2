@@ -1,6 +1,6 @@
 package edu.unsam.algo2
 
-abstract class Tarea(var nombre: String, val mailSender: MailSender) {
+abstract class Tarea(var nombre: String, private val mailSender: MailSender) {
 
     fun execute(usuario: Usuario) {
         doExecute(usuario)
@@ -11,12 +11,12 @@ abstract class Tarea(var nombre: String, val mailSender: MailSender) {
         mailSender.sendMail(Mail(nombre, usuario.email, mensaje(), mensaje()))
     }
 
-    fun mensaje() = "Se realizo la tarea: $nombre"
+    private fun mensaje() = "Se realizo la tarea: $nombre"
 
     abstract fun doExecute(usuario: Usuario)
 }
 
-class PuntuarItinerarioTarea(nombre: String, mailSender: MailSender, val puntuacion: Int) : Tarea(nombre, mailSender) {
+class PuntuarItinerarioTarea(nombre: String, mailSender: MailSender, private val puntuacion: Int) : Tarea(nombre, mailSender) {
     override fun doExecute(usuario: Usuario) {
         usuario.puntuarTodos(puntuacion)
     }
@@ -28,21 +28,23 @@ class TransferirItinerariosTarea(nombre: String, mailSender: MailSender) : Tarea
     }
 }
 
-// TODO: Acá también, crear u
-class HacerseAmigoTarea(nombre: String, mailSender: MailSender, val usuarios: List<Usuario>, val destino: Destino) :
+class HacerseAmigoTarea(
+    nombre: String,
+    mailSender: MailSender,
+    private val repositorioDeUsuarios: RepositorioDeUsuarios,
+    val destino: Destino
+) :
     Tarea(nombre, mailSender) {
     override fun doExecute(usuario: Usuario) {
-        usuariosQueConocenDestino().forEach { usr -> usuario.agregarAmigo(usr) }
+        val usuarios = repositorioDeUsuarios.usuariosQueConocenDestino(destino)
+        usuario.hacerseAmigoDeTodos(usuarios)
     }
-
-    fun usuariosQueConocenDestino() = usuarios.filter { usr -> usr.conoce(destino) }
 }
 
-class agregarDestinoMasCaroTarea(nombre: String, mailSender: MailSender) : Tarea(nombre, mailSender) {
+class AgregarDestinoMasCaroTarea(nombre: String, mailSender: MailSender) : Tarea(nombre, mailSender) {
     override fun doExecute(usuario: Usuario) {
         usuario.agregarDestinosDeseados(destinoMasCaroDeAmigos(usuario))
     }
-
 
     fun destinoMasCaroDeAmigos(usuario: Usuario): List<Destino> = usuario.amigos.map { amigo -> amigo.destinoMasCaro() }
 }
