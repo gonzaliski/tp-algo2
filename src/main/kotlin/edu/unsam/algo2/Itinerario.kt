@@ -3,7 +3,7 @@ package edu.unsam.algo2
 class Itinerario(
     var creador: Usuario,
     var destino: Destino,
-    var dias: MutableList<DiaDeItinerario> = mutableListOf(),
+    var dias: MutableList<DiaDeItinerario>,
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
 ) : NivelDificultad, Entidad {
@@ -76,10 +76,14 @@ class Itinerario(
 
     override fun <T> actualizarDatos(elemento: T) {
         val itinerario = elemento as Itinerario
-        creador = itinerario.creador
+        actualizarCreador(itinerario.creador)
         destino = itinerario.destino
         dias = itinerario.dias
         puntuaciones = itinerario.puntuaciones
+    }
+
+    fun actualizarCreador(usuario: Usuario){
+        creador = usuario
     }
 }
 

@@ -66,3 +66,14 @@ open class Repositorio<T : Entidad> {
 class RepositorioDeUsuarios : Repositorio<Usuario>() {
     fun usuariosQueConocenDestino(destino: Destino) = elementos.filter { usr -> usr.conoce(destino) }
 }
+
+class RepositorioDeItinerarios : Repositorio<Itinerario>() {
+    fun itinerariosDe(usuario: Usuario) = elementos.filter { it.fueCreadoPor(usuario) }
+
+    /* Transferir todos sus itinerarios al amigo que menos destinos visitados tenga */
+    fun transferirItinerarios(creadorOriginal: Usuario, nuevoCreador: Usuario){
+        itinerariosDe(creadorOriginal).forEach{
+            it.actualizarCreador(nuevoCreador)
+        }
+    }
+}

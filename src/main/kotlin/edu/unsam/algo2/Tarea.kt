@@ -16,15 +16,21 @@ abstract class Tarea(var nombre: String, private val mailSender: MailSender) {
     abstract fun doExecute(usuario: Usuario)
 }
 
-class PuntuarItinerarioTarea(nombre: String, mailSender: MailSender, private val puntuacion: Int) : Tarea(nombre, mailSender) {
+class PuntuarItinerarioTarea(nombre: String, mailSender: MailSender, private val puntuacion: Int) :
+    Tarea(nombre, mailSender) {
     override fun doExecute(usuario: Usuario) {
         usuario.puntuarTodos(puntuacion)
     }
 }
 
-class TransferirItinerariosTarea(nombre: String, mailSender: MailSender) : Tarea(nombre, mailSender) {
+class TransferirItinerariosTarea(
+    nombre: String,
+    mailSender: MailSender,
+    private val repositorioDeItinerarios: RepositorioDeItinerarios,
+) : Tarea(nombre, mailSender) {
     override fun doExecute(usuario: Usuario) {
-        usuario.transferirItinerarios(usuario.amigoConMenorDestinosVisitados())
+        val usuarioReceptor = usuario.amigoConMenorDestinosVisitados()
+        repositorioDeItinerarios.transferirItinerarios(usuario, usuarioReceptor)
     }
 }
 

@@ -78,7 +78,7 @@ class ViajeSpec : DescribeSpec({
 
         describe("que activó el aviso por mail") {
             val mockedMailSender = mockk<MailSender>(relaxUnitFun = true)
-            usuario.activarAvisoPorMail(mockedMailSender)
+            usuario.activarObserver(AvisoPorMail(mockedMailSender))
 
             it("al realizar el viaje, se envía a sus amigos con el destino como deseado") {
                 // Arrange

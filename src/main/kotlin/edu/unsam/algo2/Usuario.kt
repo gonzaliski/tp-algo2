@@ -20,7 +20,6 @@ class Usuario(
     var destinosVisitados: MutableList<Destino> = mutableListOf()
     val itinerariosAPuntuar: MutableList<Itinerario> = mutableListOf()
     val viajeObservers: MutableList<ViajeObserver> = mutableListOf()
-    var itinerarios: MutableList<Itinerario> = mutableListOf() // TODO: No tener bidireccion
     var tareas: MutableList<Tarea> = mutableListOf()
 
     fun realizarTareas() {
@@ -70,31 +69,14 @@ class Usuario(
         viajeObservers.forEach { it.viajeRealizado(viaje, this) }
     }
 
-    fun activarAvisoPorMail(mailSender: MailSender) {
-        viajeObservers.add(AvisoPorMail(mailSender))
-    }
-
-    fun activarModificacionDeCriterio() {
-        viajeObservers.add(ModificarCriterio)
-    }
-
-    fun activarAgregarParaPuntuar() {
-        viajeObservers.add(AgregarParaPuntuar)
-    }
-
-    fun activarPriorizarConvenio() {
-        viajeObservers.add(PriorizarConvenio)
+    fun activarObserver(observer: ViajeObserver){
+        viajeObservers.add(observer)
     }
 
     /* Darle un puntaje a los itinerarios a puntuar.
     Para eso de debe especificar el puntaje que queremos darle a todos los itinerarios */
     fun puntuarTodos(puntuacion: Int) {
         itinerariosAPuntuar.forEach { puntuar(it, puntuacion) }
-    }
-
-    /* TODO: Transferir todos sus itinerarios al amigo que menos destinos visitados tenga */
-    fun transferirItinerarios() {
-
     }
 
     fun agregarItinerarioAPuntuar(itinerario: Itinerario) {
@@ -138,10 +120,6 @@ class Usuario(
         amigos.add(usuario)
     }
 
-    fun agregarItinerarios(itinerario: List<Itinerario>) {
-        itinerarios.addAll(itinerario)
-    }
-
     fun agregarDestinosDeseados(destinos: List<Destino>) {
         destinosDeseados.addAll(destinos)
     }
@@ -181,10 +159,6 @@ class Usuario(
         amigos.minByOrNull { it.totalDestinosVisitados() }
             ?: throw Exception("No se encontró amigos con la menor cantidad de destinos visitados")
 
-    fun transferirItinerarios(amigo: Usuario) {
-        amigo.agregarItinerarios(this.itinerarios)
-    }
-
     fun modificarPreferencia(nuevaPreferenciaDeVehiculo: PreferenciaDeVehiculo) {
         vehiculoPreferencia = nuevaPreferenciaDeVehiculo
     }
@@ -195,5 +169,13 @@ class Usuario(
 
     fun hacerseAmigoDeTodos(usuarios: List<Usuario>) {
         usuarios.forEach { usr -> this.agregarAmigo(usr) }
+    }
+
+    fun agregarTarea(tarea: Tarea) {
+        tareas.add(tarea)
+    }
+
+    fun agregarMultiplesTareas(tareas: List<Tarea>){
+        tareas.forEach { agregarTarea(it) }
     }
 }
