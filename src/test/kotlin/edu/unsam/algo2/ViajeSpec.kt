@@ -4,6 +4,7 @@ import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.mockk
 import io.mockk.verify
@@ -112,6 +113,36 @@ class ViajeSpec : DescribeSpec({
                 }
                 usuario.destinosVisitados shouldContain destino
                 usuario.criterio shouldNotBe Localista
+                usuario.itinerariosAPuntuar shouldNotContain itinerario
+            }
+        }
+
+        describe("que activó la opción de modificar criterio"){
+            usuario.activarObserver(ModificarCriterio)
+
+            it("al realizar un viaje no local, se modifica su criterio"){
+                usuario.realizar(viaje)
+
+                usuario.criterio shouldBe Localista
+
+            }
+
+            it("al realizar un viaje local, NO se modifica su criterio") {
+                val destinoLocal = Destino("San Martin", "Argentina", 2_000.0)
+                itinerario.destino = destinoLocal
+                 // Act
+                usuario.realizar(viaje)
+                // Assert
+                usuario.criterio shouldNotBe Localista
+            }
+        }
+
+        describe("que activó la opción de agregar para puntuar"){
+            usuario.activarObserver(AgregarParaPuntuar)
+
+            it("si no puede puntuar al itinerario, no se agrega para puntar"){
+                usuario.realizar(viaje)
+
                 usuario.itinerariosAPuntuar shouldNotContain itinerario
             }
         }
