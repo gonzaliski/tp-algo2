@@ -167,8 +167,9 @@ class Usuario(
         criterio = nuevoCriterio
     }
 
-    fun hacerseAmigoDeTodos(usuarios: List<Usuario>) {
-        usuarios.forEach { usr -> this.agregarAmigo(usr) }
+    fun hacerseAmigoDeLosQuePueda(usuarios: List<Usuario>) {
+        usuarios.filter{ usr -> !esAmigoDe(usr) && usr != this }
+            .forEach { usr -> this.agregarAmigo(usr) }
     }
 
     fun agregarTarea(tarea: Tarea) {
@@ -178,4 +179,15 @@ class Usuario(
     fun agregarMultiplesTareas(tareas: List<Tarea>){
         tareas.forEach { agregarTarea(it) }
     }
+
+    fun agregarDestinoMasCaroDeAmigos() {
+        agregarDestinosDeseados(destinosMasCaroDeAmigos())
+    }
+
+    private fun destinosMasCaroDeAmigos(): List<Destino> = amigos.map { amigo -> amigo.destinoMasCaro() }
+
+    fun agregarVariosItinerariosAPuntuar(itinerarios: List<Itinerario>){
+        itinerariosAPuntuar.addAll(itinerarios)
+    }
+
 }

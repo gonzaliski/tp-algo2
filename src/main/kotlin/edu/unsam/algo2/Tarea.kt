@@ -43,14 +43,12 @@ class HacerseAmigoTarea(
     Tarea(nombre, mailSender) {
     override fun doExecute(usuario: Usuario) {
         val usuarios = repositorioDeUsuarios.usuariosQueConocenDestino(destino)
-        usuario.hacerseAmigoDeTodos(usuarios)
+        usuario.hacerseAmigoDeLosQuePueda(usuarios)
     }
 }
 
 class AgregarDestinoMasCaroTarea(nombre: String, mailSender: MailSender) : Tarea(nombre, mailSender) {
     override fun doExecute(usuario: Usuario) {
-        usuario.agregarDestinosDeseados(destinoMasCaroDeAmigos(usuario))
+        usuario.agregarDestinoMasCaroDeAmigos()
     }
-
-    fun destinoMasCaroDeAmigos(usuario: Usuario): List<Destino> = usuario.amigos.map { amigo -> amigo.destinoMasCaro() }
 }

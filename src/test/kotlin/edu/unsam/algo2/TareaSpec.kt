@@ -68,7 +68,7 @@ class TareaSpec : DescribeSpec({
             )
         )
 
-        usuarioQuePuntua.itinerariosAPuntuar.addAll(itinerariosAPuntuar) //TODO: Desacoplar agregar itinerarios a puntuar
+        usuarioQuePuntua.agregarVariosItinerariosAPuntuar(itinerariosAPuntuar)
 
         val mockedMailSender = mockk<MailSender>(relaxUnitFun = true)
 
@@ -81,14 +81,7 @@ class TareaSpec : DescribeSpec({
                 // Assert
                 shouldThrow<IllegalArgumentException> { usuarioQuePuntua.realizarTareas() }
                 verify(exactly = 0) {
-                    mockedMailSender.sendMail(
-                        Mail(
-                            from = "puntuar",
-                            to = "abc@mail.com",
-                            subject = "Se realizo la tarea: puntuar",
-                            content = "Se realizo la tarea: puntuar"
-                        )
-                    )
+                    mockedMailSender.sendMail(any())
                 }
             }
 
@@ -100,14 +93,7 @@ class TareaSpec : DescribeSpec({
                 // Assert
                 shouldThrow<IllegalArgumentException> { usuarioQuePuntua.realizarTareas() }
                 verify(exactly = 0) {
-                    mockedMailSender.sendMail(
-                        Mail(
-                            from = "puntuar",
-                            to = "abc@mail.com",
-                            subject = "Se realizo la tarea: puntuar",
-                            content = "Se realizo la tarea: puntuar"
-                        )
-                    )
+                    mockedMailSender.sendMail(any())
                 }
             }
 
@@ -137,19 +123,12 @@ class TareaSpec : DescribeSpec({
                     val puntuarItinerarioTarea =
                         PuntuarItinerarioTarea(nombre = "puntuar", mailSender = mockedMailSender, puntuacion = 10)
                     usuarioCreador.agregarTarea(puntuarItinerarioTarea)
-                    usuarioCreador.itinerariosAPuntuar.addAll(itinerariosAPuntuar) //TODO: Desacoplar agregar itinerarios a puntuar
+                    usuarioCreador.agregarVariosItinerariosAPuntuar(itinerariosAPuntuar)
                     // Assert
                     shouldThrow<InvalidAction> { usuarioCreador.realizarTareas() }
                     itinerariosAPuntuar.any { it.fuePuntuadoPor(usuarioCreador) }.shouldBeFalse()
                     verify(exactly = 0) {
-                        mockedMailSender.sendMail(
-                            Mail(
-                                from = "puntuar",
-                                to = "hjk@mail.com",
-                                subject = "Se realizo la tarea: puntuar",
-                                content = "Se realizo la tarea: puntuar"
-                            )
-                        )
+                        mockedMailSender.sendMail(any())
                     }
                 }
 
@@ -162,14 +141,7 @@ class TareaSpec : DescribeSpec({
                     // Assert
                     shouldThrow<InvalidAction> { usuarioQuePuntua.realizarTareas() }
                     verify(exactly = 0) {
-                        mockedMailSender.sendMail(
-                            Mail(
-                                from = "puntuar",
-                                to = "abc@mail.com",
-                                subject = "Se realizo la tarea: puntuar",
-                                content = "Se realizo la tarea: puntuar"
-                            )
-                        )
+                        mockedMailSender.sendMail(any())
                     }
                 }
             }
