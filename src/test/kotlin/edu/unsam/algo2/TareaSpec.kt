@@ -6,6 +6,7 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainAll
 import io.mockk.mockk
 import io.mockk.verify
@@ -276,5 +277,165 @@ class TareaSpec : DescribeSpec({
             }
         }
 
+    }
+
+    describe("Dado un Usuario y una Tarea de Hacerse amigos de los que conozcan un destino") {
+        val destinoConocido = Destino(ciudad = "Bariloche", pais = "Argentina", costoBase = 123456.0)
+        val destinoPeru = Destino(ciudad = "Cusco", pais="Peru", costoBase= 70000.0)
+        val destinoCosta = Destino(ciudad = "Mar del Plata", pais="Argentina", costoBase= 40000.0)
+
+        val usuarioPepe = Usuario(
+            nombre = "pepe",
+            apellido = "pepito",
+            username = "pepepe",
+            email = "pepe@mail.com",
+            paisResidencia = "Colombia",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(destinoCosta),
+            diasDisponibles = 8,
+            vehiculoPreferencia = Caprichoso
+        ).apply{
+            destinosVisitados.add(destinoPeru)
+        }
+        val usuarioOtro = Usuario(
+            nombre = "otro",
+            apellido = "otro apellido",
+            username = "otro_otro",
+            email = "otro@mail.com",
+            paisResidencia = "Uruguay",
+            criterio = Relajado,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(destinoConocido),
+            diasDisponibles = 8,
+            vehiculoPreferencia = SinLimite
+        ).apply{
+            destinosVisitados.add(destinoPeru)
+            destinosVisitados.add(destinoCosta)
+        }
+
+        val usuarioCreador = Usuario(
+            nombre = "usuario",
+            apellido = "loco",
+            username = "usuarioloco",
+            email = "usuarioloco@mail.com",
+            paisResidencia = "Mexico",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(
+                Destino(ciudad = "u", pais = "u", costoBase = 123456.0),
+            ),
+            diasDisponibles = 5,
+            vehiculoPreferencia = Neofilo
+        )
+
+        val itinerarios = mutableListOf(
+            Itinerario(
+                creador = usuarioCreador,
+                destino = destinoConocido,
+                dias = mutableListOf(
+                    DiaDeItinerario(
+                        actividades = mutableListOf(
+                            Actividad(
+                                dificultad = Dificultad.MEDIA,
+                                costo = 56_000.0,
+                                descripcion = "lsidvjpa",
+                                inicio = LocalTime.MIN,
+                                fin = LocalTime.MAX
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        val usuarios = mutableListOf(usuarioCreador,usuarioOtro,usuarioPepe)
+        val repoUsuarios = RepositorioDeUsuarios().apply {
+            elementos.addAll(usuarios)
+        }
+        val mockedMailSender = mockk<MailSender>(relaxUnitFun = true)
+        val hacerseAmigoTarea = HacerseAmigoTarea("hacerse amigo tarea", mockedMailSender,repoUsuarios,destinoConocido)
+        it("Se agrega a la lista de amigos del usuario cuando otro(usuario) conoce el destino") {
+            usuarioCreador.agregarTarea(hacerseAmigoTarea)
+            usuarioCreador.realizarTareas()
+            usuarioCreador.amigos shouldContain usuarioOtro
+        }
+    }
+    describe("Dado un Usuario y una tarea de agregar destino mas caro de los amigos a la lista de destinos deseados") {
+        val destinoConocido = Destino(ciudad = "Bariloche", pais = "Argentina", costoBase = 123456.0)
+        val destinoPeru = Destino(ciudad = "Cusco", pais="Peru", costoBase= 70000.0)
+        val destinoCosta = Destino(ciudad = "Mar del Plata", pais="Argentina", costoBase= 40000.0)
+        val destinoSierra = Destino(ciudad = "Tandil", pais="Argentina", costoBase= 50000.0)
+
+        val usuarioPepe = Usuario(
+            nombre = "pepe",
+            apellido = "pepito",
+            username = "pepepe",
+            email = "pepe@mail.com",
+            paisResidencia = "Colombia",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(destinoCosta,destinoSierra),
+            diasDisponibles = 8,
+            vehiculoPreferencia = Caprichoso
+        )
+        val usuarioOtro = Usuario(
+            nombre = "otro",
+            apellido = "otro apellido",
+            username = "otro_otro",
+            email = "otro@mail.com",
+            paisResidencia = "Uruguay",
+            criterio = Relajado,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(destinoCosta,destinoPeru),
+            diasDisponibles = 8,
+            vehiculoPreferencia = SinLimite
+        )
+
+        val usuarioCreador = Usuario(
+            nombre = "usuario",
+            apellido = "loco",
+            username = "usuarioloco",
+            email = "usuarioloco@mail.com",
+            paisResidencia = "Mexico",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(
+                Destino(ciudad = "u", pais = "u", costoBase = 123456.0),
+            ),
+            diasDisponibles = 5,
+            vehiculoPreferencia = Neofilo
+        ).apply{
+            amigos.add(usuarioPepe)
+            amigos.add(usuarioOtro)
+        }
+
+        val itinerarios = mutableListOf(
+            Itinerario(
+                creador = usuarioCreador,
+                destino = destinoConocido,
+                dias = mutableListOf(
+                    DiaDeItinerario(
+                        actividades = mutableListOf(
+                            Actividad(
+                                dificultad = Dificultad.MEDIA,
+                                costo = 56_000.0,
+                                descripcion = "lsidvjpa",
+                                inicio = LocalTime.MIN,
+                                fin = LocalTime.MAX
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        val mockedMailSender = mockk<MailSender>(relaxUnitFun = true)
+        val AgregarDestinoMasCaroTarea = AgregarDestinoMasCaroTarea("Agregar destino mas caro de los amigos a destinos deseados", mockedMailSender)
+        it("Se agrega a la lista de destinos deseados los destinos mas caros de los amigos") {
+            usuarioCreador.agregarTarea(AgregarDestinoMasCaroTarea)
+            usuarioCreador.realizarTareas()
+          //  val destinosMasCarosAmigos = mutableListOf(usuarioCreador.destinosMasCaroDeAmigos())
+            usuarioCreador.destinosDeseados shouldContain destinoSierra
+            usuarioCreador.destinosDeseados shouldContain destinoPeru
+        }
     }
 })

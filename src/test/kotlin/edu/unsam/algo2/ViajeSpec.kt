@@ -146,5 +146,15 @@ class ViajeSpec : DescribeSpec({
                 usuario.itinerariosAPuntuar shouldNotContain itinerario
             }
         }
+
+        describe("cuyo vehiculo no tiene convenio "){
+            usuario.activarObserver(PriorizarConvenio)
+            it("el usuario pasa a ser selectivo"){
+                usuario.realizar(viaje)
+
+                (usuario.vehiculoPreferencia is Selectivo) shouldBe true
+            }
+        }
     }
+
 })
