@@ -7,6 +7,8 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainAll
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldNotContainDuplicates
 import io.mockk.mockk
 import io.mockk.verify
 import java.time.LocalDate
@@ -273,6 +275,113 @@ class TareaSpec : DescribeSpec({
                         )
                     )
                 }
+            }
+        }
+
+    }
+
+    describe("Dado un Usuario y una Tarea de Hacerse Amigo") {
+        val destinoConocido = Destino(ciudad = "destino", pais = "destino", costoBase = 123456.0)
+
+        val usuarioAmigo = Usuario(
+            nombre = "a",
+            apellido = "b",
+            username = "c",
+            email = "abc@mail.com",
+            paisResidencia = "Colombia",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(destinoConocido),
+            diasDisponibles = 8,
+            vehiculoPreferencia = Caprichoso
+        )
+
+        val usuarioCreador = Usuario(
+            nombre = "h",
+            apellido = "j",
+            username = "k",
+            email = "hjk@mail.com",
+            paisResidencia = "Mexico",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(
+                Destino(ciudad = "u", pais = "u", costoBase = 123456.0),
+            ),
+            diasDisponibles = 5,
+            vehiculoPreferencia = Neofilo
+        ).apply {
+            amigos.add(usuarioAmigo)
+        }
+
+        val usuarioNoAmigo = Usuario(
+            nombre = "n",
+            apellido = "a",
+            username = "na",
+            email = "na@mail.com",
+            paisResidencia = "Mexico",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(
+                Destino(ciudad = "u", pais = "u", costoBase = 123456.0),
+                destinoConocido
+            ),
+            diasDisponibles = 5,
+            vehiculoPreferencia = Neofilo
+        )
+
+        val usuarios = mutableListOf(
+            usuarioNoAmigo,
+            usuarioAmigo
+        )
+
+        val repositorioDeUsuarios = RepositorioDeUsuarios().apply {
+            usuarios.forEach { create(it) }
+        }
+        val mockedMailSender = mockk<MailSender>(relaxUnitFun = true)
+
+        it("El usuario creador se hace amigo solo de quienes no lo era antes si conocen el destino") {
+            val hacerseAmigoTarea =
+                HacerseAmigoTarea("hacerse amigo", mockedMailSender, repositorioDeUsuarios, destinoConocido)
+
+            usuarioCreador.agregarTarea(hacerseAmigoTarea)
+
+            usuarioCreador.realizarTareas()
+
+            usuarioCreador.esAmigoDe(usuarioNoAmigo).shouldBeTrue()
+            usuarioCreador.amigos.shouldNotContainDuplicates()
+
+            verify(exactly = 1) {
+                mockedMailSender.sendMail(
+                    Mail(
+                        from = "hacerse amigo",
+                        to = "hjk@mail.com",
+                        subject = "Se realizo la tarea: hacerse amigo",
+                        content = "Se realizo la tarea: hacerse amigo"
+                    )
+                )
+            }
+
+        }
+
+        describe("El usuario creador no puede agregarse a si mismo como amigo") {
+            val hacerseAmigoTarea =
+                HacerseAmigoTarea("hacerse amigo", mockedMailSender, repositorioDeUsuarios, destinoConocido)
+            usuarioCreador.agregarTarea(hacerseAmigoTarea)
+            usuarioCreador.agregarAmigo(usuarioNoAmigo)
+
+            usuarioCreador.realizarTareas()
+
+            usuarioCreador.amigos.shouldContainExactly(usuarioAmigo, usuarioNoAmigo)
+
+            verify(exactly = 1) {
+                mockedMailSender.sendMail(
+                    Mail(
+                        from = "hacerse amigo",
+                        to = "hjk@mail.com",
+                        subject = "Se realizo la tarea: hacerse amigo",
+                        content = "Se realizo la tarea: hacerse amigo"
+                    )
+                )
             }
         }
 
