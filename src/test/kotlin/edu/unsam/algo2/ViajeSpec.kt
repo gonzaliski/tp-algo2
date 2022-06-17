@@ -95,7 +95,7 @@ class ViajeSpec : DescribeSpec({
                     destinosDeseados = mutableListOf(destino),
                     vehiculoPreferencia = Supersticioso
                 )
-                usuario.amigos.add(amigoConDestinoDeseado)
+                usuario.agregarAmigo(amigoConDestinoDeseado)
 
                 // Act
                 usuario.realizar(viaje)
