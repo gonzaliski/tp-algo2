@@ -126,7 +126,7 @@ class Usuario(
     }
 
     fun destinoMasCaro() = destinosDeseados.maxByOrNull { it.costo(this) }
-        ?: throw Exception("No se encontró el destino más caro")
+        ?: throw SinDestinosDeseadosException("No se encontró el destino más caro")
 
     fun algunAmigoConoce(destino: Destino): Boolean = amigos.any { it.conoce(destino) }
 
@@ -158,7 +158,7 @@ class Usuario(
 
     fun amigoConMenorDestinosVisitados(): Usuario =
         amigos.minByOrNull { it.totalDestinosVisitados() }
-            ?: throw Exception("No se encontró amigos con la menor cantidad de destinos visitados")
+            ?: throw SinDestinosVisitadosException("No se encontró amigos con la menor cantidad de destinos visitados")
 
     fun modificarPreferencia(nuevaPreferenciaDeVehiculo: PreferenciaDeVehiculo) {
         vehiculoPreferencia = nuevaPreferenciaDeVehiculo
