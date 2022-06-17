@@ -169,9 +169,13 @@ class Usuario(
     }
 
     fun hacerseAmigoDeLosQuePueda(usuarios: List<Usuario>) {
-        usuarios.filter { usr -> !esAmigoDe(usr) && usr != this }
-            .forEach { usr -> this.agregarAmigo(usr) }
+        usuariosNoAmigos(usuarios).forEach { usr -> this.agregarAmigo(usr) }
     }
+
+    private fun usuariosNoAmigos(usuarios: List<Usuario>) =
+        usuarios.filter { usr -> puedeSerAmigo(usr) }
+
+    private fun puedeSerAmigo(usuario: Usuario) = !esAmigoDe(usuario) && usuario != this
 
     fun agregarTarea(tarea: Tarea) {
         tareas.add(tarea)
