@@ -1,8 +1,7 @@
 package edu.unsam.algo2
 
-class InvalidAction(usuario: Usuario, itinerario: Itinerario) :
-    IllegalAccessException("Acción inválida: ${usuario.username} no puede puntuar el itinerario de ${itinerario.creador}")
+class InvalidAction(mensaje: String) : IllegalAccessException(mensaje)
 
-class InvalidIdException(id: Int?, mensaje: String) : IllegalArgumentException("Error ID: $id. $mensaje")
+class InvalidIdException(mensaje: String) : IllegalArgumentException(mensaje)
 
-class InvalidElementException(mensaje: String) : NullPointerException("Elemento invalido: $mensaje")
+class InvalidElementException(mensaje: String) : NullPointerException(mensaje)

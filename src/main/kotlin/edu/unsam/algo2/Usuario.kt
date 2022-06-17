@@ -69,7 +69,7 @@ class Usuario(
         viajeObservers.forEach { it.viajeRealizado(viaje, this) }
     }
 
-    fun activarObserver(observer: ViajeObserver){
+    fun activarObserver(observer: ViajeObserver) {
         viajeObservers.add(observer)
     }
 
@@ -94,7 +94,8 @@ class Usuario(
         require(!itinerario.fuePuntuadoPor(this)) {
             "El usuario ya ha puntuado este itinerario"
         }
-        if (!puedePuntuar(itinerario)) throw InvalidAction(this, itinerario)
+        if (!puedePuntuar(itinerario))
+            throw InvalidAction("Acción inválida: ${this.username} no puede puntuar el itinerario de ${itinerario.creador}")
         itinerario.recibirPuntajeDe(this, puntuacion)
     }
 
@@ -168,7 +169,7 @@ class Usuario(
     }
 
     fun hacerseAmigoDeLosQuePueda(usuarios: List<Usuario>) {
-        usuarios.filter{ usr -> !esAmigoDe(usr) && usr != this }
+        usuarios.filter { usr -> !esAmigoDe(usr) && usr != this }
             .forEach { usr -> this.agregarAmigo(usr) }
     }
 
@@ -176,7 +177,7 @@ class Usuario(
         tareas.add(tarea)
     }
 
-    fun agregarMultiplesTareas(tareas: List<Tarea>){
+    fun agregarMultiplesTareas(tareas: List<Tarea>) {
         tareas.forEach { agregarTarea(it) }
     }
 
@@ -186,7 +187,7 @@ class Usuario(
 
     private fun destinosMasCaroDeAmigos(): List<Destino> = amigos.map { amigo -> amigo.destinoMasCaro() }
 
-    fun agregarVariosItinerariosAPuntuar(itinerarios: List<Itinerario>){
+    fun agregarVariosItinerariosAPuntuar(itinerarios: List<Itinerario>) {
         itinerariosAPuntuar.addAll(itinerarios)
     }
 

@@ -18,7 +18,7 @@ open class Repositorio<T : Entidad> {
 
     private fun validarID(id: Int) {
         if (elementos.any { elemento -> elemento.id == id }) {
-            throw InvalidIdException(id, "Ya existe un elemento con ese ID")
+            throw InvalidIdException("Error ID: $id. Ya existe un elemento con ese ID")
         }
     }
 
@@ -30,7 +30,7 @@ open class Repositorio<T : Entidad> {
 
     private fun existeElemento(elemento: T) {
         if (!elementos.contains(elemento)) {
-            throw InvalidElementException("El elemento no ha sido encontrado")
+            throw InvalidElementException("Elemento invalido: El elemento no ha sido encontrado")
         }
     }
 
@@ -38,7 +38,7 @@ open class Repositorio<T : Entidad> {
      * De no existir el objeto buscado, es decir, un objeto con ese id, se debe lanzar una excepción.*/
     fun update(elemento: T) {
         elemento.validarEntidad()
-        if (elemento.esNuevo()) throw InvalidElementException("El elemento no existe en el repositorio")
+        if (elemento.esNuevo()) throw InvalidElementException("Elemento invalido: El elemento no existe en el repositorio")
         val elementoEncontrado = getById(elemento.id)
 
         elementoEncontrado.actualizarDatos(elemento)
@@ -53,7 +53,7 @@ open class Repositorio<T : Entidad> {
 
     private fun esNoNulo(elementoRequerido: T?) {
         if (elementoRequerido == null) {
-            throw InvalidElementException("No se encontro un elemento con ese ID")
+            throw InvalidElementException("Elemento invalido: No se encontro un elemento con ese ID")
         }
 
     }
@@ -71,8 +71,8 @@ class RepositorioDeItinerarios : Repositorio<Itinerario>() {
     fun itinerariosDe(usuario: Usuario) = elementos.filter { it.fueCreadoPor(usuario) }
 
     /* Transferir todos sus itinerarios al amigo que menos destinos visitados tenga */
-    fun transferirItinerarios(creadorOriginal: Usuario, nuevoCreador: Usuario){
-        itinerariosDe(creadorOriginal).forEach{
+    fun transferirItinerarios(creadorOriginal: Usuario, nuevoCreador: Usuario) {
+        itinerariosDe(creadorOriginal).forEach {
             it.actualizarCreador(nuevoCreador)
         }
     }
