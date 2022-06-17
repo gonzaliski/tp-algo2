@@ -54,6 +54,7 @@ internal class RepositorioSpec : DescribeSpec({
                     // Assert - Then
                     repo.elementos.contains(usuario).shouldBeTrue()
                 }
+
             }
 
             it("al intentar eliminar un usuario, lanza error") {
@@ -181,6 +182,31 @@ internal class RepositorioSpec : DescribeSpec({
                 }
                 it("hay coincidencia por username") {
                     repo.search("pperez") shouldContain usuarioEnRepo
+                }
+            }
+
+            it("al intentar agregar otro usuario con un ID que ya existe, lanza error") {
+                shouldThrowExactly<InvalidIdException> {
+                    repo.create(
+                        Usuario(
+                            nombre = "a",
+                            apellido = "b",
+                            username = "c",
+                            email = "abc@mail.com",
+                            paisResidencia = "d",
+                            fechaAlta = LocalDate.now(),
+                            diasDisponibles = 5,
+                            criterio = Relajado,
+                            destinosDeseados = mutableListOf(
+                                Destino(
+                                    ciudad = "Salta",
+                                    pais = "Argentina",
+                                    costoBase = 500.0
+                                )
+                            ),
+                            vehiculoPreferencia = SinLimite
+                        ).apply { id = 1 }
+                    )
                 }
             }
         }
