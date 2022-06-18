@@ -4,6 +4,7 @@ import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
+import io.kotest.matchers.equality.shouldBeEqualToComparingFields
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.mockk
@@ -144,6 +145,44 @@ class ViajeSpec : DescribeSpec({
                 usuario.realizar(viaje)
 
                 usuario.itinerariosAPuntuar shouldNotContain itinerario
+            }
+
+            it("si puede puntuar al itinerario, se agrega para puntuar"){
+                val usuarioConDestinoDeseado = Usuario(
+                    nombre = "Billy",
+                    apellido = "Kimpbell",
+                    username = "billy",
+                    email = "billy.kimpbell@mail.com",
+                    paisResidencia = "Inglaterra",
+                    fechaAlta = LocalDate.now(),
+                    diasDisponibles = 2,
+                    criterio = Activo,
+                    destinosDeseados = mutableListOf(destino),
+                    vehiculoPreferencia = Supersticioso
+                )
+
+                itinerario.creador = usuarioConDestinoDeseado
+
+                usuario.realizar(viaje)
+
+                usuario.itinerariosAPuntuar.shouldContain(itinerario)
+            }
+        }
+
+        describe("que activó la opción Priorizar Convenio"){
+            usuario.activarObserver(PriorizarConvenio)
+
+            it("Si el viaje no tiene vehiculo con convenio, el usuario se vuelve Selectivo"){
+                usuario.realizar(viaje)
+
+                usuario.vehiculoPreferencia shouldBeEqualToComparingFields Selectivo("Honda")
+            }
+
+            it("Si el viaje tiene vehiculo con convenio, no se modifica su preferencia de vehiculos"){
+                viaje.vehiculo.marca = "Honda"
+                usuario.realizar(viaje)
+
+                usuario.vehiculoPreferencia shouldBe SinLimite
             }
         }
     }
