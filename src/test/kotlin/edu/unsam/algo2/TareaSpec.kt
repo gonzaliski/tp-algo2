@@ -5,10 +5,7 @@ import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.collections.shouldContainAll
-import io.kotest.matchers.collections.shouldContainExactly
-import io.kotest.matchers.collections.shouldNotContainDuplicates
+import io.kotest.matchers.collections.*
 import io.mockk.mockk
 import io.mockk.verify
 import java.time.LocalDate
@@ -203,7 +200,7 @@ class TareaSpec : DescribeSpec({
             diasDisponibles = 5,
             vehiculoPreferencia = Neofilo
         ).apply {
-            amigos.add(usuarioReceptor)
+            agregarAmigo(usuarioReceptor)
         }
 
         val itinerarios = mutableListOf(
@@ -310,7 +307,7 @@ class TareaSpec : DescribeSpec({
             diasDisponibles = 5,
             vehiculoPreferencia = Neofilo
         ).apply {
-            amigos.add(usuarioAmigo)
+            agregarAmigo(usuarioAmigo)
         }
 
         val usuarioNoAmigo = Usuario(
@@ -382,6 +379,71 @@ class TareaSpec : DescribeSpec({
                         content = "Se realizo la tarea: hacerse amigo"
                     )
                 )
+            }
+        }
+
+    }
+
+    describe("Dado un Usuario creador de una Tarea con amigos") {
+        val destinoBarato = Destino(ciudad = "destino", pais = "destino", costoBase = 123.0)
+        val destinoCaro = Destino(ciudad = "u", pais = "u", costoBase = 123456.0)
+        val usuarioAmigo = Usuario(
+            nombre = "a",
+            apellido = "b",
+            username = "c",
+            email = "abc@mail.com",
+            paisResidencia = "Colombia",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(destinoBarato),
+            diasDisponibles = 8,
+            vehiculoPreferencia = Caprichoso
+        )
+
+        val usuarioCreador = Usuario(
+            nombre = "h",
+            apellido = "j",
+            username = "k",
+            email = "hjk@mail.com",
+            paisResidencia = "Mexico",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(
+                destinoBarato,
+            ),
+            diasDisponibles = 5,
+            vehiculoPreferencia = Neofilo
+        )
+        usuarioCreador.agregarAmigo(usuarioAmigo)
+
+        val amigoQueConoceOtroDestino = Usuario(
+            nombre = "n",
+            apellido = "a",
+            username = "na",
+            email = "na@mail.com",
+            paisResidencia = "Mexico",
+            criterio = Activo,
+            fechaAlta = LocalDate.now(),
+            destinosDeseados = mutableListOf(
+                destinoCaro,
+                destinoBarato
+            ),
+            diasDisponibles = 5,
+            vehiculoPreferencia = Neofilo
+        )
+        usuarioCreador.agregarAmigo(amigoQueConoceOtroDestino)
+
+        val mockedMailSender = mockk<MailSender>(relaxUnitFun = true)
+
+        describe("y dada una Tarea de Agregar Destino Mas Caro"){
+            val agregarDestinoMasCaroTarea = AgregarDestinoMasCaroTarea("agregar destino mas caro de amigos", mockedMailSender)
+            usuarioCreador.agregarTarea(agregarDestinoMasCaroTarea)
+
+            it("Se agrega el destino más caro de cada amigo como deseado"){
+                usuarioCreador.realizarTareas()
+
+                usuarioCreador.destinosDeseados.shouldContainExactlyInAnyOrder(destinoBarato, destinoCaro, destinoBarato)
+                usuarioCreador.destinosDeseados.shouldContainDuplicates()
             }
         }
 
