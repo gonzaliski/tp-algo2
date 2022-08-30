@@ -7,21 +7,30 @@ class Usuario(
     var nombre: String,
     var apellido: String,
     var username: String,
+    var email: String,
     var paisResidencia: String,
     val fechaAlta: LocalDate,
     var diasDisponibles: Int,
     var criterio: Criterio,
     var destinosDeseados: MutableList<Destino>,
     var vehiculoPreferencia: PreferenciaDeVehiculo
-): Entidad {
+) : Entidad {
 
     val amigos: MutableList<Usuario> = mutableListOf()
     var destinosVisitados: MutableList<Destino> = mutableListOf()
+    val itinerariosAPuntuar: MutableList<Itinerario> = mutableListOf()
+    val viajeObservers: MutableList<ViajeObserver> = mutableListOf()
+    var tareas: MutableList<Tarea> = mutableListOf()
+
+    fun realizarTareas() {
+        tareas.forEach { it.execute(this) }
+    }
+
     override var id: Int = Entidad.ID_INICIAL
 
     fun leGusta(vehiculo: Vehiculo) = vehiculoPreferencia.leGusta(vehiculo)
 
-    init{
+    init {
         validarEntidad()
     }
 
@@ -54,6 +63,30 @@ class Usuario(
         }
     }
 
+    /* El usuario confirma realizar el viaje. Esto debe actualizar los destinos visitados por él. */
+    fun realizar(viaje: Viaje) {
+        agregarDestinoVisitado(viaje.destino())
+        viajeObservers.forEach { it.viajeRealizado(viaje, this) }
+    }
+
+    fun activarObserver(observer: ViajeObserver) {
+        viajeObservers.add(observer)
+    }
+
+    /* Darle un puntaje a los itinerarios a puntuar.
+    Para eso de debe especificar el puntaje que queremos darle a todos los itinerarios */
+    fun puntuarTodos(puntuacion: Int) {
+        itinerariosAPuntuar.forEach { puntuar(it, puntuacion) }
+    }
+
+    fun agregarItinerarioAPuntuar(itinerario: Itinerario) {
+        itinerariosAPuntuar.add(itinerario)
+    }
+
+    fun agregarDestinoVisitado(destino: Destino) {
+        destinosVisitados.add(destino)
+    }
+
     fun puntuar(itinerario: Itinerario, puntuacion: Int) {
         require(puntuacion in 1..10) {
             "Puntuacion solo puede ser un valor entre 1 y 10"
@@ -61,6 +94,8 @@ class Usuario(
         require(!itinerario.fuePuntuadoPor(this)) {
             "El usuario ya ha puntuado este itinerario"
         }
+        if (!puedePuntuar(itinerario))
+            throw InvalidAction("Acción inválida: ${this.username} no puede puntuar el itinerario de ${itinerario.creador}")
         itinerario.recibirPuntajeDe(this, puntuacion)
     }
 
@@ -81,6 +116,17 @@ class Usuario(
         destinosDeseados.maxOf { destino -> destino.costo(this) } < destinoItinerario.costo(this)
 
     fun esAmigoDe(usuario: Usuario): Boolean = amigos.contains(usuario)
+
+    fun agregarAmigo(usuario: Usuario) {
+        amigos.add(usuario)
+    }
+
+    fun agregarDestinosDeseados(destinos: List<Destino>) {
+        destinosDeseados.addAll(destinos)
+    }
+
+    fun destinoMasCaro() = destinosDeseados.maxByOrNull { it.costo(this) }
+        ?: throw SinDestinosDeseadosException("No se encontró el destino más caro")
 
     fun algunAmigoConoce(destino: Destino): Boolean = amigos.any { it.conoce(destino) }
 
@@ -105,4 +151,48 @@ class Usuario(
         destinosDeseados = usuario.destinosDeseados
         vehiculoPreferencia = usuario.vehiculoPreferencia
     }
+
+    fun amigosConDestinoDeseado(destino: Destino): List<Usuario> = amigos.filter { it.esDestinoDeseado(destino) }
+
+    fun totalDestinosVisitados() = destinosVisitados.size
+
+    fun amigoConMenorDestinosVisitados(): Usuario =
+        amigos.minByOrNull { it.totalDestinosVisitados() }
+            ?: throw SinDestinosVisitadosException("No se encontró amigos con la menor cantidad de destinos visitados")
+
+    fun modificarPreferencia(nuevaPreferenciaDeVehiculo: PreferenciaDeVehiculo) {
+        vehiculoPreferencia = nuevaPreferenciaDeVehiculo
+    }
+
+    fun modificarCriterio(nuevoCriterio: Criterio) {
+        criterio = nuevoCriterio
+    }
+
+    fun hacerseAmigoDeLosQuePueda(usuarios: List<Usuario>) {
+        usuariosNoAmigos(usuarios).forEach { usr -> this.agregarAmigo(usr) }
+    }
+
+    private fun usuariosNoAmigos(usuarios: List<Usuario>) =
+        usuarios.filter { usr -> puedeSerAmigo(usr) }
+
+    private fun puedeSerAmigo(usuario: Usuario) = !esAmigoDe(usuario) && usuario != this
+
+    fun agregarTarea(tarea: Tarea) {
+        tareas.add(tarea)
+    }
+
+    fun agregarMultiplesTareas(tareas: List<Tarea>) {
+        tareas.forEach { agregarTarea(it) }
+    }
+
+    fun agregarDestinoMasCaroDeAmigos() {
+        agregarDestinosDeseados(destinosMasCaroDeAmigos())
+    }
+
+    private fun destinosMasCaroDeAmigos(): List<Destino> = amigos.map { amigo -> amigo.destinoMasCaro() }
+
+    fun agregarVariosItinerariosAPuntuar(itinerarios: List<Itinerario>) {
+        itinerariosAPuntuar.addAll(itinerarios)
+    }
+
 }

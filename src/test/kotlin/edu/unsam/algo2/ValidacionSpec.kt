@@ -34,6 +34,7 @@ internal class ValidacionSpec : DescribeSpec({
                     criterio = Relajado,
                     apellido = "Peter",
                     username = "ppeter",
+                    email = "pepe.peter@mail.com",
                     paisResidencia = "Venezuela",
                     destinosDeseados = mutableListOf(destino),
                     vehiculoPreferencia = Caprichoso
@@ -49,6 +50,7 @@ internal class ValidacionSpec : DescribeSpec({
                     criterio = Relajado,
                     apellido = "Peter",
                     username = "ppeter",
+                    email = "pepe.peter@mail.com",
                     paisResidencia = "Venezuela",
                     destinosDeseados = mutableListOf(destino),
                     vehiculoPreferencia = Caprichoso
@@ -66,6 +68,7 @@ internal class ValidacionSpec : DescribeSpec({
                     criterio = Relajado,
                     apellido = "Peter",
                     username = "ppeter",
+                    email = "pepe.peter@mail.com",
                     paisResidencia = "Venezuela",
                     destinosDeseados = mutableListOf(),
                     vehiculoPreferencia = Caprichoso
@@ -83,6 +86,7 @@ internal class ValidacionSpec : DescribeSpec({
                     criterio = Relajado,
                     apellido = "Peter",
                     username = "ppeter",
+                    email = "pepe.peter@mail.com",
                     paisResidencia = "Venezuela",
                     destinosDeseados = mutableListOf(destino),
                     vehiculoPreferencia = Caprichoso
@@ -113,6 +117,7 @@ internal class ValidacionSpec : DescribeSpec({
                     nombre = "Carlos",
                     apellido = "Gomez",
                     username = "cgomez",
+                    email = "pepe.peter@mail.com",
                     fechaAlta = LocalDate.now().minusYears(16),
                     paisResidencia = "Chile",
                     diasDisponibles = 1,
@@ -193,6 +198,11 @@ internal class ValidacionSpec : DescribeSpec({
     }
 
     describe("puntuaciones") {
+        val destinoConocido = Destino(
+            pais = "Argentina",
+            ciudad = "Runcuncun",
+            costoBase = 25_000.0
+        )
         val user = Usuario(
             nombre = "Peperoni",
             fechaAlta = LocalDate.now(),
@@ -200,6 +210,31 @@ internal class ValidacionSpec : DescribeSpec({
             criterio = Relajado,
             apellido = "Peter",
             username = "ppeter",
+            email = "pepe.peter@mail.com",
+            paisResidencia = "Venezuela",
+            destinosDeseados = mutableListOf(
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "MDQ",
+                    costoBase = 25_000.0
+                ),
+                Destino(
+                    pais = "Argentina",
+                    ciudad = "Buenos Aires",
+                    costoBase = 25_000.0
+                ),
+                destinoConocido
+            ),
+            vehiculoPreferencia = Caprichoso
+        )
+        val otroUser = Usuario(
+            nombre = "Peperoni",
+            fechaAlta = LocalDate.now(),
+            diasDisponibles = 15,
+            criterio = Relajado,
+            apellido = "Peter",
+            username = "ppeter",
+            email = "pepe.peter@mail.com",
             paisResidencia = "Venezuela",
             destinosDeseados = mutableListOf(
                 Destino(
@@ -216,12 +251,8 @@ internal class ValidacionSpec : DescribeSpec({
             vehiculoPreferencia = Caprichoso
         )
         val itinerario = Itinerario(
-            creador = user,
-            destino = Destino(
-                pais = "Argentina",
-                ciudad = "Runcuncun",
-                costoBase = 25_000.0
-            ),
+            creador = otroUser,
+            destino = destinoConocido,
             dias = mutableListOf(
                 DiaDeItinerario(
                     mutableListOf(

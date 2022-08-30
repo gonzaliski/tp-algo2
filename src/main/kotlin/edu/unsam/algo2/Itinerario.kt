@@ -3,14 +3,16 @@ package edu.unsam.algo2
 class Itinerario(
     var creador: Usuario,
     var destino: Destino,
-    var dias: MutableList<DiaDeItinerario> = mutableListOf(),
+    var dias: MutableList<DiaDeItinerario>,
     var puntuaciones: MutableMap<Usuario, Int> = mutableMapOf()
 
 ) : NivelDificultad, Entidad {
     override var id: Int = Entidad.ID_INICIAL
-    init{
+
+    init {
         validarEntidad()
     }
+
     override fun validarEntidad() {
         require(cantidadDias() > 0) {
             "Las actividades del dia deben tener al menos 1 actividad "
@@ -20,9 +22,6 @@ class Itinerario(
         }
 
     }
-
-    fun actividadesOrdenadas(actividades: MutableList<Actividad>) =
-        actividades.sortedBy { actividad -> actividad.inicio }
 
     fun seSolapanActividades(): Boolean = dias.any { dia -> dia.seSolapanActividades() }
 
@@ -76,10 +75,14 @@ class Itinerario(
 
     override fun <T> actualizarDatos(elemento: T) {
         val itinerario = elemento as Itinerario
-        creador = itinerario.creador
+        actualizarCreador(itinerario.creador)
         destino = itinerario.destino
         dias = itinerario.dias
         puntuaciones = itinerario.puntuaciones
+    }
+
+    fun actualizarCreador(usuario: Usuario) {
+        creador = usuario
     }
 }
 
@@ -87,8 +90,6 @@ class DiaDeItinerario(var actividades: MutableList<Actividad>) : NivelDificultad
     fun costo() = actividades.sumOf { actividad -> actividad.costo }
 
     fun duracion() = actividades.sumOf { actividad -> actividad.duracion() }
-
-    fun duracionPromedio() = duracion() / actividades.size
 
     fun tieneActividades() = actividades.isNotEmpty()
 

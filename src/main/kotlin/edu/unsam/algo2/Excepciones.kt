@@ -1,5 +1,11 @@
 package edu.unsam.algo2
 
-class InvalidIdException(id :Int?, mensaje: String) : IllegalArgumentException("Error ID: $id. $mensaje")
+class InvalidAction(mensaje: String) : IllegalAccessException(mensaje)
 
-class InvalidElementException(mensaje: String) : NullPointerException("Elemento invalido: $mensaje")
+class InvalidIdException(mensaje: String) : IllegalArgumentException(mensaje)
+
+class InvalidElementException(mensaje: String) : NullPointerException(mensaje)
+
+class SinDestinosDeseadosException(mensaje: String): NullPointerException(mensaje)
+
+class SinDestinosVisitadosException(mensaje: String): NullPointerException(mensaje)

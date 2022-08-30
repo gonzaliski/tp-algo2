@@ -23,6 +23,7 @@ internal class RepositorioSpec : DescribeSpec({
             nombre = "lala",
             apellido = "lele",
             username = "lalalele",
+            email = "",
             paisResidencia = "Colombia",
             fechaAlta = LocalDate.now(),
             diasDisponibles = 3,
@@ -53,6 +54,7 @@ internal class RepositorioSpec : DescribeSpec({
                     // Assert - Then
                     repo.elementos.contains(usuario).shouldBeTrue()
                 }
+
             }
 
             it("al intentar eliminar un usuario, lanza error") {
@@ -101,6 +103,7 @@ internal class RepositorioSpec : DescribeSpec({
                 nombre = "pepe",
                 apellido = "perez",
                 username = "pperez",
+                email = "pepe.perez@mail.com",
                 paisResidencia = "Bolivia",
                 fechaAlta = LocalDate.now().minusDays(2),
                 diasDisponibles = 5,
@@ -181,6 +184,31 @@ internal class RepositorioSpec : DescribeSpec({
                     repo.search("pperez") shouldContain usuarioEnRepo
                 }
             }
+
+            it("al intentar agregar otro usuario con un ID que ya existe, lanza error") {
+                shouldThrowExactly<InvalidIdException> {
+                    repo.create(
+                        Usuario(
+                            nombre = "a",
+                            apellido = "b",
+                            username = "c",
+                            email = "abc@mail.com",
+                            paisResidencia = "d",
+                            fechaAlta = LocalDate.now(),
+                            diasDisponibles = 5,
+                            criterio = Relajado,
+                            destinosDeseados = mutableListOf(
+                                Destino(
+                                    ciudad = "Salta",
+                                    pais = "Argentina",
+                                    costoBase = 500.0
+                                )
+                            ),
+                            vehiculoPreferencia = SinLimite
+                        ).apply { id = 1 }
+                    )
+                }
+            }
         }
     }
 
@@ -205,6 +233,7 @@ internal class RepositorioSpec : DescribeSpec({
             nombre = "lala",
             apellido = "lele",
             username = "lalalele",
+            email = "",
             paisResidencia = "Colombia",
             fechaAlta = LocalDate.now(),
             diasDisponibles = 3,
