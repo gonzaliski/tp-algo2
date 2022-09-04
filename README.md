@@ -8,6 +8,5 @@ TP para Algoritmos 2
 ### Integrantes
 
 - Adán Rodriguez
-- Daiana Castro
 - Gonzalo Mendez
 - Luz Cucarella
